@@ -1,5 +1,5 @@
 name: 🐛 Bug Report
-description: Problems and issues with code of Suparking Sparking 🤔.
+description: Problems and issues with code of Suparking Shared-Trading-System 🤔.
 title: "[BUG] <title>"
 labels: ["type: bug"]
 body:
@@ -38,7 +38,7 @@ body:
     label: Environment
     description: |
       examples:
-        - **ShenYu version(s)**: 2.4.0
+        - **Shard-Trading-System version(s)**: 2.4.0
     value: "sparking version(s):"
     render: markdown
   validations:
