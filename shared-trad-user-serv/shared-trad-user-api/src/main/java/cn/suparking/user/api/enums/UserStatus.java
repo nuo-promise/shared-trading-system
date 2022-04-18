@@ -22,7 +22,6 @@ import lombok.Getter;
 
 import java.util.stream.Stream;
 
-
 /**
  * User Status Enum.
  */
@@ -49,5 +48,4 @@ public enum UserStatus {
                 .findFirst()
                 .orElse(UNKNOWN);
     }
-
 }
