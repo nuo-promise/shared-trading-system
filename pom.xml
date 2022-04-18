@@ -26,7 +26,7 @@
         <module>shared-trad-seattle-serv</module>
         <module>shared-trad-reverse-serv</module>
         <module>shared-trad-order-serv</module>
-        <module>shared-trade-invoice-serv</module>
+        <module>shared-trad-invoice-serv</module>
         <module>shared-trad-data-serv</module>
         <module>shared-trad-customer-serv</module>
     </modules>
@@ -48,7 +48,7 @@
         <alibaba.cloud.version>2021.1</alibaba.cloud.version>
         <commons.lang3.version>3.0</commons.lang3.version>
         <commons.collections4.version>[4.1,)</commons.collections4.version>
-        <commons.codec.version>1.9</commons.codec.version>
+        <commons.codec.version>1.13</commons.codec.version>
         <fastjson.version>1.2.31</fastjson.version>
         <lombok.version>1.18.20</lombok.version>
         <jakarta.validation.version>2.0.2</jakarta.validation.version>
