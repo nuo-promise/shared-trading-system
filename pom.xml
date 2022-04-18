@@ -26,7 +26,7 @@
         <module>shared-trad-seattle-serv</module>
         <module>shared-trad-reverse-serv</module>
         <module>shared-trad-order-serv</module>
-        <module>shared-trade-invoice-serv</module>
+        <module>shared-trad-invoice-serv</module>
         <module>shared-trad-data-serv</module>
         <module>shared-trad-customer-serv</module>
     </modules>
