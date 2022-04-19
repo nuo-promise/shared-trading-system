@@ -5,18 +5,15 @@ import lombok.Getter;
 
 import java.util.stream.Stream;
 
-/**
- * User Register Type.
- */
 @Getter
 @AllArgsConstructor
-public enum RegisterType {
-
+public enum ParkStatus {
     UNKNOWN("unknown", "0"),
-    IPHONE("手机端", "1"),
-    WECHAT_MINI("小程序", "2"),
-    ALI_MINI("支付宝", "3"),
-    OTHER("其他", "4");
+    FREE("空闲", "1"),
+    REVERSE("发布中", "2"),
+    REVERSED("被预约", "3"),
+    ENTERED("已驶入", "4"),
+    LEFT("已驶离", "5");
 
     private final String description;
 
@@ -27,9 +24,9 @@ public enum RegisterType {
      * @param code  user register code
      * @return user register desc
      */
-    public static RegisterType convert(final String code) {
+    public static ParkStatus convert(final String code) {
         return Stream.of(values())
-                .filter(registerType -> registerType.code.equalsIgnoreCase(code))
+                .filter(parkStatus -> parkStatus.code.equalsIgnoreCase(code))
                 .findFirst()
                 .orElse(UNKNOWN);
     }
