@@ -23,21 +23,24 @@ import java.sql.Timestamp;
 @Entity
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "spk_merchant_wallet")
-public class MerchantWallet implements Serializable {
+@Table(name = "spk_car_license")
+public class CarLicenseDO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "user_id", nullable = true)
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(name = "merchant_id", nullable = false)
-    private String merchantId;
+    @Column(name = "car_license", nullable = false)
+    private String carLicense;
 
-    @Column(name = "amount", nullable = false)
-    private Long amount;
+    @Column(name = "type", nullable = false)
+    private Integer type;
+
+    @Column(name = "driver_id", nullable = false)
+    private String driverId;
 
     @CreatedDate
     @Column(name = "date_created", nullable = false)

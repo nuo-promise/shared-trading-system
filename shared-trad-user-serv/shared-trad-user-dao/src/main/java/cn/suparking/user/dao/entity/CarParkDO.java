@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "spk_car_park")
-public class CarPark implements Serializable {
+public class CarParkDO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
