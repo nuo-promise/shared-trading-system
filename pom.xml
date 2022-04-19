@@ -13,6 +13,7 @@
         <module>shared-trad-invoice-serv</module>
         <module>shared-trad-data-serv</module>
         <module>shared-trad-customer-serv</module>
+        <module>shared-trad-common-serv</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -37,6 +38,8 @@
         <lombok.version>1.18.20</lombok.version>
         <jakarta.validation.version>2.0.2</jakarta.validation.version>
         <guava.version>[24.1.1,)</guava.version>
+        <mysql.version>8.0.28</mysql.version>
+        <mybatis.starter.version>2.2.2</mybatis.starter.version>
     </properties>
 
     <dependencyManagement>
@@ -90,7 +93,17 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.starter.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
 </project>

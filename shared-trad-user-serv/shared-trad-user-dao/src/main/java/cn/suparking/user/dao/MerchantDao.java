@@ -1,6 +1,6 @@
 package cn.suparking.user.dao;
 
-import cn.suparking.user.dao.entity.Merchant;
+import cn.suparking.user.dao.entity.MerchantDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -8,19 +8,19 @@ import java.util.Optional;
 /**
  * Merchant Dao.
  */
-public interface MerchantDao extends JpaRepository<Merchant, String> {
+public interface MerchantDao extends JpaRepository<MerchantDO, String> {
 
     /**
      * get merchant by id.
      * @param id merchant id
      * @return {@link Optional}
      */
-    Optional<Merchant> findById(String id);
+    Optional<MerchantDO> findById(String id);
 
     /**
      * get merchant by iphone.
      * @param iphone merchant iphone
      * @return {@link Optional}
      */
-    Optional<Merchant> findByIphone(String iphone);
+    Optional<MerchantDO> findByIphone(String iphone);
 }

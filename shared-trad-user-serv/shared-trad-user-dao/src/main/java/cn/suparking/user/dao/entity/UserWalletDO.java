@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "spk_user_wallet")
-public class UserWallet implements Serializable {
+public class UserWalletDO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

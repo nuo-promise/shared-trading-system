@@ -1,6 +1,6 @@
 package cn.suparking.user.dao;
 
-import cn.suparking.user.dao.entity.CarLicense;
+import cn.suparking.user.dao.entity.CarLicenseDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,21 +12,21 @@ import java.util.Optional;
 /**
  * Car license Dao.
  */
-public interface CarLicenseDao extends JpaRepository<CarLicense, String> {
+public interface CarLicenseDao extends JpaRepository<CarLicenseDO, String> {
 
     /**
      * get car license by id.
      * @param id car license id
      * @return {@link Optional}
      */
-    Optional<CarLicense> findById(String id);
+    Optional<CarLicenseDO> findById(String id);
 
     /**
      * get car license by user id.
      * @param userId user id
      * @return {@link Optional}
      */
-    Optional<CarLicense> findByUserId(String userId);
+    Optional<CarLicenseDO> findByUserId(String userId);
 
     /**
      * update car license by id.
@@ -37,7 +37,7 @@ public interface CarLicenseDao extends JpaRepository<CarLicense, String> {
      * @return {@link int}
      */
     @Modifying
-    @Query("update CarLicense c set c.carLicense = :carLicense, c.driverId = :driverId, c.dateUpdated = :dateUpdated where c.id = :id")
+    @Query("update CarLicenseDO c set c.carLicense = :carLicense, c.driverId = :driverId, c.dateUpdated = :dateUpdated where c.id = :id")
     int updateLicenseById(@Param("carLicense") String carLicense, @Param("driverId") String driverId, @Param("dateUpdated") Timestamp dateUpdated, @Param("id") String id);
 
     /**
@@ -49,7 +49,7 @@ public interface CarLicenseDao extends JpaRepository<CarLicense, String> {
      * @return {@link int}
      */
     @Modifying
-    @Query("update CarLicense c set c.carLicense = :carLicense, c.driverId = :driverId, c.dateUpdated = :dateUpdated where c.userId = :userId")
+    @Query("update CarLicenseDO c set c.carLicense = :carLicense, c.driverId = :driverId, c.dateUpdated = :dateUpdated where c.userId = :userId")
     int updateLicenseByUserId(@Param("carLicense") String carLicense, @Param("driverId") String driverId, @Param("dateUpdated") Timestamp dateUpdated, @Param("userId") String userId);
 
     /**
@@ -60,7 +60,7 @@ public interface CarLicenseDao extends JpaRepository<CarLicense, String> {
      * @return {@link int}
      */
     @Modifying
-    @Query("update CarLicense c set c.type = :type, c.dateUpdated = :dateUpdated where c.id = :id")
+    @Query("update CarLicenseDO c set c.type = :type, c.dateUpdated = :dateUpdated where c.id = :id")
     int updateTypeById(@Param("type") Integer type, @Param("dateUpdated") Timestamp dateUpdated, @Param("id") String id);
 
     /**
@@ -71,6 +71,6 @@ public interface CarLicenseDao extends JpaRepository<CarLicense, String> {
      * @return {@link int}
      */
     @Modifying
-    @Query("update CarLicense c set c.type = :type, c.dateUpdated = :dateUpdated where c.userId = :userId")
+    @Query("update CarLicenseDO c set c.type = :type, c.dateUpdated = :dateUpdated where c.userId = :userId")
     int updateTypeByUserId(@Param("type") int type, @Param("dateUpdated") Timestamp dateUpdated, @Param("userId") String userId);
 }
