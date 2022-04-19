@@ -27,11 +27,11 @@ public class UserDTO implements Serializable {
 
     private String nickName;
 
-    private String enabled;
+    private Integer enabled;
 
     @NotNull
     @NotBlank
-    private String registerType;
+    private Integer registerType;
 
     private String merchantId;
 }
