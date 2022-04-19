@@ -4,15 +4,13 @@ import cn.suparking.common.api.utils.UUIDUtils;
 import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.api.enums.RegisterType;
 import cn.suparking.user.api.enums.UserStatus;
-import cn.suparking.user.dao.converter.RegisterTypeConverter;
-import cn.suparking.user.dao.converter.UserStatusConverter;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -26,18 +24,39 @@ import java.util.Optional;
 @ToString
 public final class UserDO extends BaseDO {
 
+    /**
+     * 用户名称.
+     */
     private String userName;
 
+    /**
+     * 用户密码.
+     */
     private String password;
 
+    /**
+     * 用户手机号码.
+     */
     private String iphone;
 
+    /**
+     * 用户昵称.
+     */
     private String nickName;
 
-    private UserStatus enabled;
+    /**
+     * 用户状态 1:激活 2:未激活
+     */
+    private Integer enabled;
 
-    private RegisterType registerType;
+    /**
+     * 注册类型.
+     */
+    private Integer registerType;
 
+    /**
+     * 商户号.
+     */
     private String merchantId;
 
     /**
@@ -53,18 +72,18 @@ public final class UserDO extends BaseDO {
                     .password(item.getPassword())
                     .iphone(item.getIphone())
                     .nickName(item.getNickName())
-                    .enabled(UserStatus.convert(item.getEnabled()))
-                    .registerType(RegisterType.convert(item.getRegisterType()))
+                    .enabled(item.getEnabled())
+                    .registerType(item.getRegisterType())
                     .merchantId(item.getMerchantId())
                     .build();
             if (StringUtils.isEmpty(item.getId())) {
                 userDO.setId(UUIDUtils.getInstance().generateShortUuid());
-                userDO.setEnabled(UserStatus.ACTIVE);
+                userDO.setEnabled(UserStatus.ACTIVE.getCode());
                 userDO.setDateCreated(currentTime);
             } else {
                 userDO.setId(item.getId());
                 userDO.setDateUpdated(currentTime);
-                userDO.setEnabled(UserStatus.convert(item.getEnabled()));
+                userDO.setEnabled(item.getEnabled());
             }
             return userDO;
         }).orElse(null);

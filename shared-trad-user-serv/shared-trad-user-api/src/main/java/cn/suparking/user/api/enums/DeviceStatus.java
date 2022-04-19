@@ -9,22 +9,22 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public enum DeviceStatus {
 
-    UNKNOWN("unknown", "0"),
-    FREE("空闲", "1"),
-    NO_FREE("上锁/占位", "2");
+    UNKNOWN("unknown", 0),
+    FREE("空闲", 1),
+    NO_FREE("上锁/占位", 2);
 
     private final String description;
 
-    private final String code;
+    private final Integer code;
 
     /**
      * get code desc.
      * @param code  user status code
      * @return user desc
      */
-    public static DeviceStatus convert(final String code) {
+    public static DeviceStatus convert(final Integer code) {
         return Stream.of(values())
-                .filter(deviceStatus -> deviceStatus.code.equalsIgnoreCase(code))
+                .filter(deviceStatus -> deviceStatus.code.equals(code))
                 .findFirst()
                 .orElse(UNKNOWN);
     }

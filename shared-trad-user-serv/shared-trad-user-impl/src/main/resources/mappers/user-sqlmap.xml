@@ -31,7 +31,7 @@
     </select>
 
     <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.UserDO">
-        INSERT INTO dashboard_user
+        INSERT INTO spk_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,
             <if test="dateCreated != null">
@@ -95,7 +95,7 @@
     </insert>
 
     <update id="updateSelective" parameterType="cn.suparking.user.dao.entity.UserDO">
-        UPDATE dashboard_user
+        UPDATE spk_user
         <set>
             <if test="dateCreated != null">
                 date_created = #{dateCreated, jdbcType=TIMESTAMP},

@@ -25,21 +25,12 @@ spring:
   #      minimum-idle: 5
   #      max-lifetime: 60000
   #      auto-commit: true
-  jpa:
-    show-sql: true
-    hibernate:
-      # 在生产环境全部为none，防止ddl结构被自动执行
-      ddl-auto: none
-    properties:
-      hibernate.format_sql: true
-      hibernate.show_sql: true
-    open-in-view: false
   # cloud-nacos 配置
   cloud:
     nacos:
       discovery:
         # 服务地址,集群用逗号分开
-        server-addr: center.suparking.cn:21310
+        server-addr: 47.98.44.236:21310
         # 注册中心服务名称 application name,一般不用配置
         service: shared-trad-user-serv
         # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
