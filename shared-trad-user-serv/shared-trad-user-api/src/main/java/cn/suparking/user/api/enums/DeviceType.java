@@ -5,16 +5,13 @@ import lombok.Getter;
 
 import java.util.stream.Stream;
 
-/**
- * User Status Enum.
- */
 @Getter
 @AllArgsConstructor
-public enum UserStatus {
+public enum DeviceType {
 
     UNKNOWN("unknown", "0"),
-    ACTIVE("激活", "1"),
-    NO_ACTIVE("未激活", "2");
+    LOCK("地锁", "1"),
+    GEOMAGNETIC("地磁", "2");
 
     private final String description;
 
@@ -25,9 +22,9 @@ public enum UserStatus {
      * @param code  user status code
      * @return user desc
      */
-    public static UserStatus convert(final String code) {
+    public static DeviceType convert(final String code) {
         return Stream.of(values())
-                .filter(userStatus -> userStatus.code.equalsIgnoreCase(code))
+                .filter(deviceType -> deviceType.code.equalsIgnoreCase(code))
                 .findFirst()
                 .orElse(UNKNOWN);
     }

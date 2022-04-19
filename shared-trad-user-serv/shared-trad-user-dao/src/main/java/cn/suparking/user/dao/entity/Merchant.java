@@ -1,18 +1,14 @@
 package cn.suparking.user.dao.entity;
 
-import cn.suparking.user.api.enums.RegisterType;
-import cn.suparking.user.api.enums.UserStatus;
-import cn.suparking.user.dao.converter.RegisterTypeConverter;
-import cn.suparking.user.dao.converter.UserStatusConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -22,45 +18,54 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * user table entity.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "spk_user")
-public class User implements Serializable {
-
+@Table(name = "spk_merchant")
+public class Merchant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "user_name", nullable = false)
-    private String userName;
-
-    @Column(name = "password", nullable = true)
-    private String password;
+    @Column(name = "merchant_name", nullable = false)
+    private String merchantName;
 
     @Column(name = "iphone", nullable = false)
     private String iphone;
 
-    @Column(name = "nick_name", nullable = false)
-    private String nickName;
+    @Column(name = "merchant_number", nullable = false)
+    private String merchantNumber;
+
+    @Column(name = "card_id", nullable = false)
+    private String cardId;
+
+    @Column(name = "business_license_id", nullable = false)
+    private String businessLicenseId;
+
+    @Column(name = "bank_card", nullable = false)
+    private String bankCard;
+
+    @Column(name = "bank_card_type", nullable = false)
+    private String bankCardType;
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "enabled", nullable = false)
-    @Convert(converter = UserStatusConverter.class)
-    private UserStatus enabled;
+    private int enabled;
 
-    @Column(name = "register_type", nullable = false)
-    @Convert(converter = RegisterTypeConverter.class)
-    private RegisterType registerType;
+    @Column(name = "creator", nullable = false)
+    private String creator;
 
-    @Column(name = "merchant_id", nullable = true)
-    private String merchantId;
+    @Column(name = "modify", nullable = true)
+    private String modify;
 
     @CreatedDate
     @Column(name = "date_created", nullable = false)
