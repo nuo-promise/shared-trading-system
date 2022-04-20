@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class CarLicenseDO extends BaseDO {
 
-    private String userId;
+    private Long userId;
 
     private String carLicense;
 

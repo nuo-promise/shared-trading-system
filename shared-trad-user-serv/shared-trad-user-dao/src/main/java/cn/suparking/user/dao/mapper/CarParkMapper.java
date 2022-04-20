@@ -14,7 +14,7 @@ public interface CarParkMapper {
      * @param id primary key
      * @return {@linkplain CarParkDO}
      */
-    CarParkDO selectById(String id);
+    CarParkDO selectById(Long id);
 
     /**
      * insert selective user.

@@ -1,7 +1,6 @@
 package cn.suparking.user.dao.mapper;
 
 import cn.suparking.user.dao.entity.CarLicenseDO;
-import cn.suparking.user.dao.entity.CarParkDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,7 +14,7 @@ public interface CarLicenseMapper {
      * @param id primary key
      * @return {@linkplain CarLicenseDO}
      */
-    CarLicenseDO selectById(String id);
+    CarLicenseDO selectById(Long id);
 
     /**
      * insert selective user.

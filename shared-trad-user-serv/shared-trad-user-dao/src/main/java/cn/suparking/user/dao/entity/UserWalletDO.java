@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class UserWalletDO extends BaseDO {
 
-    private String userId;
+    private Long userId;
 
     private Long amount;
 }

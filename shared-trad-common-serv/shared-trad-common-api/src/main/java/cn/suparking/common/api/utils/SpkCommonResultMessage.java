@@ -16,4 +16,8 @@ public final class SpkCommonResultMessage {
     public static final String CREATE_SUCCESS = "create success";
 
     public static final String USER_CREATE_USER_ERROR = "empty user info, please confirm";
+
+    public static final String DETAIL_SUCCESS = "detail success";
+
+    public static final String USER_QUERY_ERROR = "user info is empty";
 }
