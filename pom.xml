@@ -41,6 +41,7 @@
         <mysql.version>8.0.28</mysql.version>
         <mybatis.starter.version>2.2.2</mybatis.starter.version>
         <shardingsphere.jdbc.version>5.1.0</shardingsphere.jdbc.version>
+        <hutool.version>5.7.22</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +94,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>

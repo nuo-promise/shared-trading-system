@@ -14,7 +14,7 @@ public interface MerchantMapper {
      * @param id primary key
      * @return {@linkplain MerchantDO}
      */
-    MerchantDO selectById(String id);
+    MerchantDO selectById(Long id);
 
     /**
      * insert selective user.

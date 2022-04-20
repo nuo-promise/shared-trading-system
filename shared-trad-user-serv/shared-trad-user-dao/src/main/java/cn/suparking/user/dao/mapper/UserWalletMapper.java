@@ -14,7 +14,7 @@ public interface UserWalletMapper {
      * @param id primary key
      * @return {@linkplain UserWalletDO}
      */
-    UserWalletDO selectById(String id);
+    UserWalletDO selectById(Long id);
 
     /**
      * insert selective user wallet.

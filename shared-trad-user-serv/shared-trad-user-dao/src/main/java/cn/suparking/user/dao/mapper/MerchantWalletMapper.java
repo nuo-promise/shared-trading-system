@@ -14,7 +14,7 @@ public interface MerchantWalletMapper {
      * @param id primary key
      * @return {@linkplain MerchantWalletDO}
      */
-    MerchantWalletDO selectById(String id);
+    MerchantWalletDO selectById(Long id);
 
     /**
      * insert selective user.

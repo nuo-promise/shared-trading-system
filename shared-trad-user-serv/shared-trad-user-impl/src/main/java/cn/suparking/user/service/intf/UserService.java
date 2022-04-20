@@ -19,5 +19,5 @@ public interface UserService {
      * @param id primary key.
      * @return {@linkplain UserVO}
      */
-    UserVO findById(String id);
+    UserVO findById(Long id);
 }

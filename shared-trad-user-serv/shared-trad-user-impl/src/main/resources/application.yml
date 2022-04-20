@@ -4,88 +4,104 @@ server:
   error:
     include-message: always
 spring:
-  application:
-#   定义项目名称
-    name: shared-trad-user-serv
-#  datasource:
-#    # mysql数据源
-#    username: SPKRoot
-#    password: SPKRoot2017!
-#    url: jdbc:mysql://center.suparking.cn:21305/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-#    type: com.zaxxer.hikari.HikariDataSource
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    # 连接池
-#    hikari:
-#      pool-name: GeekbangCouponHikari
-#      connection-timeout: 5000
-#      idle-timeout: 30000
-#      maximum-pool-size: 10
-#      minimum-idle: 5
-#      max-lifetime: 60000
-#      auto-commit: true
-  main:
-    allow-bean-definition-overriding: true
-  shardingsphere:
-    mode:
-      type: Memory
-    props:
-      sql-show: true
-    datasource:
-      names: ds-master, ds-slave
-      ds-master:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://center.suparking.cn:21305/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-        username: SPKRoot
-        password: SPKRoot2017!
-        hikari:
-          pool-name: GeekbangCouponHikari
-          connection-timeout: 5000
-          idle-timeout: 30000
-          maximum-pool-size: 10
-          minimum-idle: 5
-          max-lifetime: 60000
-          auto-commit: true
-      ds-slave:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://center.suparking.cn:21306/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-        username: SPKRoot
-        password: SPKRoot2017!
-        hikari:
-          pool-name: GeekbangCouponHikari
-          connection-timeout: 5000
-          idle-timeout: 30000
-          maximum-pool-size: 10
-          minimum-idle: 5
-          max-lifetime: 60000
-          auto-commit: true
-      # 读写分离配置,对应YamlMasterSlaveRuleConfiguration 配置类
-      masterslave:
-        name: ms-user
-        master-data-source-name: master
-        slave-data-source-names: replica0
+#  application:
+##   定义项目名称
+#    name: shared-trad-user-serv
+#  main:
+#    allow-bean-definition-overriding: true
+#  shardingsphere:
+#    enabled: true
+#    mode:
+#      type: Memory
+#    props:
+#      sql-show: true
+#    schema:
+#      name: multi-tenant
+#    datasource:
+#      names: write-ds,write-ds-read-ds-0,write-ds-read-ds-1
+#      write-ds:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://center.suparking.cn:21305/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#        username: SPKRoot
+#        password: SPKRoot2017!
+#        max-active: 16
+#        hikari:
+#          pool-name: SharedTradUserMHikari
+#          connection-timeout: 5000
+#          idle-timeout: 30000
+#          maximum-pool-size: 10
+#          minimum-idle: 5
+#          max-lifetime: 60000
+#          auto-commit: true
+#      write-ds-read-ds-0:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://center.suparking.cn:21306/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#        username: SPKRoot
+#        password: SPKRoot2017!
+#        max-active: 16
+#        hikari:
+#          pool-name: SharedTradUserSHikari
+#          connection-timeout: 5000
+#          idle-timeout: 30000
+#          maximum-pool-size: 10
+#          minimum-idle: 5
+#          max-lifetime: 60000
+#          auto-commit: true
+#      write-ds-read-ds-1:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://center.suparking.cn:21306/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#        username: SPKRoot
+#        password: SPKRoot2017!
+#        max-active: 16
+#        hikari:
+#          pool-name: SharedTradUserSSHikari
+#          connection-timeout: 5000
+#          idle-timeout: 30000
+#          maximum-pool-size: 10
+#          minimum-idle: 5
+#          max-lifetime: 60000
+#          auto-commit: true
+#    # 读写分离配置
 #    rules:
 #      sharding:
 #        tables:
-#          router_config:
-#            actual-data-nodes: master.spk_user_$->{0..2} #实际表名
-#            table-strategy: ## 分表策略
+#          spk_user:
+#            # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..2}
+#            actual-data-nodes: ds.spk_user_$->{0..2}
+#            table-strategy:
 #              standard:
-#                sharding-column: id  #按表名的列id
-#                sharding-algorithm-name: router-config-inline # 分表算法名称(使用yml配置不能包含下划线,否则不生效)
+#                sharding-column: id
+#                sharding-algorithm-name: spk-user-inline
 #            key-generate-strategy:
-#              column: id #主键列
-#              key-generator-name: snowflake # 策略算法名称(推荐使用雪花)
+#              column: id
+#              key-generator-name: snowflake
 #        sharding-algorithms:
-#          router-config-inline:
+#          spk-user-inline:
 #            type: INLINE
 #            props:
-#              algorithm-expression: spk_user_$->{id % 3} # 分表算法(取余)
+#              algorithm-expression: spk_user_$->{id % 3}
+#              allow-range-query-with-inline-sharding: false
 #        key-generators:
 #          snowflake:
 #            type: SNOWFLAKE
-
+#            props:
+#              worker-id: 0
+#              max-vibration-offset: 1
+#              max-tolerate-time-difference-milliseconds: 10
+#      readwrite-splitting:
+#        data-sources:
+#          ds:
+#            type: Static
+#            props:
+#              write-data-source-name: write-ds
+#              read-data-source-names: write-ds-read-ds-0, write-ds-read-ds-1
+#            load-balancer-name: round_robin
+#        load-balancers:
+#          round_robin:
+#            type: ROUND_ROBIN
   # cloud-nacos 配置
   cloud:
     nacos:
@@ -130,6 +146,7 @@ mybatis:
 logging:
   level:
     cn.suparking.user: debug
+    org.apache.shardingsphere: debug
 feign:
   client:
     config:

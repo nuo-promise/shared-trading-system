@@ -53,7 +53,7 @@ public class UserController {
      * @return {@linkplain SpkCommonResult}
      */
     @GetMapping("/{id}")
-    public SpkCommonResult detailUser(@PathVariable("id") final String id) {
+    public SpkCommonResult detailUser(@PathVariable("id") final Long id) {
         UserVO userVO = userService.findById(id);
         return Optional.ofNullable(userVO)
                 .map(item -> SpkCommonResult.success(SpkCommonResultMessage.DETAIL_SUCCESS, item))

@@ -14,7 +14,7 @@ public interface CarLicenseMapper {
      * @param id primary key
      * @return {@linkplain CarLicenseDO}
      */
-    CarLicenseDO selectById(String id);
+    CarLicenseDO selectById(Long id);
 
     /**
      * insert selective user.

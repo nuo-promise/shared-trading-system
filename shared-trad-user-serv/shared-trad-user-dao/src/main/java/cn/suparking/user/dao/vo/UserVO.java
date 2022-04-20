@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 @Data
@@ -75,9 +76,9 @@ public class UserVO implements Serializable {
      */
     public static UserVO buildUserVO(final UserDO userDO) {
         return Optional.ofNullable(userDO)
-                .map(item -> new UserVO(item.getId(), item.getUserName(),
+                .map(item -> new UserVO(item.getId().toString(), item.getUserName(),
                         item.getPassword(), item.getIphone(), item.getNickName(), item.getEnabled(),
-                        item.getRegisterType(), item.getMerchantId(),
+                        item.getRegisterType(), Objects.nonNull(item.getMerchantId()) ? item.getMerchantId().toString() : null,
                         DateUtils.localDateTimeToString(item.getDateCreated().toLocalDateTime()),
                         DateUtils.localDateTimeToString(item.getDateUpdated().toLocalDateTime())))
                 .orElse(null);

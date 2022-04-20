@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class CarParkDO extends BaseDO {
 
-    private String userId;
+    private Long userId;
 
     private String parkNo;
 

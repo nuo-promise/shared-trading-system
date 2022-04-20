@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserVO findById(final String id) {
+    public UserVO findById(final Long id) {
         return UserVO.buildUserVO(userMapper.selectById(id));
     }
 }

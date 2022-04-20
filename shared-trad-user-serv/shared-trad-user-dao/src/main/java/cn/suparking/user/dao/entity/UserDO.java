@@ -1,5 +1,6 @@
 package cn.suparking.user.dao.entity;
 
+import cn.suparking.common.api.configuration.SnowflakeConfig;
 import cn.suparking.common.api.utils.UUIDUtils;
 import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.api.enums.UserStatus;
@@ -9,8 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -56,7 +59,7 @@ public final class UserDO extends BaseDO {
     /**
      * 商户号.
      */
-    private String merchantId;
+    private Long merchantId;
 
     /**
      * build userDO.
@@ -73,14 +76,16 @@ public final class UserDO extends BaseDO {
                     .nickName(item.getNickName())
                     .enabled(item.getEnabled())
                     .registerType(item.getRegisterType())
-                    .merchantId(item.getMerchantId())
                     .build();
-            if (StringUtils.isEmpty(item.getId())) {
-                userDO.setId(UUIDUtils.getInstance().generateShortUuid());
+            if (Objects.nonNull(item.getMerchantId())) {
+                userDO.setMerchantId(Long.valueOf(item.getMerchantId()));
+            }
+            if (Objects.isNull(item.getId())) {
+                userDO.setId(SnowflakeConfig.snowflakeId());
                 userDO.setEnabled(UserStatus.ACTIVE.getCode());
                 userDO.setDateCreated(currentTime);
             } else {
-                userDO.setId(item.getId());
+                userDO.setId(Long.valueOf(item.getId()));
                 userDO.setDateUpdated(currentTime);
                 userDO.setEnabled(item.getEnabled());
             }

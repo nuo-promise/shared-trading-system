@@ -14,7 +14,7 @@ public interface UserMapper {
      * @param id primary key
      * @return {@linkplain UserDO}
      */
-    UserDO selectById(String id);
+    UserDO selectById(Long id);
 
     /**
      * insert selective user.

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.suparking.user.dao.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="cn.suparking.user.dao.entity.UserDO">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
@@ -11,7 +11,7 @@
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="enabled" jdbcType="INTEGER" property="enabled"/>
         <result column="register_type" jdbcType="INTEGER" property="registerType"/>
-        <result column="merchant_id" jdbcType="VARCHAR" property="MerchantId"/>
+        <result column="merchant_id" jdbcType="BIGINT" property="merchantId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -23,11 +23,11 @@
         enabled, register_type, merchant_id
     </sql>
 
-    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM spk_user
-        WHERE id = #{id, jdbcType=VARCHAR}
+        WHERE id = #{id, jdbcType=BIGINT}
     </select>
 
     <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.UserDO">
@@ -63,7 +63,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id, jdbcType=VARCHAR},
+            #{id, jdbcType=BIGINT},
             <if test="dateCreated != null">
                 #{dateCreated, jdbcType=TIMESTAMP},
             </if>
@@ -89,7 +89,7 @@
                 #{registerType, jdbcType=INTEGER},
             </if>
             <if test="merchantId != null">
-                #{merchantId, jdbcType=VARCHAR},
+                #{merchantId, jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -122,9 +122,9 @@
                 register_type = #{registerType, jdbcType=INTEGER},
             </if>
             <if test="merchantId != null">
-                merchant_id = #{merchantId, jdbcType=VARCHAR},
+                merchant_id = #{merchantId, jdbcType=BIGINT}
             </if>
         </set>
-        WHERE id = #{id, jdbcType=VARCHAR}
+        WHERE id = #{id, jdbcType=BIGINT}
     </update>
 </mapper>

@@ -13,9 +13,9 @@ import lombok.ToString;
 @ToString
 public class MerchantWalletDO extends BaseDO {
 
-    private String userId;
+    private Long userId;
 
-    private String merchantId;
+    private Long merchantId;
 
     private Long amount;
 }
