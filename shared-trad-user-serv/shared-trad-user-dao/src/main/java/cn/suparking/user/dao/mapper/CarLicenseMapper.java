@@ -1,7 +1,6 @@
 package cn.suparking.user.dao.mapper;
 
 import cn.suparking.user.dao.entity.CarLicenseDO;
-import cn.suparking.user.dao.entity.CarParkDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

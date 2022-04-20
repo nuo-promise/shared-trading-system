@@ -3,28 +3,89 @@ server:
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
-
 spring:
-  #  application:
-  # 定义项目名称
-  #    name: coupon-customer-serv
-  # 走 Nacos config
-  #  datasource:
-  #    # mysql数据源
-  #    username: root
-  #    password: xyzj1a2y3
-  #    url: jdbc:mysql://192.168.1.7:3306/geekbang_coupon_db?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-  #    type: com.zaxxer.hikari.HikariDataSource
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #    # 连接池
-  #    hikari:
-  #      pool-name: GeekbangCouponHikari
-  #      connection-timeout: 5000
-  #      idle-timeout: 30000
-  #      maximum-pool-size: 10
-  #      minimum-idle: 5
-  #      max-lifetime: 60000
-  #      auto-commit: true
+  application:
+#   定义项目名称
+    name: shared-trad-user-serv
+#  datasource:
+#    # mysql数据源
+#    username: SPKRoot
+#    password: SPKRoot2017!
+#    url: jdbc:mysql://center.suparking.cn:21305/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    # 连接池
+#    hikari:
+#      pool-name: GeekbangCouponHikari
+#      connection-timeout: 5000
+#      idle-timeout: 30000
+#      maximum-pool-size: 10
+#      minimum-idle: 5
+#      max-lifetime: 60000
+#      auto-commit: true
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    mode:
+      type: Memory
+    props:
+      sql-show: true
+    datasource:
+      names: ds-master, ds-slave
+      ds-master:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://center.suparking.cn:21305/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+        username: SPKRoot
+        password: SPKRoot2017!
+        hikari:
+          pool-name: GeekbangCouponHikari
+          connection-timeout: 5000
+          idle-timeout: 30000
+          maximum-pool-size: 10
+          minimum-idle: 5
+          max-lifetime: 60000
+          auto-commit: true
+      ds-slave:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://center.suparking.cn:21306/spk_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+        username: SPKRoot
+        password: SPKRoot2017!
+        hikari:
+          pool-name: GeekbangCouponHikari
+          connection-timeout: 5000
+          idle-timeout: 30000
+          maximum-pool-size: 10
+          minimum-idle: 5
+          max-lifetime: 60000
+          auto-commit: true
+      # 读写分离配置,对应YamlMasterSlaveRuleConfiguration 配置类
+      masterslave:
+        name: ms-user
+        master-data-source-name: master
+        slave-data-source-names: replica0
+#    rules:
+#      sharding:
+#        tables:
+#          router_config:
+#            actual-data-nodes: master.spk_user_$->{0..2} #实际表名
+#            table-strategy: ## 分表策略
+#              standard:
+#                sharding-column: id  #按表名的列id
+#                sharding-algorithm-name: router-config-inline # 分表算法名称(使用yml配置不能包含下划线,否则不生效)
+#            key-generate-strategy:
+#              column: id #主键列
+#              key-generator-name: snowflake # 策略算法名称(推荐使用雪花)
+#        sharding-algorithms:
+#          router-config-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_user_$->{id % 3} # 分表算法(取余)
+#        key-generators:
+#          snowflake:
+#            type: SNOWFLAKE
+
   # cloud-nacos 配置
   cloud:
     nacos:
@@ -62,6 +123,10 @@ spring:
         watch:
           enabled: true
         watch-delay: 30000
+
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+
 logging:
   level:
     cn.suparking.user: debug

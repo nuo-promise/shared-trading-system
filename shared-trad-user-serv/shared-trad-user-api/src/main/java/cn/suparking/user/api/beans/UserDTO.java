@@ -30,7 +30,6 @@ public class UserDTO implements Serializable {
     private Integer enabled;
 
     @NotNull
-    @NotBlank
     private Integer registerType;
 
     private String merchantId;

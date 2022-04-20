@@ -2,7 +2,6 @@ package cn.suparking.user.dao.entity;
 
 import cn.suparking.common.api.utils.UUIDUtils;
 import cn.suparking.user.api.beans.UserDTO;
-import cn.suparking.user.api.enums.RegisterType;
 import cn.suparking.user.api.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,7 +44,7 @@ public final class UserDO extends BaseDO {
     private String nickName;
 
     /**
-     * 用户状态 1:激活 2:未激活
+     * 用户状态 1:激活 2:未激活.
      */
     private Integer enabled;
 
