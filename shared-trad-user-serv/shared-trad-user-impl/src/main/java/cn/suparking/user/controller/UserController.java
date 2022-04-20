@@ -37,7 +37,7 @@ public class UserController {
         return Optional.ofNullable(userDTO)
                 .map(item -> {
                     SpkCommonAssert.notBlack(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": iphone is not black");
-                    SpkCommonAssert.notBlack(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not black");
+                    SpkCommonAssert.isNull(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not black");
                     Integer createCount = userService.createOrUpdate(userDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
                 }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_CREATE_USER_ERROR));

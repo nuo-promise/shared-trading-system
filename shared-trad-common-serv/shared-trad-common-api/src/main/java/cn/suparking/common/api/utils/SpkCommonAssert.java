@@ -51,6 +51,7 @@ public final class SpkCommonAssert {
     public static void notEmpty(final Collection<?> collection, final String message) {
         isTrue(!CollectionUtils.isEmpty(collection), message);
     }
+
     /**
      * assert flag is true.
      * @param flag {@link Boolean}
