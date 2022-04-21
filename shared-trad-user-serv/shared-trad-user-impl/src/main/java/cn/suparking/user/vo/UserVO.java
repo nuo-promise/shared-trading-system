@@ -17,6 +17,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserVO implements Serializable {
 
+    private static final long serialVersionUID = 6138752221593750928L;
+
     /**
      * primary key.
      */
