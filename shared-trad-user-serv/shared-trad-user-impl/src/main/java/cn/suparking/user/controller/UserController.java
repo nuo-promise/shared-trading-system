@@ -4,7 +4,7 @@ import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.user.api.beans.UserDTO;
-import cn.suparking.user.dao.vo.UserVO;
+import cn.suparking.user.vo.UserVO;
 import cn.suparking.user.service.intf.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**
+ * User Controller.
+ */
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("shared-user")
+@RequestMapping("user")
 public class UserController {
 
     private final UserService userService;
@@ -40,7 +43,7 @@ public class UserController {
         return Optional.ofNullable(userDTO)
                 .map(item -> {
                     SpkCommonAssert.notBlack(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": iphone is not black");
-                    SpkCommonAssert.notNull(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not black");
+                    SpkCommonAssert.notNull(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not null");
                     Integer createCount = userService.createOrUpdate(userDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
                 }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_CREATE_USER_ERROR));

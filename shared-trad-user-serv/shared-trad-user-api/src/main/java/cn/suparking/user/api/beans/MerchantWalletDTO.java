@@ -13,26 +13,18 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
+public class MerchantWalletDTO implements Serializable {
 
-    private static final long serialVersionUID = 3205442982068634056L;
+    private static final long serialVersionUID = 6133908542660582708L;
 
     private String id;
 
-    private String userName;
-
-    private String password;
-
     @NotNull
     @NotBlank
-    private String iphone;
-
-    private String nickName;
-
-    private Integer enabled;
-
-    @NotNull
-    private Integer registerType;
+    private String userId;
 
     private String merchantId;
+
+    @NotNull
+    private Long amount;
 }

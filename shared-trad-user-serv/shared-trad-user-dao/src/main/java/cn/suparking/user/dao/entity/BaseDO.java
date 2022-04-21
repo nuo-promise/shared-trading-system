@@ -11,6 +11,8 @@ import java.sql.Timestamp;
 @Data
 public class BaseDO implements Serializable {
 
+    private static final long serialVersionUID = 9183753993391891137L;
+
     private Long id;
 
     private Timestamp dateCreated;

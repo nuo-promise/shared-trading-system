@@ -3,6 +3,8 @@ server:
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
+  servlet:
+    context-path: /user-center
 spring:
 #  application:
 ##   定义项目名称
@@ -67,10 +69,12 @@ spring:
 #    # 读写分离配置
 #    rules:
 #      sharding:
+#        bindings-tables[0]: spk_user, spk_user_wallet, spk_car_license, spk_car_park, spk_merchant, spk_merchant_wallet
 #        tables:
+#          # 用户表
 #          spk_user:
-#            # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..2}
-#            actual-data-nodes: ds.spk_user_$->{0..2}
+#            # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..4}
+#            actual-data-nodes: ds.spk_user_$->{0..4}
 #            table-strategy:
 #              standard:
 #                sharding-column: id
@@ -78,11 +82,87 @@ spring:
 #            key-generate-strategy:
 #              column: id
 #              key-generator-name: snowflake
+#              #用户虚拟账户
+#          spk_user_wallet:
+#            # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..4}
+#            actual-data-nodes: ds.spk_user_wallet_$->{0..4}
+#            table-strategy:
+#              standard:
+#                sharding-column: user_id
+#                sharding-algorithm-name: spk-user-wallet-inline
+#            key-generate-strategy:
+#              column: user_id
+#              key-generator-name: snowflake
+#              #用户车牌
+#          spk_car_license:
+#            actual-data-nodes: ds.spk_car_license_$->{0..4}
+#            table-strategy:
+#              standard:
+#                sharding-column: user_id
+#                sharding-algorithm-name: spk-car-license-inline
+#            key-generate-strategy:
+#              column: user_id
+#              key-generator-name: snowflake
+#              #用户车位
+#          spk_car_park:
+#            actual-data-nodes: ds.spk_car_park_$->{0..4}
+#            table-strategy:
+#              standard:
+#                sharding-column: user_id
+#                sharding-algorithm-name: spk-car-park-inline
+#            key-generate-strategy:
+#              column: user_id
+#              key-generator-name: snowflake
+#              # 商户
+#          spk_merchant:
+#            actual-data-nodes: ds.spk_merchant_$->{0..2}
+#            table-strategy:
+#              standard:
+#                sharding-column: id
+#                sharding-algorithm-name: spk-merchant-inline
+#            key-generate-strategy:
+#              column: id
+#              key-generator-name: snowflake
+#              # 商户虚拟钱包
+#          spk_merchant_wallet:
+#            actual-data-nodes: ds.spk_merchant_wallet_$->{0..2}
+#            table-strategy:
+#              standard:
+#                sharding-column: merchant_id
+#                sharding-algorithm-name: spk-merchant-wallet-inline
+#            key-generate-strategy:
+#              column: merchant_id
+#              key-generator-name: snowflake
 #        sharding-algorithms:
 #          spk-user-inline:
 #            type: INLINE
 #            props:
-#              algorithm-expression: spk_user_$->{id % 3}
+#              algorithm-expression: spk_user_$->{id % 5}
+#              allow-range-query-with-inline-sharding: false
+#          spk-user-wallet-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_user_wallet_$->{user_id % 5}
+#              allow-range-query-with-inline-sharding: false
+#          spk-car-license-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_car_license_$->{user_id % 5}
+#              allow-range-query-with-inline-sharding: false
+#          spk-car-park-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_car_park_$->{user_id % 5}
+#              allow-range-query-with-inline-sharding: false
+#          spk-merchant-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_merchant_$->{id % 5}
+#              allow-range-query-with-inline-sharding: false
+#          spk-merchant-wallet-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_merchant_wallet_$->{merchant_id % 5}
 #              allow-range-query-with-inline-sharding: false
 #        key-generators:
 #          snowflake:
@@ -139,7 +219,6 @@ spring:
         watch:
           enabled: true
         watch-delay: 30000
-
 mybatis:
   mapper-locations: classpath:/mappers/*.xml
 

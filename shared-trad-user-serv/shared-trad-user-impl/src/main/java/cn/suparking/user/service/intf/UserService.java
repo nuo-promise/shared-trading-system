@@ -1,7 +1,7 @@
 package cn.suparking.user.service.intf;
 
 import cn.suparking.user.api.beans.UserDTO;
-import cn.suparking.user.dao.vo.UserVO;
+import cn.suparking.user.vo.UserVO;
 
 public interface UserService {
 

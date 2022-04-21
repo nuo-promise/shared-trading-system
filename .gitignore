@@ -25,6 +25,7 @@ cobertura.ser
 *.iws
 
 # temp ignore
+log/
 logs/
 *.log
 *.doc

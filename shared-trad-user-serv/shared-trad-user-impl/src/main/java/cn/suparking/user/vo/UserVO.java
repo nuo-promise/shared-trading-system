@@ -1,4 +1,4 @@
-package cn.suparking.user.dao.vo;
+package cn.suparking.user.vo;
 
 import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.user.dao.entity.UserDO;
@@ -16,6 +16,8 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserVO implements Serializable {
+
+    private static final long serialVersionUID = 6138752221593750928L;
 
     /**
      * primary key.

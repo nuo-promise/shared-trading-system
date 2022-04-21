@@ -13,26 +13,23 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
+public class CarLicenseDTO implements Serializable {
 
-    private static final long serialVersionUID = 3205442982068634056L;
+    private static final long serialVersionUID = -4740605825334062507L;
 
     private String id;
 
-    private String userName;
-
-    private String password;
+    @NotNull
+    @NotBlank
+    private String userId;
 
     @NotNull
     @NotBlank
-    private String iphone;
-
-    private String nickName;
-
-    private Integer enabled;
+    private String carLicense;
 
     @NotNull
-    private Integer registerType;
+    private Integer type;
 
-    private String merchantId;
+    private String driverId;
+
 }
