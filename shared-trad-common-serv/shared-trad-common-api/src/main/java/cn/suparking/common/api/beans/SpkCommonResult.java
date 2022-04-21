@@ -15,6 +15,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public final class SpkCommonResult implements Serializable {
 
+    private static final long serialVersionUID = 1219598492776934916L;
+
     private Integer code;
 
     private String message;

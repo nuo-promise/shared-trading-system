@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.suparking.user.mapper.UserWalletMapper">
-    <resultMap id="BaseResultMap" type="cn.suparking.user.entity.UserWalletDO">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
+<mapper namespace="cn.suparking.user.dao.mapper.UserWalletMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.user.dao.entity.UserWalletDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
-        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
-        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -17,14 +17,14 @@
         amount
     </sql>
 
-    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM spk_user_wallet
-        WHERE id = #{id, jdbcType=VARCHAR}
+        WHERE id = #{id, jdbcType=BIGINT}
     </select>
 
-    <insert id="insertSelective" parameterType="cn.suparking.user.entity.UserWalletDO">
+    <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.UserWalletDO">
         INSERT INTO spk_user_wallet
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,
@@ -42,7 +42,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id, jdbcType=VARCHAR},
+            #{id, jdbcType=BIGINT},
             <if test="dateCreated != null">
                 #{dateCreated, jdbcType=TIMESTAMP},
             </if>
@@ -50,15 +50,15 @@
                 #{dateUpdated, jdbcType=TIMESTAMP},
             </if>
             <if test="userId != null">
-                #{userId, jdbcType=VARCHAR},
+                #{userId, jdbcType=BIGINT},
             </if>
             <if test="amount != null">
-                #{amount, jdbcType=INTERGE},
+                #{amount, jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
 
-    <update id="updateSelective" parameterType="cn.suparking.user.entity.UserWalletDO">
+    <update id="updateSelective" parameterType="cn.suparking.user.dao.entity.UserWalletDO">
         UPDATE spk_user_wallet
         <set>
             <if test="dateCreated != null">
@@ -68,12 +68,12 @@
                 date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
             </if>
             <if test="userId != null">
-                user_id = #{userId, jdbcType=VARCHAR},
+                user_id = #{userId, jdbcType=BIGINT},
             </if>
             <if test="amount != null">
-                amount = #{amount, jdbcType=INTEGER},
+                amount = #{amount, jdbcType=BIGINT},
             </if>
         </set>
-        WHERE id = #{id, jdbcType=VARCHAR}
+        WHERE id = #{id, jdbcType=BIGINT}
     </update>
 </mapper>

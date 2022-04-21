@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.user.dao.mapper.CarLicenseMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.user.dao.entity.CarLicenseDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="car_license" jdbcType="VARCHAR" property="carLicense"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="driver_id" jdbcType="VARCHAR" property="driverId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        date_created,
+        date_updated,
+        user_id,
+        car_license, type, driver_id
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_car_license
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.CarLicenseDO">
+        INSERT INTO spk_car_license
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="carLicense != null">
+                car_license,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="driverId != null">
+                driver_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=BIGINT},
+            <if test="dateCreated != null">
+                #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="carLicense != null">
+                #{carLicense, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type, jdbcType=INTEGER},
+            </if>
+            <if test="driverId != null">
+                #{driverId, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSelective" parameterType="cn.suparking.user.dao.entity.CarLicenseDO">
+        UPDATE spk_car_license
+        <set>
+            <if test="dateCreated != null">
+                date_created = #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="carLicense != null">
+                car_license = #{carLicense, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type, jdbcType=INTEGER},
+            </if>
+            <if test="driverId != null">
+                driver_id = #{driverId, jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+</mapper>

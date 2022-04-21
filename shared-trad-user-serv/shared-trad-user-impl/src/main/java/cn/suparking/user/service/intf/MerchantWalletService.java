@@ -1,23 +1,23 @@
 package cn.suparking.user.service.intf;
 
-import cn.suparking.user.api.beans.CarParkDTO;
-import cn.suparking.user.vo.CarParkVO;
+import cn.suparking.user.api.beans.MerchantWalletDTO;
+import cn.suparking.user.vo.MerchantWalletVO;
 
-public interface MerchantWallService {
+public interface MerchantWalletService {
 
     /**
-     * create or update carPark .
-     * @param carParkDTO {@linkplain CarParkDTO}
+     * create or update merchant wallet .
+     * @param merchantWalletDTO {@linkplain MerchantWalletDTO}
      * @return rows
      */
-    int createOrUpdate(CarParkDTO carParkDTO);
+    int createOrUpdate(MerchantWalletDTO merchantWalletDTO);
 
 
     /**
-     * find Car park by id.
+     * find Merchant wallet by id.
      *
      * @param id primary key.
-     * @return {@linkplain CarParkVO}
+     * @return {@linkplain MerchantWalletVO}
      */
-    CarParkVO findById(Long id);
+    MerchantWalletVO findById(Long id);
 }

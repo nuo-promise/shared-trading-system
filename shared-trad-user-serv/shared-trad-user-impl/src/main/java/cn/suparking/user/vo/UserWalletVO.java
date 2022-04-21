@@ -1,4 +1,4 @@
-package cn.suparking.user.dao.vo;
+package cn.suparking.user.vo;
 
 import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.user.dao.entity.UserWalletDO;

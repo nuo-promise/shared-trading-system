@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.user.dao.mapper.MerchantMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.user.dao.entity.MerchantDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="iphone" jdbcType="VARCHAR" property="iphone"/>
+        <result column="merchant_number" jdbcType="VARCHAR" property="merchantNumber"/>
+        <result column="card_id" jdbcType="VARCHAR" property="cardId"/>
+        <result column="business_license_id" jdbcType="VARCHAR" property="businessLicenseId"/>
+        <result column="bank_card" jdbcType="VARCHAR" property="bankCard"/>
+        <result column="bank_card_type" jdbcType="INTEGER" property="bankCardType"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="enabled" jdbcType="INTEGER" property="enabled"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="modify" jdbcType="VARCHAR" property="modify"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        date_created,
+        date_updated,
+        merchant_name, iphone, merchant_number, card_id, business_license_id, bank_card, bank_card_type, address, password,
+        enabled, creator, modify
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_merchant
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.MerchantDO">
+        INSERT INTO spk_merchant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+            <if test="merchantName != null">
+                merchant_name,
+            </if>
+            <if test="iphone != null">
+                iphone,
+            </if>
+            <if test="merchantNumber != null">
+                merchant_number,
+            </if>
+            <if test="cardId != null">
+                card_id,
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id,
+            </if>
+            <if test="bankCard != null">
+                bank_card,
+            </if>
+            <if test="bankCardType != null">
+                bank_card_type,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modify != null">
+                modify,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=BIGINT},
+            <if test="dateCreated != null">
+                #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="merchantName != null">
+                #{merchantName, jdbcType=VARCHAR},
+            </if>
+            <if test="iphone != null">
+                #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="merchantNumber != null">
+                #{enabled, jdbcType=INTEGER},
+            </if>
+            <if test="cardId != null">
+                #{iphone, jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseId != null">
+                #{businessLicenseId, jdbcType=VARCHAR},
+            </if>
+            <if test="bankCard != null">
+                #{bankCard, jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardType != null">
+                #{bankCardType, jdbcType=BIGINT},
+            </if>
+            <if test="address != null">
+                #{address, jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="enabled != null">
+                #{enabled, jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator, jdbcType=VARCHAR},
+            </if>
+            <if test="modify != null">
+                #{modify, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSelective" parameterType="cn.suparking.user.dao.entity.MerchantDO">
+        UPDATE spk_merchant
+        <set>
+            <if test="dateCreated != null">
+                date_created = #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="merchantName != null">
+                merchant_name = #{merchantName, jdbcType=VARCHAR},
+            </if>
+            <if test="iphone != null">
+                iphone = #{iphone, jdbcType=VARCHAR},
+            </if>
+            <if test="merchantNumber != null">
+                merchant_number = #{merchantNumber, jdbcType=INTEGER},
+            </if>
+            <if test="cardId != null">
+                card_id = #{cardId, jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id = #{businessLicenseId, jdbcType=VARCHAR},
+            </if>
+            <if test="bankCard != null">
+                bank_card = #{bankCard, jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardType != null">
+                bank_card_type = #{bankCardType, jdbcType=INTEGER}
+            </if>
+            <if test="address != null">
+                address = #{address, jdbcType=VARCHAR},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled, jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                creator = #{creator, jdbcType=VARCHAR},
+            </if>
+            <if test="modify != null">
+                modify = #{modify, jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+</mapper>

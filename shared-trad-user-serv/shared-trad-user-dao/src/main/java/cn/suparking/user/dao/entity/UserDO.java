@@ -1,7 +1,6 @@
 package cn.suparking.user.dao.entity;
 
 import cn.suparking.common.api.configuration.SnowflakeConfig;
-import cn.suparking.common.api.utils.UUIDUtils;
 import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.api.enums.UserStatus;
 import lombok.AllArgsConstructor;
@@ -9,8 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -25,6 +22,8 @@ import java.util.Optional;
 @Builder
 @ToString
 public final class UserDO extends BaseDO {
+
+    private static final long serialVersionUID = 2444424006825058796L;
 
     /**
      * 用户名称.
