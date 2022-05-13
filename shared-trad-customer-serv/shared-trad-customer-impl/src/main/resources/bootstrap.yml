@@ -1,11 +1,11 @@
 spring:
   # 必须把name属性从application.yml迁移出来,否则无法动态刷新
   application:
-    name: shared-trad-user-serv
+    name: shared-trad-customer-serv
   cloud:
     nacos:
       config:
-        enabled: true
+        enabled: false
         # nacos config服务器的地址
         server-addr: 47.98.44.236:8848
         file-extension: yml

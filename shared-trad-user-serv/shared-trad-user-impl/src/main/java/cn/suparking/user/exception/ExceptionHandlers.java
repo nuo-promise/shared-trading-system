@@ -99,7 +99,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(SpkCommonException.class)
     protected SpkCommonResult handleShenyuException(final SpkCommonException exception) {
-        log.error("shenyu admin exception ", exception);
+        log.error("shared user exception ", exception);
         return SpkCommonResult.error(SpkCommonCode.ERROR, exception.getMessage());
 
     }

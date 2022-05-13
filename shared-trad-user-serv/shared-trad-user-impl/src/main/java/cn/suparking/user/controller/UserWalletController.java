@@ -39,7 +39,7 @@ public class UserWalletController {
     public SpkCommonResult createUserWallet(@Valid @RequestBody final UserWalletDTO userWalletDTO) {
         return Optional.ofNullable(userWalletDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + ": user id is not black");
+                    SpkCommonAssert.notBlank(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + ": user id is not blank");
                     SpkCommonAssert.notNull(item.getAmount(), SpkCommonResultMessage.PARAMETER_ERROR + ": amount is not null");
                     Integer createCount = userWalletService.createOrUpdate(userWalletDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);

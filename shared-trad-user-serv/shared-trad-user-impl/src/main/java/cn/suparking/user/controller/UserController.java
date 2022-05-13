@@ -42,7 +42,7 @@ public class UserController {
     public SpkCommonResult createSharedUser(@Valid @RequestBody final UserDTO userDTO) {
         return Optional.ofNullable(userDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": iphone is not black");
+                    SpkCommonAssert.notBlank(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": iphone is not blank");
                     SpkCommonAssert.notNull(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not null");
                     Integer createCount = userService.createOrUpdate(userDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);

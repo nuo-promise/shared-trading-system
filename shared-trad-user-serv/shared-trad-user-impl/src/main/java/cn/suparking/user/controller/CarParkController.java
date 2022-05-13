@@ -42,10 +42,10 @@ public class CarParkController {
     public SpkCommonResult createCarPark(@Valid @RequestBody final CarParkDTO carParkDTO) {
         return Optional.ofNullable(carParkDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + ": user id is not black");
-                    SpkCommonAssert.notBlack(item.getParkNo(), SpkCommonResultMessage.PARAMETER_ERROR + ": park no is not black");
-                    SpkCommonAssert.notBlack(item.getAddress(), SpkCommonResultMessage.PARAMETER_ERROR + ": address is not black");
-                    SpkCommonAssert.notBlack(item.getParkId(), SpkCommonResultMessage.PARAMETER_ERROR + ": park id is not black");
+                    SpkCommonAssert.notBlank(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + ": user id is not blank");
+                    SpkCommonAssert.notBlank(item.getParkNo(), SpkCommonResultMessage.PARAMETER_ERROR + ": park no is not blank");
+                    SpkCommonAssert.notBlank(item.getAddress(), SpkCommonResultMessage.PARAMETER_ERROR + ": address is not blank");
+                    SpkCommonAssert.notBlank(item.getParkId(), SpkCommonResultMessage.PARAMETER_ERROR + ": park id is not blank");
                     Integer createCount = carParkService.createOrUpdate(carParkDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
                 }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.CAR_PARK_CREATE_USER_ERROR));

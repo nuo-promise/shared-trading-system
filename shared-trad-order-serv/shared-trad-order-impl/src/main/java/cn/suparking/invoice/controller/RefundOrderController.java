@@ -60,8 +60,8 @@ public class RefundOrderController {
     public SpkCommonResult createSharedOrder(@Valid @RequestBody final RefundOrderDTO refundOrderDTO) {
         return Optional.ofNullable(refundOrderDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getOriginOrderNo(), "原始订单号不能为空");
-                    SpkCommonAssert.notBlack(item.getRefundNo(), "退费订单号不能为空");
+                    SpkCommonAssert.notBlank(item.getOriginOrderNo(), "原始订单号不能为空");
+                    SpkCommonAssert.notBlank(item.getRefundNo(), "退费订单号不能为空");
                     Integer count = refundOrderService.createOrUpdate(item);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
                 }).orElseGet(() -> SpkCommonResult.error("退费订单信息不能为空"));

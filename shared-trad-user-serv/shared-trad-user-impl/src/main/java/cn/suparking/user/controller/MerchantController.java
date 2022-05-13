@@ -39,11 +39,11 @@ public class MerchantController {
     public SpkCommonResult createMerchant(@Valid @RequestBody final MerchantDTO merchantDTO) {
         return Optional.ofNullable(merchantDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getMerchantName(), SpkCommonResultMessage.PARAMETER_ERROR + ": merchant name is not black");
-                    SpkCommonAssert.notBlack(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": merchant iphone is not black");
-                    SpkCommonAssert.notBlack(item.getAddress(), SpkCommonResultMessage.PARAMETER_ERROR + ": address is not black");
-                    SpkCommonAssert.notBlack(item.getCardId(), SpkCommonResultMessage.PARAMETER_ERROR + ": card id is not black");
-                    SpkCommonAssert.notBlack(item.getBankCard(), SpkCommonResultMessage.PARAMETER_ERROR + ": bank card is not black");
+                    SpkCommonAssert.notBlank(item.getMerchantName(), SpkCommonResultMessage.PARAMETER_ERROR + ": merchant name is not blank");
+                    SpkCommonAssert.notBlank(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": merchant iphone is not blank");
+                    SpkCommonAssert.notBlank(item.getAddress(), SpkCommonResultMessage.PARAMETER_ERROR + ": address is not blank");
+                    SpkCommonAssert.notBlank(item.getCardId(), SpkCommonResultMessage.PARAMETER_ERROR + ": card id is not blank");
+                    SpkCommonAssert.notBlank(item.getBankCard(), SpkCommonResultMessage.PARAMETER_ERROR + ": bank card is not blank");
                     SpkCommonAssert.notNull(item.getBankCardType(), SpkCommonResultMessage.PARAMETER_ERROR + ": bank card type is not null");
                     SpkCommonAssert.notNull(item.getEnabled(), SpkCommonResultMessage.PARAMETER_ERROR + ": merchant status(enabled) id is not null");
                     Integer createCount = merchantService.createOrUpdate(merchantDTO);

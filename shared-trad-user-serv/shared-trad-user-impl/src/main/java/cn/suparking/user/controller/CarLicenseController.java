@@ -39,8 +39,8 @@ public class CarLicenseController {
     public SpkCommonResult createCarLicense(@Valid @RequestBody final CarLicenseDTO carLicenseDTO) {
         return Optional.ofNullable(carLicenseDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + ": user id is not black");
-                    SpkCommonAssert.notBlack(item.getCarLicense(), SpkCommonResultMessage.PARAMETER_ERROR + ": car license is not black");
+                    SpkCommonAssert.notBlank(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + ": user id is not blank");
+                    SpkCommonAssert.notBlank(item.getCarLicense(), SpkCommonResultMessage.PARAMETER_ERROR + ": car license is not blank");
                     SpkCommonAssert.notNull(item.getType(), SpkCommonResultMessage.PARAMETER_ERROR + ": type is not null");
                     Integer createCount = carLicenseService.createOrUpdate(carLicenseDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);

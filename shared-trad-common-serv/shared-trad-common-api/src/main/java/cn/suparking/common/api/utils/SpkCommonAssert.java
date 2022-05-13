@@ -34,11 +34,11 @@ public final class SpkCommonAssert {
     }
 
     /**
-     * assert str is black.
+     * assert str is blank.
      * @param str {@link String}
      * @param msg error msg
      */
-    public static void notBlack(final String str, final String msg) {
+    public static void notBlank(final String str, final String msg) {
         isTrue(StringUtils.isNotBlank(str), msg);
     }
 

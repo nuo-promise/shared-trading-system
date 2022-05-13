@@ -57,7 +57,7 @@ public class OrderController {
     public SpkCommonResult createSharedOrder(@Valid @RequestBody final OrderDTO orderDTO) {
         return Optional.ofNullable(orderDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getOrderNo(), "订单号不能为空");
+                    SpkCommonAssert.notBlank(item.getOrderNo(), "订单号不能为空");
                     Integer count = orderService.createOrUpdate(item);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
                 }).orElseGet(() -> SpkCommonResult.error("订单信息不能为空"));

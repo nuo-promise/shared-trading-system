@@ -40,7 +40,7 @@ public class InvoiceInfoController {
     public SpkCommonResult createSharedInvoiceInfo(@Valid @RequestBody final InvoiceInfoDTO InvoiceInfoDTO) {
         return Optional.ofNullable(InvoiceInfoDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlack(item.getHeadName(), "抬头名称不能为空");
+                    SpkCommonAssert.notBlank(item.getHeadName(), "抬头名称不能为空");
                     Integer createCount = invoiceInfoService.createOrUpdate(InvoiceInfoDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
                 }).orElseGet(() -> SpkCommonResult.error("发票抬头信息不能为空"));
