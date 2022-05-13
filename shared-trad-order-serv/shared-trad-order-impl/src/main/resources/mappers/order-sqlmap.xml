@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.OrderDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="buyer_id" jdbcType="BIGINT" property="buyerId"/>
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="order_type" jdbcType="TINYINT" property="orderType"/>
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus"/>
+        <result column="date_begin" jdbcType="TIMESTAMP" property="dateBegin"/>
+        <result column="date_end" jdbcType="TIMESTAMP" property="dateEnd"/>
+        <result column="order_minutes" jdbcType="INTEGER" property="orderMinutes"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="platform_amount" jdbcType="BIGINT" property="platformAmount"/>
+        <result column="platform_rate" jdbcType="INTEGER" property="platformRate"/>
+        <result column="discount_id" jdbcType="VARCHAR" property="discountId"/>
+        <result column="other_order_ids" jdbcType="VARCHAR" property="otherOrderIds"/>
+        <result column="invoice_status" jdbcType="INTEGER" property="invoiceStatus"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,buyer_id,seller_id
+        order_no,order_type,
+        order_status,date_begin,
+        date_end,order_minutes,
+        amount, platform_amount, platform_rate,
+        discount_id, other_order_ids, invoice_status,
+        remark,date_created,date_updated
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_order
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="cn.suparking.order.entity.OrderDO">
+        INSERT INTO spk_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="buyerId != null">
+                buyer_id,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="orderType != null">
+                order_type,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="dateBegin != null">
+                date_begin,
+            </if>
+            <if test="dateEnd != null">
+                date_end,
+            </if>
+            <if test="orderMinutes != null">
+                order_minutes,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="platformAmount != null">
+                platform_amount,
+            </if>
+            <if test="platformRate != null">
+                platform_rate,
+            </if>
+            <if test="discountId != null">
+                discount_id,
+            </if>
+            <if test="otherOrderIds != null">
+                other_order_ids,
+            </if>
+            <if test="invoiceStatus != null">
+                invoice_status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=BIGINT},
+            <if test="buyerId != null">
+                #{buyerId, jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId, jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo, jdbcType=VARCHAR},
+            </if>
+            <if test="orderType != null">
+                #{orderType, jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus, jdbcType=INTEGER},
+            </if>
+            <if test="dateBegin != null">
+                #{dateBegin, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateEnd != null">
+                #{dateEnd, jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderMinutes != null">
+                #{orderMinutes, jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                #{amount, jdbcType=BIGINT},
+            </if>
+            <if test="platformAmount != null">
+                #{platformAmount, jdbcType=BIGINT},
+            </if>
+            <if test="platformRate != null">
+                #{platformRate, jdbcType=INTEGER},
+            </if>
+            <if test="discountId != null">
+                #{discountId, jdbcType=VARCHAR},
+            </if>
+            <if test="otherOrderIds != null">
+                #{otherOrderIds, jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceStatus != null">
+                #{invoiceStatus, jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark, jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.entity.OrderDO">
+        UPDATE spk_order
+        <set>
+            <if test="buyerId != null">
+                buyer_id = #{buyerId, jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                seller_id = #{sellerId, jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo, jdbcType=VARCHAR},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType, jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus, jdbcType=INTEGER},
+            </if>
+            <if test="dateBegin != null">
+                date_begin = #{dateBegin, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateEnd != null">
+                date_end = #{dateEnd, jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderMinutes != null">
+                order_minutes = #{orderMinutes, jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                amount = #{amount, jdbcType=BIGINT},
+            </if>
+            <if test="platformAmount != null">
+                platform_amount = #{platformAmount, jdbcType=BIGINT},
+            </if>
+            <if test="platformRate != null">
+                platform_rate = #{platformRate, jdbcType=INTEGER},
+            </if>
+            <if test="discountId != null">
+                discount_id = #{discountId, jdbcType=VARCHAR},
+            </if>
+            <if test="otherOrderIds != null">
+                other_order_ids = #{otherOrderIds, jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceStatus != null">
+                invoice_status = #{invoiceStatus, jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark, jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                date_created = #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+</mapper>

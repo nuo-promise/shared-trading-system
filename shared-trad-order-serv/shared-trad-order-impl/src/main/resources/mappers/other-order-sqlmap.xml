@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.OtherOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.OtherOrderDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="date_begin" jdbcType="TIMESTAMP" property="dateBegin"/>
+        <result column="date_end" jdbcType="TIMESTAMP" property="dateEnd"/>
+        <result column="platform" jdbcType="INTEGER" property="platform"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="due_amount" jdbcType="BIGINT" property="dueAmount"/>
+        <result column="receive_amount" jdbcType="BIGINT" property="receiveAmount"/>
+        <result column="discount_type" jdbcType="INTEGER" property="discountType"/>
+        <result column="discount_value" jdbcType="BIGINT" property="discountValue"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_no,type
+        date_begin,date_end,
+        platform,amount,
+        due_amount,receive_amount,
+        discount_type, discount_value,
+        remark,date_created,date_updated
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_other_order
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="cn.suparking.order.entity.OtherOrderDO">
+        INSERT INTO spk_other_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="dateBegin != null">
+                date_begin,
+            </if>
+            <if test="dateEnd != null">
+                date_end,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="dueAmount != null">
+                due_amount,
+            </if>
+            <if test="receiveAmount != null">
+                receive_amount,
+            </if>
+            <if test="discountType != null">
+                discount_type,
+            </if>
+            <if test="discountValue != null">
+                discount_value,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=BIGINT},
+            <if test="orderNo != null">
+                #{orderNo, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type, jdbcType=INTEGER},
+            </if>
+            <if test="dateBegin != null">
+                #{dateBegin, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateEnd != null">
+                #{dateEnd, jdbcType=TIMESTAMP},
+            </if>
+            <if test="platform != null">
+                #{platform, jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                #{amount, jdbcType=BIGINT},
+            </if>
+            <if test="dueAmount != null">
+                #{dueAmount, jdbcType=BIGINT},
+            </if>
+            <if test="receiveAmount != null">
+                #{receiveAmount, jdbcType=BIGINT},
+            </if>
+            <if test="discountType != null">
+                #{discountType, jdbcType=INTEGER},
+            </if>
+            <if test="discountValue != null">
+                #{discountValue, jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark, jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.entity.OtherOrderDO">
+        UPDATE spk_other_order
+        <set>
+            <if test="orderNo != null">
+                order_no = #{orderNo, jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type, jdbcType=INTEGER},
+            </if>
+            <if test="dateBegin != null">
+                date_begin = #{dateBegin, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateEnd != null">
+                date_end = #{dateEnd, jdbcType=TIMESTAMP},
+            </if>
+            <if test="platform != null">
+                platform = #{platform, jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                amount = #{amount, jdbcType=BIGINT},
+            </if>
+            <if test="dueAmount != null">
+                due_amount = #{dueAmount, jdbcType=BIGINT},
+            </if>
+            <if test="receiveAmount != null">
+                receive_amount = #{receiveAmount, jdbcType=BIGINT},
+            </if>
+            <if test="discountType != null">
+                discount_type = discount_type = #{discountType, jdbcType=INTEGER},
+            </if>
+            <if test="discountValue != null">
+                discount_value = #{discountValue, jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark, jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                date_created = #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.invoice.dao.mapper.InvoiceInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.invoice.dao.entity.InvoiceInfoDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="head_name" jdbcType="VARCHAR" property="headName"/>
+        <result column="tax_code" jdbcType="VARCHAR" property="taxCode"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="iphone" jdbcType="VARCHAR" property="iphone"/>
+        <result column="bank_code" jdbcType="VARCHAR" property="bankCode"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone"/>
+        <result column="plate_no" jdbcType="VARCHAR" property="plateNo"/>
+        <result column="default_info" jdbcType="INTEGER" property="defaultInfo"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        head_name,
+        tax_code,
+        address, iphone, bank_code,
+        user_name,user_phone,plate_no,
+        default_info,date_created,date_updated
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_info
+        WHERE id = #{id, jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="api.beans.InvoiceInfoDTO">
+        INSERT INTO spk_invoice_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="headName != null">
+                head_name,
+            </if>
+            <if test="taxCode != null">
+                tax_code,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="iphone != null">
+                iphone,
+            </if>
+            <if test="bankCode != null">
+                bank_code,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="plateNo != null">
+                plate_no,
+            </if>
+            <if test="defaultInfo != null">
+                default_info,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=BIGINT},
+            <if test="userId != null">
+                #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="headName != null">
+                #{headName, jdbcType=VARCHAR},
+            </if>
+            <if test="taxCode != null">
+                #{taxCode, jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address, jdbcType=VARCHAR},
+            </if>
+            <if test="iphone != null">
+                #{iphone, jdbcType=VARCHAR},
+            </if>
+            <if test="bankCode != null">
+                #{bankCode, jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName, jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone, jdbcType=VARCHAR},
+            </if>
+            <if test="plateNo != null">
+                #{plateNo, jdbcType=VARCHAR},
+            </if>
+            <if test="defaultInfo != null">
+                #{defaultInfo, jdbcType=INTEGER},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.invoice.dao.entity.InvoiceInfoDO">
+        UPDATE spk_invoice_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="headName != null">
+                head_name = #{headName, jdbcType=VARCHAR},
+            </if>
+            <if test="taxCode != null">
+                tax_code = #{taxCode, jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address, jdbcType=VARCHAR},
+            </if>
+            <if test="iphone != null">
+                iphone = #{iphone, jdbcType=VARCHAR},
+            </if>
+            <if test="bankCode != null">
+                bank_code = #{bankCode, jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName, jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone, jdbcType=VARCHAR},
+            </if>
+            <if test="plateNo != null">
+                plate_no = #{plateNo, jdbcType=VARCHAR},
+            </if>
+            <if test="defaultInfo != null">
+                default_info = #{defaultInfo, jdbcType=INTEGER},
+            </if>
+            <if test="dateCreated != null">
+                date_created = #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+</mapper>

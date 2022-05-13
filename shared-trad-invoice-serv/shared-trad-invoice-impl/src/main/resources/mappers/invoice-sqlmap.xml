@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.invoice.dao.mapper.InvoiceMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.invoice.dao.entity.InvoiceDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="qrcode" jdbcType="VARCHAR" property="qrcode"/>
+        <result column="invoice_path" jdbcType="VARCHAR" property="invoicePath"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="iphone" jdbcType="VARCHAR" property="iphone"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="invoice_type" jdbcType="TINYINT" property="invoiceType"/>
+        <result column="access_type" jdbcType="TINYINT" property="accessType"/>
+        <result column="pick_address" jdbcType="VARCHAR" property="pickAddress"/>
+        <result column="courier_address" jdbcType="VARCHAR" property="courierAddress"/>
+        <result column="date_invoice_begin" jdbcType="TIMESTAMP" property="dateInvoiceBegin"/>
+        <result column="date_invoice_end" jdbcType="TIMESTAMP" property="dateInvoiceEnd"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        qrcode,
+        invoice_path,
+        email,iphone,
+        user_id, amount,invoice_type,
+        access_type,pick_address,courier_address,
+        date_invoice_begin,date_invoice_end,
+        date_created,date_updated
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+    <select id="findByUserId" resultType="cn.suparking.invoice.dao.entity.InvoiceDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="api.beans.InvoiceDTO">
+        INSERT INTO spk_invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="qrcode != null">
+                qrcode,
+            </if>
+            <if test="invoicePath != null">
+                invoice_path,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="iphone != null">
+                iphone,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="invoiceType != null">
+                invoice_type,
+            </if>
+            <if test="accessType != null">
+                access_type,
+            </if>
+            <if test="pickAddress != null">
+                pick_address,
+            </if>
+            <if test="courierAddress != null">
+                courier_address,
+            </if>
+            <if test="dateInvoiceBegin != null">
+                date_invoice_begin,
+            </if>
+            <if test="dateInvoiceEnd != null">
+                date_invoice_end,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=BIGINT},
+            <if test="qrcode != null">
+                #{qrcode, jdbcType=VARCHAR},
+            </if>
+            <if test="invoicePath != null">
+                #{invoicePath, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email, jdbcType=VARCHAR},
+            </if>
+            <if test="iphone != null">
+                #{iphone, jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                #{amount, jdbcType=BIGINT},
+            </if>
+            <if test="invoiceType != null">
+                #{invoiceType, jdbcType=TINYINT},
+            </if>
+            <if test="accessType != null">
+                #{accessType, jdbcType=TINYINT},
+            </if>
+            <if test="pickAddress != null">
+                #{pickAddress, jdbcType=VARCHAR},
+            </if>
+            <if test="courierAddress != null">
+                #{courierAddress, jdbcType=VARCHAR},
+            </if>
+            <if test="dateInvoiceBegin != null">
+                #{dateInvoiceBegin, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateInvoiceEnd != null">
+                #{dateInvoiceEnd, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="api.beans.InvoiceDTO">
+        UPDATE spk_invoice
+        <set>
+            <if test="qrcode != null">
+                qrcode = #{qrcode, jdbcType=VARCHAR},
+            </if>
+            <if test="invoicePath != null">
+                invoice_path = #{invoicePath, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email, jdbcType=VARCHAR},
+            </if>
+            <if test="iphone != null">
+                iphone = #{iphone, jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount, jdbcType=BIGINT},
+            </if>
+            <if test="invoiceType != null">
+                invoice_type = #{invoiceType, jdbcType=TINYINT},
+            </if>
+            <if test="accessType != null">
+                access_type = #{accessType, jdbcType=TINYINT},
+            </if>
+            <if test="pickAddress != null">
+                pick_address = #{pickAddress, jdbcType=VARCHAR},
+            </if>
+            <if test="courierAddress != null">
+                courier_address = #{courierAddress, jdbcType=VARCHAR},
+            </if>
+            <if test="dateInvoiceBegin != null">
+                date_invoice_begin = #{dateInvoiceBegin, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateInvoiceEnd != null">
+                date_invoice_end = #{dateInvoiceEnd, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateCreated != null">
+                date_created = #{dateCreated, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+</mapper>
