@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"cn.suparking"})
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"cn.suparking"})
 public class Application {
 
     /**

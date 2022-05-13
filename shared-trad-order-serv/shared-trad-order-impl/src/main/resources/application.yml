@@ -13,7 +13,7 @@ spring:
     # mysql数据源
     username: SPKRoot
     password: SPKRoot2017!
-    url: jdbc:mysql://192.168.1.105:3306/spk_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+    url: jdbc:mysql://47.98.44.236:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
     #      type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 连接池
@@ -32,7 +32,7 @@ spring:
         # 服务发现默认开关打开
         enabled: true
         # 服务地址,集群用逗号分开
-        server-addr: center.suparking.cn:21310
+        server-addr: 47.98.44.236:8848
         # 注册中心服务名称 application name,一般不用配置
         service: shared-trad-order-serv
         # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms

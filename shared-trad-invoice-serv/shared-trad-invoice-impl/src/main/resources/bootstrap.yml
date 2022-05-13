@@ -7,7 +7,7 @@ spring:
       config:
         enabled: true
         # nacos config服务器的地址
-        server-addr: center.suparking.cn:21310
+        server-addr: 47.98.44.236:8848
         file-extension: yml
         # prefix: 文件名前缀,默认是spring.application.name
         # 如果没有指定命名空间,则默认是PUBLIC
