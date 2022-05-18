@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>shared-trad-common-api</module>
+        <module>shared-trad-common-tools</module>
     </modules>
 
     <properties>

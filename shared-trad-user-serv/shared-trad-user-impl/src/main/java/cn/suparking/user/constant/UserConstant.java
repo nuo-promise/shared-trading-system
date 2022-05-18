@@ -9,6 +9,13 @@ public class UserConstant {
      */
     public static final String GRANT_TYPE = "authorization_code";
 
+    /**
+     * 获取微信access_token.
+     */
+    public static final String ACCESS_TOKEN_GRANT_TYPE = "client_credential";
+
+    public static final String WX_ACCESS_TOKEN_KEY = "WX_ACCESS_TOKEN";
+
 
     // =============================================== 路径 ===============================================
 
@@ -18,7 +25,12 @@ public class UserConstant {
     public static final String JSCODE_TO_SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
 
     /**
-     * 获取access_token.
+     * 获取 微信 access_token.
      */
-    public static final String TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
+    public static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
+
+    /**
+     * 获取 getPhoneNumber.
+     */
+    public static final String PHONE_NUMBER_URL = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=";
 }

@@ -13,9 +13,9 @@
     <artifactId>shared-trad-customer-serv</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>shared-trad-customer-impl</module>
         <module>shared-trad-customer-api</module>
         <module>shared-trad-customer-dao</module>
-        <module>shared-trad-customer-impl</module>
     </modules>
 
     <properties>

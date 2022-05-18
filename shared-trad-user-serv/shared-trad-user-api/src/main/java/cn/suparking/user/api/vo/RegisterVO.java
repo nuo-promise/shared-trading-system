@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SessionKeyVO implements Serializable {
+public class RegisterVO implements Serializable {
 
     private static final long serialVersionUID = -4952795851464885155L;
 
@@ -30,5 +30,5 @@ public class SessionKeyVO implements Serializable {
     /**
      * 用户在开放平台的唯一标识符.
      */
-    private String unionid;
+    private String unionId;
 }

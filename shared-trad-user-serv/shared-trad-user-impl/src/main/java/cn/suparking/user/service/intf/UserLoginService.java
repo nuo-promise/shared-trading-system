@@ -1,15 +1,29 @@
 package cn.suparking.user.service.intf;
 
-import cn.suparking.user.api.beans.SessionKeyDTO;
-import cn.suparking.user.api.vo.SessionKeyVO;
+import cn.suparking.user.api.vo.PhoneInfoVO;
+import cn.suparking.user.api.vo.RegisterVO;
+import cn.suparking.user.api.vo.SessionVO;
 
 public interface UserLoginService {
 
     /**
      * 根据code获取openId和sessionKey.
      *
-     * @param sessionKeyDTO {@linkplain SessionKeyDTO}
-     * @return {@linkplain SessionKeyVO}
+     * @param code wx login code
+     * @return {@linkplain RegisterVO}
      */
-    SessionKeyVO getSessionKey(SessionKeyDTO sessionKeyDTO);
+    SessionVO getSessionKey(String code);
+
+    /**
+     * get wx accessToken.
+     */
+    void getAccessToken();
+
+
+    /**
+     * get user phone.
+     * @param phoneCode phone
+     * @return {@link PhoneInfoVO}
+     */
+    PhoneInfoVO getPhoneInfo(String phoneCode);
 }

@@ -182,6 +182,30 @@ spring:
 #        load-balancers:
 #          round_robin:
 #            type: ROUND_ROBIN
+  # rabbitmq 配置
+  rabbitmq:
+    host: ms.suparking.cn
+    port: 5666
+    username: shared
+    password: shared2019
+    exchange: spk.shared
+    consumer-prefetch: 5
+    concurrent-consumer: 2
+    enable: true
+  # redis 配置
+  redis:
+    host: localhost
+    port: 6378
+    password:
+    database: 0
+    timeout: 6000
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 8
+        max-idle: 8
+        min-idle: 4
+        max-wait: 1
   # cloud-nacos 配置
   cloud:
     nacos:
@@ -241,7 +265,13 @@ feign:
         readTimeout: 2000
   circuitbreaker:
     enabled: true
-
-wx:
-  appid: wx30b06cff779215bb
-  secret: 919be359c7f692d66bde05ad6c34a95d
+# thread pool,wx 配置
+sparking:
+  wx:
+    appid: wx30b06cff779215bb
+    secret: 919be359c7f692d66bde05ad6c34a95d
+  pool:
+    core-size: 8
+    max-size: 32
+    keep-alive: 360
+    queue-capacity: 100

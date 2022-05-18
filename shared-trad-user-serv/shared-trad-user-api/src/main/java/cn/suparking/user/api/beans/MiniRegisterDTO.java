@@ -1,6 +1,7 @@
 package cn.suparking.user.api.beans;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,25 +9,19 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SessionKeyDTO implements Serializable {
+public class MiniRegisterDTO implements Serializable {
 
     private static final long serialVersionUID = 3159952960557190780L;
 
     /**
-     * 微信端返回code，使用code 换取 session_key.
+     * 微信端返回code，使用code 换取 openId unionId.
      */
     @NotNull
     private String code;
 
-    /**
-     * 用户信息的加密数据.
-     */
-    private String encryptedData;
-
-    /**
-     * 对称解密算法初始向量.
-     */
-    private String iv;
+    @NotNull
+    private String phoneCode;
 }

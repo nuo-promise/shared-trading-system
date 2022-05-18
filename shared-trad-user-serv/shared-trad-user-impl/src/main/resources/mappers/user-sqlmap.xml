@@ -9,6 +9,9 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="iphone" jdbcType="VARCHAR" property="iphone"/>
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="mini_open_id" jdbcType="VARCHAR" property="miniOpenId"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="union_id" jdbcType="VARCHAR" property="unionId"/>
         <result column="enabled" jdbcType="INTEGER" property="enabled"/>
         <result column="register_type" jdbcType="INTEGER" property="registerType"/>
         <result column="merchant_id" jdbcType="BIGINT" property="merchantId"/>
@@ -19,7 +22,7 @@
         date_created,
         date_updated,
         user_name,
-        password, iphone, nick_name,
+        password, iphone, nick_name, mini_open_id, open_id, union_id,
         enabled, register_type, merchant_id
     </sql>
 
@@ -28,6 +31,13 @@
         <include refid="Base_Column_List"/>
         FROM spk_user
         WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByMiniOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_user
+        WHERE mini_open_id = #{miniOpenId, jdbcType=VARCHAR}
     </select>
 
     <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.UserDO">
@@ -45,6 +55,15 @@
             </if>
             <if test="password != null">
                 password,
+            </if>
+            <if test="miniOpenId != null">
+                mini_open_id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="unionId != null">
+                union_id,
             </if>
             <if test="enabled != null">
                 enabled,
@@ -75,6 +94,15 @@
             </if>
             <if test="password != null">
                 #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="miniOpenId != null">
+                #{miniOpenId, jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                #{openId, jdbcType=VARCHAR},
+            </if>
+            <if test="unionId != null">
+                #{unionId, jdbcType=VARCHAR},
             </if>
             <if test="enabled != null">
                 #{enabled, jdbcType=INTEGER},
@@ -108,6 +136,15 @@
             </if>
             <if test="password != null">
                 password = #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="miniOpenId != null">
+                mini_open_id = #{miniOpenId, jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                open_id = #{openId, jdbcType=VARCHAR},
+            </if>
+            <if test="unionId != null">
+                union_id = #{unionId, jdbcType=VARCHAR},
             </if>
             <if test="enabled != null">
                 enabled = #{enabled, jdbcType=INTEGER},

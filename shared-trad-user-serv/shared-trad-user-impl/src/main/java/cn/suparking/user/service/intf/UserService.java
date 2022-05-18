@@ -20,4 +20,12 @@ public interface UserService {
      * @return {@linkplain UserVO}
      */
     UserVO findById(Long id);
+
+
+    /**
+     * find user by openId.
+     * @param miniOpenId wx open id
+     * @return {@link UserVO}
+     */
+    UserVO findByOpenId(String miniOpenId);
 }

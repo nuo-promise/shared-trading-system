@@ -10,7 +10,7 @@ spring:
         server-addr: 47.98.44.236:8848
         file-extension: yml
         # prefix: 文件名前缀,默认是spring.application.name
-        # 如果没有指定命名空间,则默认是PUBLIC
+        # 如果没有指定命名空间,则默认是PUBLIC,很重要,要与nacos 配置文件的 命名空间ID 为主
         namespace: dev
         # 如果没有配置Group,则默认值为DEFAULT_GROUP
         group: DEFAULT_GROUP

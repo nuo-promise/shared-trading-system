@@ -39,14 +39,13 @@ public class UserController {
      * @return {@linkplain SpkCommonResult}
      */
     @PostMapping("")
-    public SpkCommonResult createSharedUser(@Valid @RequestBody final UserDTO userDTO) {
+    public Integer createSharedUser(@Valid @RequestBody final UserDTO userDTO) {
         return Optional.ofNullable(userDTO)
                 .map(item -> {
                     SpkCommonAssert.notBlank(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": iphone is not blank");
                     SpkCommonAssert.notNull(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not null");
-                    Integer createCount = userService.createOrUpdate(userDTO);
-                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
-                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_CREATE_USER_ERROR));
+                    return userService.createOrUpdate(userDTO);
+                }).orElse(0);
     }
 
     /**
@@ -61,5 +60,18 @@ public class UserController {
         return Optional.ofNullable(userVO)
                 .map(item -> SpkCommonResult.success(SpkCommonResultMessage.DETAIL_SUCCESS, item))
                 .orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_QUERY_ERROR));
+    }
+
+    /**
+     * get user info by mini open id.
+     * @param miniOpenId mini open id
+     * @return {@link  UserDTO}
+     */
+    @PostMapping("/getUserByOpenId")
+    public UserVO getUserByOpenId(@RequestBody final String miniOpenId) {
+        return Optional.ofNullable(miniOpenId).map(item -> {
+            SpkCommonAssert.notBlank(miniOpenId, SpkCommonResultMessage.PARAMETER_ERROR + " miniOpenId 不能为空");
+            return userService.findByOpenId(miniOpenId);
+        }).orElse(null);
     }
 }

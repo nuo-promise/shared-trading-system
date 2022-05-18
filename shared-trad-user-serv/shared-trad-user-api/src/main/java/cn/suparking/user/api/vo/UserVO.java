@@ -40,6 +40,12 @@ public class UserVO implements Serializable {
      */
     private String nickName;
 
+    private String miniOpenId;
+
+    private String openId;
+
+    private String unionId;
+
     /**
      * 用户状态 1:激活 2:未激活.
      */

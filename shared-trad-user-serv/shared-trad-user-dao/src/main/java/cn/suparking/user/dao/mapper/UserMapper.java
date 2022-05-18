@@ -17,6 +17,13 @@ public interface UserMapper {
     UserDO selectById(Long id);
 
     /**
+     * select user by mini_open_id.
+     * @param miniOpenId mini open id
+     * @return {@link UserDO}
+     */
+    UserDO selectByMiniOpenId(String miniOpenId);
+
+    /**
      * insert selective user.
      *
      * @param userDO {@linkplain UserDO}

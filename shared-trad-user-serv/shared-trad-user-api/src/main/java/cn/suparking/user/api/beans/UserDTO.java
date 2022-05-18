@@ -29,6 +29,12 @@ public class UserDTO implements Serializable {
 
     private String nickName;
 
+    private String miniOpenId;
+
+    private String openId;
+
+    private String unionId;
+
     private Integer enabled;
 
     @NotNull

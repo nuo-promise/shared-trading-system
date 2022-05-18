@@ -44,6 +44,12 @@ public class UserVO implements Serializable {
      */
     private String nickName;
 
+    private String openId;
+
+    private String miniOpenId;
+
+    private String unionId;
+
     /**
      * 用户状态 1:激活 2:未激活.
      */
@@ -79,7 +85,8 @@ public class UserVO implements Serializable {
     public static UserVO buildUserVO(final UserDO userDO) {
         return Optional.ofNullable(userDO)
                 .map(item -> new UserVO(item.getId().toString(), item.getUserName(),
-                        item.getPassword(), item.getIphone(), item.getNickName(), item.getEnabled(),
+                        item.getPassword(), item.getIphone(), item.getNickName(), item.getOpenId(), item.getMiniOpenId(),
+                        item.getUnionId(), item.getEnabled(),
                         item.getRegisterType(), Objects.nonNull(item.getMerchantId()) ? item.getMerchantId().toString() : null,
                         DateUtils.localDateTimeToString(item.getDateCreated().toLocalDateTime()),
                         DateUtils.localDateTimeToString(item.getDateUpdated().toLocalDateTime())))

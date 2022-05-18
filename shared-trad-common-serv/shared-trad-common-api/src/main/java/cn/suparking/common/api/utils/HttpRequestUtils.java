@@ -23,7 +23,7 @@ public class HttpRequestUtils {
      * @return String
      */
     public static JSONObject sendGet(final String url, final Map<String, Object> paramsMap) {
-        return sendGet(url, paramsMap, 2000);
+        return sendGet(url, paramsMap, 15000);
     }
 
     /**
@@ -34,7 +34,7 @@ public class HttpRequestUtils {
      * @param timeout   超时时间
      * @return String
      */
-    public static JSONObject sendGet(final String url, final Map<String, Object> paramsMap, final int timeout) {
+     private static JSONObject sendGet(final String url, final Map<String, Object> paramsMap, final int timeout) {
         try {
             String params = httpHeaderParams(paramsMap);
             log.info("[GET]请求外部api ======> 请求路径 [{}]    请求参数 [{}]", url, params);
@@ -56,7 +56,7 @@ public class HttpRequestUtils {
      * @return String
      */
     public static JSONObject sendPost(final String url, final Map<String, Object> paramsMap) {
-        return sendPost(url, paramsMap, 2000);
+        return sendPost(url, paramsMap, 15000);
     }
 
     /**
@@ -67,7 +67,7 @@ public class HttpRequestUtils {
      * @param timeout   超时时间
      * @return String
      */
-    public static JSONObject sendPost(final String url, final Map<String, Object> paramsMap, final int timeout) {
+    private static JSONObject sendPost(final String url, final Map<String, Object> paramsMap, final int timeout) {
         try {
             String params = JSONObject.toJSONString(paramsMap);
             log.info("[POST]请求外部api ======> 请求路径 [{}]    请求参数 [{}]", url, params);

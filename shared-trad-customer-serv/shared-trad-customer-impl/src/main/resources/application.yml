@@ -1,5 +1,5 @@
 server:
-  port: 20009
+  port: 20001
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
@@ -43,11 +43,33 @@ spring:
           watch:
             enabled: true
           watch-delay: 30000
+    rabbitmq:
+      host: ms.suparking.cn
+      port: 5666
+      username: shared
+      password: shared2019
+      exchange: spk.shared
+      consumer-prefetch: 5
+      concurrent-consumer: 2
+      enable: true
+      # redis 配置
+    redis:
+      host: localhost
+      port: 6378
+      password:
+      database: 0
+      timeout: 6000
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 8
+          max-idle: 8
+          min-idle: 4
+          max-wait: 1
 
 logging:
   level:
-    cn.suparking.invoice: debug
-    org.apache.shardingsphere: debug
+    cn.suparking.customer.feign.user.UserTemplateService: debug
 feign:
   client:
     config:
@@ -58,7 +80,7 @@ feign:
         # 服务器请求超时阶段5秒超时
         readTimeout: 5000
       # 针对某个特定服务的超时配置
-      coupon-template-serv:
+      shared-trad-user-serv:
         connectTimeout: 1000
         readTimeout: 2000
   circuitbreaker:
