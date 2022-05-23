@@ -7,7 +7,10 @@ import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.vo.UserVO;
 import cn.suparking.user.service.intf.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shardingsphere.transaction.annotation.ShardingSphereTransactionType;
+import org.apache.shardingsphere.transaction.core.TransactionType;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +42,7 @@ public class UserController {
      * @return {@linkplain SpkCommonResult}
      */
     @PostMapping("")
+    @ShardingSphereTransactionType(TransactionType.BASE)
     public Integer createSharedUser(@Valid @RequestBody final UserDTO userDTO) {
         return Optional.ofNullable(userDTO)
                 .map(item -> {

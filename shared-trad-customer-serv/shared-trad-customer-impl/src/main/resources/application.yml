@@ -6,67 +6,105 @@ server:
   servlet:
     context-path: /mini-module
 spring:
+  datasource:
+    # mysql数据源
+    username: SPKRoot
+    password: SPKRoot2017!
+    url: jdbc:mysql://center.suparking.cn:3306/tbl_mini_business?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 连接池
+    hikari:
+      pool-name: GeekbangCouponHikari
+      connection-timeout: 5000
+      idle-timeout: 30000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      max-lifetime: 60000
+      auto-commit: true
 #   cloud-nacos 配置
-    cloud:
-      nacos:
-        discovery:
-          # 服务发现默认开关打开
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: seata-server-group
+    nacos:
+      discovery:
+        # 服务发现默认开关打开
+        enabled: true
+        # 服务地址,集群用逗号分开
+        server-addr: 47.98.44.236:8848
+        # 注册中心服务名称 application name,一般不用配置
+        service: shared-trad-customer-serv
+        # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
+        heart-beat-interval: 5000
+        # 服务端没有接受到客户端心跳请求就将其设为不健康的时间间隔,默认15s
+        heart-beat-timeout: 15000
+        # [注意] 这个IP地址如果更换网络后变化,会导致服务调用失败,建议先不要设置
+        # ip: 127.0.0.1
+        # 元数据部分 - 可以自己随便定制
+        metadata:
+          mydata: abc
+        # 客户端在启动时是否读取本地配置项(一个文件)来获取服务列表
+        # 注: 推荐该值为false,若改成true。则客户端会在本地的一个文件中保存服务信息,当下次宕机时候,会优先读取本地的配置对外提供服务
+        naming-load-cache-at-start: false
+        # 创建不同的集群
+        cluster-name: Shared-Trading-Cluster-A
+        # 命令空间ID，Nacos通过不同的命名空间来区分不同的环境,进行数据隔离
+        # 服务消费时只能消费到对应的命名空间下的服务
+        # [注意]需要在nacos-server中创建好namespace,然后把id copy进来
+        namespace: dev
+        # [注意] 两个服务如果存在上下游调用关系,必须配置相同的group才能发起访问
+        group: myGroup
+        # 向注册中心注册服务,默认为true
+        # 如果只消费服务,不作为服务提供方,倒是可以设置为false,减少开销
+        register-enabled: false
+        # 类似长连接监听服务端信息变化的功能
+        watch:
           enabled: true
-          # 服务地址,集群用逗号分开
-          server-addr: 47.98.44.236:8848
-          # 注册中心服务名称 application name,一般不用配置
-          service: shared-trad-customer-serv
-          # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
-          heart-beat-interval: 5000
-          # 服务端没有接受到客户端心跳请求就将其设为不健康的时间间隔,默认15s
-          heart-beat-timeout: 15000
-          # [注意] 这个IP地址如果更换网络后变化,会导致服务调用失败,建议先不要设置
-          # ip: 127.0.0.1
-          # 元数据部分 - 可以自己随便定制
-          metadata:
-            mydata: abc
-          # 客户端在启动时是否读取本地配置项(一个文件)来获取服务列表
-          # 注: 推荐该值为false,若改成true。则客户端会在本地的一个文件中保存服务信息,当下次宕机时候,会优先读取本地的配置对外提供服务
-          naming-load-cache-at-start: false
-          # 创建不同的集群
-          cluster-name: Shared-Trading-Cluster-A
-          # 命令空间ID，Nacos通过不同的命名空间来区分不同的环境,进行数据隔离
-          # 服务消费时只能消费到对应的命名空间下的服务
-          # [注意]需要在nacos-server中创建好namespace,然后把id copy进来
-          namespace: dev
-          # [注意] 两个服务如果存在上下游调用关系,必须配置相同的group才能发起访问
-          group: myGroup
-          # 向注册中心注册服务,默认为true
-          # 如果只消费服务,不作为服务提供方,倒是可以设置为false,减少开销
-          register-enabled: false
-          # 类似长连接监听服务端信息变化的功能
-          watch:
-            enabled: true
-          watch-delay: 30000
-    rabbitmq:
-      host: ms.suparking.cn
-      port: 5666
-      username: shared
-      password: shared2019
-      exchange: spk.shared
-      consumer-prefetch: 5
-      concurrent-consumer: 2
-      enable: true
-      # redis 配置
-    redis:
-      host: localhost
-      port: 6378
-      password:
-      database: 0
-      timeout: 6000
-      lettuce:
-        pool:
-          enabled: true
-          max-active: 8
-          max-idle: 8
-          min-idle: 4
-          max-wait: 1
-
+        watch-delay: 30000
+  rabbitmq:
+    host: ms.suparking.cn
+    port: 5666
+    username: shared
+    password: shared2019
+    exchange: spk.shared
+    consumer-prefetch: 5
+    concurrent-consumer: 2
+    enable: true
+    # redis 配置
+  redis:
+    host: localhost
+    port: 6378
+    password:
+    database: 0
+    timeout: 6000
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 8
+        max-idle: 8
+        min-idle: 4
+        max-wait: 1
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 整合ss关键点
+  enable-auto-data-source-proxy: true
+  data-source-proxy-mode: AT
+  tx-service-group: seata-server-group
+  service:
+    vgroup-mapping:
+      seata-server-group: default
+    grouplist:
+      default: 47.98.44.236:8091
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 47.98.44.236:8848
+      namespace: dev
+      group: myGroup
+      cluster: default
 logging:
   level:
     cn.suparking.customer.feign.user.UserTemplateService: debug
@@ -85,3 +123,6 @@ feign:
         readTimeout: 2000
   circuitbreaker:
     enabled: true
+sparking:
+  bs:
+    url: http://192.168.1.133:10088/spms/api/wxapp

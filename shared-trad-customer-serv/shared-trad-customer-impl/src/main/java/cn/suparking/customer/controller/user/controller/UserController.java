@@ -6,6 +6,7 @@ import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.controller.user.service.UserService;
 import cn.suparking.user.api.beans.MiniLoginDTO;
 import cn.suparking.user.api.beans.MiniRegisterDTO;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,11 +36,12 @@ public class UserController {
      * @return {@linkplain SpkCommonResult}
      */
     @PostMapping("register")
+    @GlobalTransactional(name = "shared-trad-customer-serv", rollbackFor = Exception.class)
     public SpkCommonResult getSessionKey(@Valid @RequestBody final MiniRegisterDTO miniRegisterDTO) {
         return Optional.ofNullable(miniRegisterDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlank(miniRegisterDTO.getCode(), SpkCommonResultMessage.PARAMETER_ERROR + "code 不能为空");
-                    return SpkCommonResult.success(userService.register(miniRegisterDTO));
+                    SpkCommonAssert.notBlank(item.getCode(), SpkCommonResultMessage.PARAMETER_ERROR + "code 不能为空");
+                    return SpkCommonResult.success(userService.register(item));
                 }).orElseGet(() -> SpkCommonResult.error("code不能为空"));
     }
 
@@ -52,8 +54,8 @@ public class UserController {
     public SpkCommonResult login(@Valid @RequestBody final MiniLoginDTO miniLoginDTO) {
         return Optional.ofNullable(miniLoginDTO)
                .map(item -> {
-                   SpkCommonAssert.notBlank(miniLoginDTO.getCode(), SpkCommonResultMessage.PARAMETER_ERROR + "code不能为空");
-                   return SpkCommonResult.success(userService.login(miniLoginDTO.getCode()));
+                   SpkCommonAssert.notBlank(item.getCode(), SpkCommonResultMessage.PARAMETER_ERROR + "code不能为空");
+                   return SpkCommonResult.success(userService.login(item.getCode()));
                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR));
 
     }

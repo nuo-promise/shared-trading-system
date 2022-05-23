@@ -208,6 +208,9 @@ spring:
         max-wait: 1
   # cloud-nacos 配置
   cloud:
+    alibaba:
+      seata:
+        tx-service-group: seata-server-group
     nacos:
       discovery:
         # 服务发现默认开关打开
@@ -243,6 +246,25 @@ spring:
         watch:
           enabled: true
         watch-delay: 30000
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: false
+  data-source-proxy-mode: AT
+  tx-service-group: seata-server-group
+  service:
+    vgroup-mapping:
+      seata-server-group: default
+    grouplist:
+      default: 47.98.44.236:8091
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 47.98.44.236:8848
+      namespace: dev
+      group: myGroup
+      cluster: default
 mybatis:
   mapper-locations: classpath:/mappers/*.xml
 

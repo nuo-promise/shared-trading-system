@@ -6,10 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "sparking.wx")
-public class WxProperties {
+@ConfigurationProperties(prefix = "sparking.bs")
+public class SparkProperties {
 
-    private String appid;
-
-    private String secret;
+    private String url;
 }

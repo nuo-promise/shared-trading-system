@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class UserServiceImpl implements UserService {
      * @return {@linkplain SpkCommonResult}
      */
     @Override
+    @Transactional
     public UserVO register(final MiniRegisterDTO miniRegisterDTO) {
         //1.根据code获取openId和sessionKey
         SessionVO sessionVO = userTemplateService.getSessionKey(miniRegisterDTO.getCode());
