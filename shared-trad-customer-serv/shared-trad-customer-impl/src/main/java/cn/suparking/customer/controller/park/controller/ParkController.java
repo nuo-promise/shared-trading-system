@@ -40,6 +40,7 @@ public class ParkController {
                    SpkCommonAssert.notNull(item.getLatitude(), SpkCommonResultMessage.PARAMETER_ERROR + " latitude 不能为null");
                    SpkCommonAssert.notNull(item.getLongitude(), SpkCommonResultMessage.PARAMETER_ERROR + " longitude 不能为null");
                    SpkCommonAssert.notNull(item.getNumber(), SpkCommonResultMessage.PARAMETER_ERROR + " number 不能为null");
+                   SpkCommonAssert.notNull(item.getRadius(), SpkCommonResultMessage.PARAMETER_ERROR + " radius 不能为null");
                    return SpkCommonResult.success(parkService.nearByPark(item));
                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR + " latitude, longitude 不能为 null"));
     }

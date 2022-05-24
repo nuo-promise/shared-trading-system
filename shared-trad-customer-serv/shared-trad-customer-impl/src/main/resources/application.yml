@@ -96,7 +96,9 @@ seata:
     vgroup-mapping:
       seata-server-group: default
     grouplist:
-      default: 47.98.44.236:8091
+      node1: 47.98.44.236:8091
+      node2: 47.98.44.236:8092
+      node3: 47.98.44.236:8093
   registry:
     type: nacos
     nacos:
@@ -114,13 +116,13 @@ feign:
       #全局配置
       default:
         #网络连接阶段1秒超时
-        connectTimeout: 1000
+        connectTimeout: 6000
         # 服务器请求超时阶段5秒超时
-        readTimeout: 5000
+        readTimeout: 10000
       # 针对某个特定服务的超时配置
       shared-trad-user-serv:
-        connectTimeout: 1000
-        readTimeout: 2000
+        connectTimeout: 6000
+        readTimeout: 10000
   circuitbreaker:
     enabled: true
 sparking:

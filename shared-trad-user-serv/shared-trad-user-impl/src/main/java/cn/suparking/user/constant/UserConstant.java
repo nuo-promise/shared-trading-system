@@ -16,6 +16,11 @@ public class UserConstant {
 
     public static final String WX_ACCESS_TOKEN_KEY = "WX_ACCESS_TOKEN";
 
+    /**
+     * WX Access Token error.
+     */
+    public static final Integer ACCESS_TOKEN_EXPIRED_CODE = 42001;
+
 
     // =============================================== 路径 ===============================================
 

@@ -256,7 +256,9 @@ seata:
     vgroup-mapping:
       seata-server-group: default
     grouplist:
-      default: 47.98.44.236:8091
+      node1: 47.98.44.236:8091
+      node2: 47.98.44.236:8092
+      node3: 47.98.44.236:8093
   registry:
     type: nacos
     nacos:

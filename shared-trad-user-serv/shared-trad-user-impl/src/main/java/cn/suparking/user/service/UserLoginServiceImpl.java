@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static cn.suparking.user.constant.UserConstant.ACCESS_TOKEN_EXPIRED_CODE;
+
 @Slf4j
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
@@ -100,7 +102,12 @@ public class UserLoginServiceImpl implements UserLoginService {
 
             return Optional.ofNullable(result).map(item -> {
                 if (item.getInteger("errcode") != 0) {
-                    throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
+                    if (item.getInteger("errcode").equals(ACCESS_TOKEN_EXPIRED_CODE)) {
+                        getAccessToken();
+                        return getPhoneInfo(phoneCode);
+                    } else {
+                        throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
+                    }
                 }
                 JSONObject phoneInfo = item.getJSONObject("phone_info");
                 JSONObject waterMark = phoneInfo.getJSONObject("watermark");
