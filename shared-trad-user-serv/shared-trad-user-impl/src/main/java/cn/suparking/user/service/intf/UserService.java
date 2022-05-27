@@ -28,4 +28,11 @@ public interface UserService {
      * @return {@link UserVO}
      */
     UserVO findByOpenId(String miniOpenId);
+
+    /**
+     * find user by iphone.
+     * @param iphone  user iphone
+     * @return {@link UserVO}
+     */
+    UserVO findUserByIphone(String iphone);
 }

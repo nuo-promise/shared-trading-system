@@ -4,18 +4,18 @@ import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.user.api.beans.UserDTO;
-import cn.suparking.user.vo.UserVO;
 import cn.suparking.user.service.intf.UserService;
+import cn.suparking.user.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.transaction.annotation.ShardingSphereTransactionType;
 import org.apache.shardingsphere.transaction.core.TransactionType;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -74,8 +74,21 @@ public class UserController {
     @PostMapping("/getUserByOpenId")
     public UserVO getUserByOpenId(@RequestBody final String miniOpenId) {
         return Optional.ofNullable(miniOpenId).map(item -> {
-            SpkCommonAssert.notBlank(miniOpenId, SpkCommonResultMessage.PARAMETER_ERROR + " miniOpenId 不能为空");
-            return userService.findByOpenId(miniOpenId);
+            SpkCommonAssert.notBlank(item, SpkCommonResultMessage.PARAMETER_ERROR + " miniOpenId 不能为空");
+            return userService.findByOpenId(item);
         }).orElse(null);
+    }
+
+    /**
+     * 根据用户手机号获取用户信息.
+     * @param iphone user iphone
+     * @return {@link UserVO}
+     */
+    @GetMapping("/getUserByIphone")
+    public SpkCommonResult getUserByIphone(@RequestParam("iphone") final String iphone) {
+        return Optional.ofNullable(iphone).map(item -> {
+            SpkCommonAssert.notBlank(iphone, SpkCommonResultMessage.PARAMETER_ERROR + " iphone 不能为空");
+            return SpkCommonResult.success(SpkCommonResultMessage.RESULT_SUCCESS, userService.findUserByIphone(item));
+        }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_QUERY_ERROR));
     }
 }

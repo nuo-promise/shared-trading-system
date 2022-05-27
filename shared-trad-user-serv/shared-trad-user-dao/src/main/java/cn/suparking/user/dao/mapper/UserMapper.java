@@ -38,4 +38,11 @@ public interface UserMapper {
      * @return rows
      */
     int updateSelective(UserDO userDO);
+
+    /**
+     * get user by iphone.
+     * @param iphone user iphone
+     * @return {@link UserDO}
+     */
+    UserDO selectUserByIphone(String iphone);
 }

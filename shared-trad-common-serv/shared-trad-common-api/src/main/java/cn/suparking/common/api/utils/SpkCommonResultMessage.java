@@ -29,6 +29,8 @@ public final class SpkCommonResultMessage {
 
     public static final String DETAIL_SUCCESS = "detail success";
 
+    public static final String RESULT_SUCCESS = "result success";
+
     public static final String USER_QUERY_ERROR = "user info is empty";
 
     public static final String CAR_PARK_QUERY_ERROR = "car park info is empty";

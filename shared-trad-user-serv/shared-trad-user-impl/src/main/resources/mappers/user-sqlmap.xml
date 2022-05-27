@@ -40,6 +40,13 @@
         WHERE mini_open_id = #{miniOpenId, jdbcType=VARCHAR}
     </select>
 
+    <select id="selectUserByIphone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_user
+        WHERE iphone = #{iphone, jdbcType=VARCHAR}
+    </select>
+
     <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.UserDO">
         INSERT INTO spk_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
