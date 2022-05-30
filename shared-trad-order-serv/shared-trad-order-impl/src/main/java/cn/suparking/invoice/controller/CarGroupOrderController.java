@@ -1,11 +1,11 @@
 package cn.suparking.invoice.controller;
 
-import api.beans.OtherOrderDTO;
+import api.beans.CarGroupOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
-import cn.suparking.invoice.service.OtherOrderService;
-import cn.suparking.order.entity.OtherOrderDO;
+import cn.suparking.invoice.service.CarGroupOrderService;
+import cn.suparking.order.entity.CarGroupOrderDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,47 +19,48 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 /**
- * 三方订单信息.
+ * 订单信息.
  */
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("orderCenter/otherOrder")
-public class OtherOrderController {
+@RequestMapping("car-group")
+public class CarGroupOrderController {
 
-    private final OtherOrderService otherOrderService;
+    private final CarGroupOrderService carGroupOrderService;
 
-    public OtherOrderController(final OtherOrderService otherOrderService) {
-        this.otherOrderService = otherOrderService;
+    public CarGroupOrderController(final CarGroupOrderService carGroupOrderService) {
+        this.carGroupOrderService = carGroupOrderService;
     }
 
     /**
-     * 根据三方订单id查询订单信息.
+     * 根据订单id查询订单信息.
      *
-     * @param id 三方订单id
+     * @param id 订单id
      * @return {@linkplain SpkCommonResult}
      */
-    @GetMapping("/detail/{id}")
-    public SpkCommonResult findById(@PathVariable("id") final String id) {
-        OtherOrderDO otherOrderDO = otherOrderService.findById(id);
-        return Optional.ofNullable(otherOrderDO)
+    @GetMapping("/{id}")
+    public SpkCommonResult detailCarGroupOrder(@PathVariable("id") final String id) {
+        CarGroupOrderDO carGroupOrderDo = carGroupOrderService.findById(id);
+        return Optional.ofNullable(carGroupOrderDo)
                 .map(item -> SpkCommonResult.success(SpkCommonResultMessage.DETAIL_SUCCESS, item))
-                .orElseGet(() -> SpkCommonResult.error("订单不存在"));
+                .orElseGet(() -> SpkCommonResult.error("合约订单不存在"));
     }
 
     /**
-     * 创建或修改三方订单.
+     * 创建或修改合约订单.
      *
-     * @param otherOrderDTO 三方订单信息
+     * @param carGroupOrderDTO 合约订单信息
      * @return Integer
      */
     @PostMapping("")
-    public SpkCommonResult createSharedOrder(@Valid @RequestBody final OtherOrderDTO otherOrderDTO) {
-        return Optional.ofNullable(otherOrderDTO)
+    public SpkCommonResult createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
+        return Optional.ofNullable(carGroupOrderDTO)
                 .map(item -> {
                     SpkCommonAssert.notBlank(item.getOrderNo(), "订单号不能为空");
-                    Integer count = otherOrderService.createOrUpdate(item);
+                    Integer count = carGroupOrderService.createOrUpdate(item);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
-                }).orElseGet(() -> SpkCommonResult.error("订单信息不能为空"));
+                }).orElseGet(() -> SpkCommonResult.error("合约订单信息不能为空"));
     }
+
 }

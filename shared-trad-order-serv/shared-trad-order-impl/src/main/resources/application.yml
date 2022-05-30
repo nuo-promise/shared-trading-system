@@ -5,28 +5,210 @@ server:
     include-message: always
 
 spring:
-  #  application:
-  # 定义项目名称
-  #    name: coupon-customer-serv
-  # 走 Nacos config
-  datasource:
-    # mysql数据源
-    username: SPKRoot
-    password: SPKRoot2017!
-    url: jdbc:mysql://47.98.44.236:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-    #      type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    # 连接池
-    hikari:
-      pool-name: GeekbangCouponHikari
-      connection-timeout: 5000
-      idle-timeout: 30000
-      maximum-pool-size: 10
-      minimum-idle: 5
-      max-lifetime: 60000
-      auto-commit: true
+#    application:
+#  #   定义项目名称
+#      name: shared-trad-order-serv
+#    main:
+#      allow-bean-definition-overriding: true
+#    shardingsphere:
+#      enabled: true
+#      mode:
+#        type: Memory
+#      props:
+#        sql-show: true
+#      schema:
+#        name: multi-tenant
+#      datasource:
+#        names: write-ds,write-ds-read-ds-0,write-ds-read-ds-1
+#        write-ds:
+#          type: com.zaxxer.hikari.HikariDataSource
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          jdbc-url: jdbc:mysql://47.98.44.236:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#          username: SPKRoot
+#          password: SPKRoot2017!
+#          max-active: 16
+#          hikari:
+#            pool-name: SharedTradUserMHikari
+#            connection-timeout: 5000
+#            idle-timeout: 30000
+#            maximum-pool-size: 10
+#            minimum-idle: 5
+#            max-lifetime: 60000
+#            auto-commit: true
+#        write-ds-read-ds-0:
+#          type: com.zaxxer.hikari.HikariDataSource
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#          username: SPKRoot
+#          password: SPKRoot2017!
+#          max-active: 16
+#          hikari:
+#            pool-name: SharedTradUserSHikari
+#            connection-timeout: 5000
+#            idle-timeout: 30000
+#            maximum-pool-size: 10
+#            minimum-idle: 5
+#            max-lifetime: 60000
+#            auto-commit: true
+#        write-ds-read-ds-1:
+#          type: com.zaxxer.hikari.HikariDataSource
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#          username: SPKRoot
+#          password: SPKRoot2017!
+#          max-active: 16
+#          hikari:
+#            pool-name: SharedTradUserSSHikari
+#            connection-timeout: 5000
+#            idle-timeout: 30000
+#            maximum-pool-size: 10
+#            minimum-idle: 5
+#            max-lifetime: 60000
+#            auto-commit: true
+#      # 读写分离配置
+#      rules:
+#        sharding:
+#          bindings-tables[0]: spk_car_group_order, spk_car_group_refund_order, spk_charge_detail, spk_charge_info, spk_parking_order, spk_parking_refund_order
+#          tables:
+#            # 合约订单
+#            spk_car_group_order:
+#              # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..4}
+#              actual-data-nodes: ds.spk_car_group_order_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: user_id
+#                  sharding-algorithm-name: spk-car-group-order-inline
+#              key-generate-strategy:
+#                column: user_id
+#                key-generator-name: snowflake
+#                #合约退费订单
+#            spk_car_group_refund_order:
+#              # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..4}
+#              actual-data-nodes: ds.spk_car_group_refund_order_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: user_id
+#                  sharding-algorithm-name: spk-car-group-refund-order-inline
+#              key-generate-strategy:
+#                column: user_id
+#                key-generator-name: snowflake
+#                #临停订单
+#            spk_parking_order:
+#              actual-data-nodes: ds.spk_parking_order_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: user_id
+#                  sharding-algorithm-name: spk-parking-order-inline
+#              key-generate-strategy:
+#                column: user_id
+#                key-generator-name: snowflake
+#                #缴费信息
+#            spk_charge_info:
+#              actual-data-nodes: ds.spk_charge_info_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: parking_order_id
+#                  sharding-algorithm-name: spk-charge-info-inline
+#              key-generate-strategy:
+#                column: parking_order_id
+#                key-generator-name: snowflake
+#                # 详情信息
+#            spk_charge_detail:
+#              actual-data-nodes: ds.spk_charge_detail_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: charge_info_id
+#                  sharding-algorithm-name: spk-charge-detail-inline
+#              key-generate-strategy:
+#                column: charge_info_id
+#                key-generator-name: snowflake
+#                # 临停退费
+#            spk_parking_refund_order:
+#              actual-data-nodes: ds.spk_parking_refund_order_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: user_id
+#                  sharding-algorithm-name: spk-parking-refund-order-inline
+#              key-generate-strategy:
+#                column: user_id
+#                key-generator-name: snowflake
+#          sharding-algorithms:
+#            spk-car-group-order-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_car_group_order_$->{user_id % 5}
+#                allow-range-query-with-inline-sharding: false
+#            spk-car-group-refund-order-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_car_group_refund_order_$->{user_id % 5}
+#                allow-range-query-with-inline-sharding: false
+#            spk-parking-order-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_parking_order_$->{user_id % 5}
+#                allow-range-query-with-inline-sharding: false
+#            spk-charge-info-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_charge_info_$->{parking_order_id % 5}
+#                allow-range-query-with-inline-sharding: false
+#            spk-charge-detail-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_charge_detail_$->{charge_info_id % 5}
+#                allow-range-query-with-inline-sharding: false
+#            spk-parking-refund-order-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_parking_refund_order_$->{user_id % 5}
+#                allow-range-query-with-inline-sharding: false
+#          key-generators:
+#            snowflake:
+#              type: SNOWFLAKE
+#              props:
+#                worker-id: 0
+#                max-vibration-offset: 1
+#                max-tolerate-time-difference-milliseconds: 10
+#        readwrite-splitting:
+#          data-sources:
+#            ds:
+#              type: Static
+#              props:
+#                write-data-source-name: write-ds
+#                read-data-source-names: write-ds-read-ds-0, write-ds-read-ds-1
+#              load-balancer-name: round_robin
+#          load-balancers:
+#            round_robin:
+#              type: ROUND_ROBIN
+  rabbitmq:
+    host: ms.suparking.cn
+    port: 5666
+    username: shared
+    password: shared2019
+    exchange: spk.shared
+    consumer-prefetch: 5
+    concurrent-consumer: 2
+    enable: true
+    # redis 配置
+    redis:
+      host: localhost
+      port: 6378
+      password:
+      database: 0
+      timeout: 6000
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 8
+          max-idle: 8
+          min-idle: 4
+          max-wait: 1
   #   cloud-nacos 配置
   cloud:
+    alibaba:
+      seata:
+        tx-service-group: seata-server-group
     nacos:
       discovery:
         # 服务发现默认开关打开
@@ -62,14 +244,34 @@ spring:
         watch:
           enabled: true
         watch-delay: 30000
-
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: false
+  data-source-proxy-mode: AT
+  tx-service-group: seata-server-group
+  service:
+    vgroup-mapping:
+      seata-server-group: default
+    grouplist:
+      node1: 47.98.44.236:8091
+      node2: 47.98.44.236:8092
+      node3: 47.98.44.236:8093
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 47.98.44.236:8848
+      namespace: dev
+      group: myGroup
+      cluster: default
 mybatis:
   mapper-locations: classpath:/mappers/*.xml
 
 logging:
   level:
-    cn.suparking.invoice: debug
-    com.ljf.spring.boot.demo.persistence.dao: debug
+    cn.suparking.order: debug
+    org.apache.shardingsphere: debug
 feign:
   client:
     config:
