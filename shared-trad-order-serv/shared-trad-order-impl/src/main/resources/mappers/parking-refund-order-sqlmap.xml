@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.ParkingRefundOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.ParkingRefundOrderDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
+        <result column="pay_parking_id" jdbcType="VARCHAR" property="payParkingId" />
+        <result column="max_refund_amount" jdbcType="INTEGER" property="maxRefundAmount" />
+        <result column="refund_amount" jdbcType="INTEGER" property="refundAmount" />
+        <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
+        <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		user_id,
+		order_no,
+		pay_order_no,
+		pay_parking_id,
+		max_refund_amount,
+		refund_amount,
+		pay_channel,
+		pay_type,
+		order_state,
+		project_no,
+		creator,
+		modifier,
+		date_created,
+		date_updated
+    </sql>
+
+    <insert id="insert" parameterType="cn.suparking.order.entity.ParkingRefundOrderDO">
+        INSERT INTO spk_parking_refund_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="payOrderNo != null">
+                pay_order_no,
+            </if>
+            <if test="payParkingId != null">
+                pay_parking_id,
+            </if>
+            <if test="maxRefundAmount != null">
+                max_refund_amount,
+            </if>
+            <if test="refundAmount != null">
+                refund_amount,
+            </if>
+            <if test="payChannel != null">
+                pay_channel,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="orderState != null">
+                order_state,
+            </if>
+            <if test="projectNo != null">
+                project_no,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payOrderNo != null">
+                #{payOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payParkingId != null">
+                #{payParkingId,jdbcType=VARCHAR},
+            </if>
+            <if test="maxRefundAmount != null">
+                #{maxRefundAmount,jdbcType=INTEGER},
+            </if>
+            <if test="refundAmount != null">
+                #{refundAmount,jdbcType=INTEGER},
+            </if>
+            <if test="payChannel != null">
+                #{payChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=VARCHAR},
+            </if>
+            <if test="orderState != null">
+                #{orderState,jdbcType=VARCHAR},
+            </if>
+            <if test="projectNo != null">
+                #{projectNo,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.entity.ParkingRefundOrderDO">
+        UPDATE spk_parking_refund_order <set>
+        <if test="userId != null">
+            user_id = #{userId,jdbcType=BIGINT} , </if>
+        <if test="orderNo != null">
+            order_no = #{orderNo,jdbcType=VARCHAR} , </if>
+        <if test="payOrderNo != null">
+            pay_order_no = #{payOrderNo,jdbcType=VARCHAR} , </if>
+        <if test="payParkingId != null">
+            pay_parking_id = #{payParkingId,jdbcType=VARCHAR} , </if>
+        <if test="maxRefundAmount != null">
+            max_refund_amount = #{maxRefundAmount,jdbcType=INTEGER} , </if>
+        <if test="refundAmount != null">
+            refund_amount = #{refundAmount,jdbcType=INTEGER} , </if>
+        <if test="payChannel != null">
+            pay_channel = #{payChannel,jdbcType=VARCHAR} , </if>
+        <if test="payType != null">
+            pay_type = #{payType,jdbcType=VARCHAR} , </if>
+        <if test="orderState != null">
+            order_state = #{orderState,jdbcType=VARCHAR} , </if>
+        <if test="projectNo != null">
+            project_no = #{projectNo,jdbcType=VARCHAR} , </if>
+        <if test="creator != null">
+            creator = #{creator,jdbcType=VARCHAR} , </if>
+        <if test="modifier != null">
+            modifier = #{modifier,jdbcType=VARCHAR} , </if>
+        <if test="dateCreated != null">
+            date_created = #{dateCreated,jdbcType=TIMESTAMP} , </if>
+        <if test="dateUpdated != null">
+            date_updated = #{dateUpdated,jdbcType=TIMESTAMP}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from spk_parking_refund_order
+        where
+            id = #{id,jdbcType=BIGINT}
+    </select>
+</mapper>

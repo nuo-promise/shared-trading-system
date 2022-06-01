@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.ChargeDetailMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.ChargeDetailDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="charge_info_id" jdbcType="BIGINT" property="chargeInfoId" />
+        <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
+        <result column="end_time" jdbcType="BIGINT" property="endTime" />
+        <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
+        <result column="balanced_minutes" jdbcType="INTEGER" property="balancedMinutes" />
+        <result column="free_minutes" jdbcType="INTEGER" property="freeMinutes" />
+        <result column="discounted_minutes" jdbcType="INTEGER" property="discountedMinutes" />
+        <result column="charging_minutes" jdbcType="INTEGER" property="chargingMinutes" />
+        <result column="charge_amount" jdbcType="INTEGER" property="chargeAmount" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		charge_info_id,
+		begin_time,
+		end_time,
+		parking_minutes,
+		balanced_minutes,
+		free_minutes,
+		discounted_minutes,
+		charging_minutes,
+		charge_amount,
+		remark
+    </sql>
+
+    <insert id="insert" parameterType="cn.suparking.order.entity.ChargeDetailDO">
+        INSERT INTO spk_charge_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="chargeInfoId != null">
+                charge_info_id,
+            </if>
+            <if test="beginTime != null">
+                begin_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="parkingMinutes != null">
+                parking_minutes,
+            </if>
+            <if test="balancedMinutes != null">
+                balanced_minutes,
+            </if>
+            <if test="freeMinutes != null">
+                free_minutes,
+            </if>
+            <if test="discountedMinutes != null">
+                discounted_minutes,
+            </if>
+            <if test="chargingMinutes != null">
+                charging_minutes,
+            </if>
+            <if test="chargeAmount != null">
+                charge_amount,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="chargeInfoId != null">
+                #{chargeInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="beginTime != null">
+                #{beginTime,jdbcType=BIGINT},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=BIGINT},
+            </if>
+            <if test="parkingMinutes != null">
+                #{parkingMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="balancedMinutes != null">
+                #{balancedMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="freeMinutes != null">
+                #{freeMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="discountedMinutes != null">
+                #{discountedMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="chargingMinutes != null">
+                #{chargingMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="chargeAmount != null">
+                #{chargeAmount,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.entity.ChargeDetailDO">
+        UPDATE spk_charge_detail_0 <set>
+        <if test="chargeInfoId != null">
+            charge_info_id = #{chargeInfoId,jdbcType=BIGINT} , </if>
+        <if test="beginTime != null">
+            begin_time = #{beginTime,jdbcType=BIGINT} , </if>
+        <if test="endTime != null">
+            end_time = #{endTime,jdbcType=BIGINT} , </if>
+        <if test="parkingMinutes != null">
+            parking_minutes = #{parkingMinutes,jdbcType=INTEGER} , </if>
+        <if test="balancedMinutes != null">
+            balanced_minutes = #{balancedMinutes,jdbcType=INTEGER} , </if>
+        <if test="freeMinutes != null">
+            free_minutes = #{freeMinutes,jdbcType=INTEGER} , </if>
+        <if test="discountedMinutes != null">
+            discounted_minutes = #{discountedMinutes,jdbcType=INTEGER} , </if>
+        <if test="chargingMinutes != null">
+            charging_minutes = #{chargingMinutes,jdbcType=INTEGER} , </if>
+        <if test="chargeAmount != null">
+            charge_amount = #{chargeAmount,jdbcType=INTEGER} , </if>
+        <if test="remark != null">
+            remark = #{remark,jdbcType=VARCHAR}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from spk_charge_detail
+        where
+            id = #{id,jdbcType=BIGINT}
+
+    </select>
+</mapper>

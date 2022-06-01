@@ -1,6 +1,6 @@
-package cn.suparking.user.configuration;
+package cn.suparking.order.configuration;
 
-import cn.suparking.user.configuration.properties.RabbitmqProperties;
+import cn.suparking.order.configuration.properties.RabbitmqProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ShutdownSignalException;
 import org.slf4j.Logger;
@@ -115,7 +115,7 @@ public class RabbitMqConfiguration {
      */
     @Bean("MQCloudQueue")
     public Queue cloudQueue(@Qualifier("MQCloudAMQPAdmin") final AmqpAdmin admin) {
-        String queueName = "suaprking.shared.user.ack";
+        String queueName = "suaprking.shared.order.ack";
         Queue queue = new Queue(queueName, false, true, true);
         queue.setAdminsThatShouldDeclare(admin);
         queue.setShouldDeclare(true);

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.ChargeInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.ChargeInfoDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="parking_order_id" jdbcType="BIGINT" property="parkingOrderId" />
+        <result column="begin_cycle_seq" jdbcType="INTEGER" property="beginCycleSeq" />
+        <result column="cycle_number" jdbcType="INTEGER" property="cycleNumber" />
+        <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
+        <result column="balanced_minutes" jdbcType="INTEGER" property="balancedMinutes" />
+        <result column="discounted_minutes" jdbcType="INTEGER" property="discountedMinutes" />
+        <result column="total_amount" jdbcType="INTEGER" property="totalAmount" />
+        <result column="extra_amount" jdbcType="INTEGER" property="extraAmount" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		parking_order_id,
+		begin_cycle_seq,
+		cycle_number,
+		parking_minutes,
+		balanced_minutes,
+		discounted_minutes,
+		total_amount,
+		extra_amount
+    </sql>
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_charge_info
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="cn.suparking.order.entity.ChargeInfoDO">
+        INSERT INTO spk_charge_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parkingOrderId != null">
+                parking_order_id,
+            </if>
+            <if test="beginCycleSeq != null">
+                begin_cycle_seq,
+            </if>
+            <if test="cycleNumber != null">
+                cycle_number,
+            </if>
+            <if test="parkingMinutes != null">
+                parking_minutes,
+            </if>
+            <if test="balancedMinutes != null">
+                balanced_minutes,
+            </if>
+            <if test="discountedMinutes != null">
+                discounted_minutes,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="extraAmount != null">
+                extra_amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="parkingOrderId != null">
+                #{parkingOrderId,jdbcType=BIGINT},
+            </if>
+            <if test="beginCycleSeq != null">
+                #{beginCycleSeq,jdbcType=INTEGER},
+            </if>
+            <if test="cycleNumber != null">
+                #{cycleNumber,jdbcType=INTEGER},
+            </if>
+            <if test="parkingMinutes != null">
+                #{parkingMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="balancedMinutes != null">
+                #{balancedMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="discountedMinutes != null">
+                #{discountedMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=INTEGER},
+            </if>
+            <if test="extraAmount != null">
+                #{extraAmount,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.entity.ChargeInfoDO">
+        UPDATE spk_charge_info <set>
+        <if test="parkingOrderId != null">
+            parking_order_id = #{parkingOrderId,jdbcType=BIGINT} , </if>
+        <if test="beginCycleSeq != null">
+            begin_cycle_seq = #{beginCycleSeq,jdbcType=INTEGER} , </if>
+        <if test="cycleNumber != null">
+            cycle_number = #{cycleNumber,jdbcType=INTEGER} , </if>
+        <if test="parkingMinutes != null">
+            parking_minutes = #{parkingMinutes,jdbcType=INTEGER} , </if>
+        <if test="balancedMinutes != null">
+            balanced_minutes = #{balancedMinutes,jdbcType=INTEGER} , </if>
+        <if test="discountedMinutes != null">
+            discounted_minutes = #{discountedMinutes,jdbcType=INTEGER} , </if>
+        <if test="totalAmount != null">
+            total_amount = #{totalAmount,jdbcType=INTEGER} , </if>
+        <if test="extraAmount != null">
+            extra_amount = #{extraAmount,jdbcType=INTEGER}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

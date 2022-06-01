@@ -1,75 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.suparking.order.mapper.OtherOrderMapper">
-    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.OtherOrderDO">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="date_begin" jdbcType="TIMESTAMP" property="dateBegin"/>
-        <result column="date_end" jdbcType="TIMESTAMP" property="dateEnd"/>
-        <result column="platform" jdbcType="INTEGER" property="platform"/>
-        <result column="amount" jdbcType="BIGINT" property="amount"/>
-        <result column="due_amount" jdbcType="BIGINT" property="dueAmount"/>
-        <result column="receive_amount" jdbcType="BIGINT" property="receiveAmount"/>
-        <result column="discount_type" jdbcType="INTEGER" property="discountType"/>
-        <result column="discount_value" jdbcType="BIGINT" property="discountValue"/>
-        <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
-        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.CarGroupRefundOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.CarGroupRefundOrderDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
+        <result column="car_group_id" jdbcType="BIGINT" property="carGroupId" />
+        <result column="car_type_id" jdbcType="VARCHAR" property="carTypeId" />
+        <result column="car_type_name" jdbcType="VARCHAR" property="carTypeName" />
+        <result column="protocol_id" jdbcType="VARCHAR" property="protocolId" />
+        <result column="protocol_name" jdbcType="VARCHAR" property="protocolName" />
+        <result column="begin_date" jdbcType="BIGINT" property="beginDate" />
+        <result column="end_date" jdbcType="BIGINT" property="endDate" />
+        <result column="max_refund_amount" jdbcType="INTEGER" property="maxRefundAmount" />
+        <result column="refund_amount" jdbcType="INTEGER" property="refundAmount" />
+        <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
+        <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+        <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,order_no,type
-        date_begin,date_end,
-        platform,amount,
-        due_amount,receive_amount,
-        discount_type, discount_value,
-        remark,date_created,date_updated
+        id,
+		user_id,
+		order_no,
+		pay_order_no,
+		car_group_id,
+		car_type_id,
+		car_type_name,
+		protocol_id,
+		protocol_name,
+		begin_date,
+		end_date,
+		max_refund_amount,
+		refund_amount,
+		pay_channel,
+		pay_type,
+		user_name,
+		user_mobile,
+		order_state,
+		project_no,
+		creator,
+		modifier,
+		date_created,
+		date_updated
     </sql>
 
-    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM spk_other_order
-        WHERE id = #{id, jdbcType=BIGINT}
-    </select>
-
-    <insert id="insert" parameterType="cn.suparking.order.entity.OtherOrderDO">
-        INSERT INTO spk_other_order
+    <insert id="insert" parameterType="cn.suparking.order.entity.CarGroupRefundOrderDO">
+        INSERT INTO spk_car_group_refund_order_0
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            id,
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
             <if test="orderNo != null">
                 order_no,
             </if>
-            <if test="type != null">
-                type,
+            <if test="payOrderNo != null">
+                pay_order_no,
             </if>
-            <if test="dateBegin != null">
-                date_begin,
+            <if test="carGroupId != null">
+                car_group_id,
             </if>
-            <if test="dateEnd != null">
-                date_end,
+            <if test="carTypeId != null">
+                car_type_id,
             </if>
-            <if test="platform != null">
-                platform,
+            <if test="carTypeName != null">
+                car_type_name,
             </if>
-            <if test="amount != null">
-                amount,
+            <if test="protocolId != null">
+                protocol_id,
             </if>
-            <if test="dueAmount != null">
-                due_amount,
+            <if test="protocolName != null">
+                protocol_name,
             </if>
-            <if test="receiveAmount != null">
-                receive_amount,
+            <if test="beginDate != null">
+                begin_date,
             </if>
-            <if test="discountType != null">
-                discount_type,
+            <if test="endDate != null">
+                end_date,
             </if>
-            <if test="discountValue != null">
-                discount_value,
+            <if test="maxRefundAmount != null">
+                max_refund_amount,
             </if>
-            <if test="remark != null">
-                remark,
+            <if test="refundAmount != null">
+                refund_amount,
+            </if>
+            <if test="payChannel != null">
+                pay_channel,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userMobile != null">
+                user_mobile,
+            </if>
+            <if test="orderState != null">
+                order_state,
+            </if>
+            <if test="projectNo != null">
+                project_no,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
             </if>
             <if test="dateCreated != null">
                 date_created,
@@ -79,92 +127,136 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id, jdbcType=BIGINT},
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
             <if test="orderNo != null">
-                #{orderNo, jdbcType=VARCHAR},
+                #{orderNo,jdbcType=VARCHAR},
             </if>
-            <if test="type != null">
-                #{type, jdbcType=INTEGER},
+            <if test="payOrderNo != null">
+                #{payOrderNo,jdbcType=VARCHAR},
             </if>
-            <if test="dateBegin != null">
-                #{dateBegin, jdbcType=TIMESTAMP},
+            <if test="carGroupId != null">
+                #{carGroupId,jdbcType=BIGINT},
             </if>
-            <if test="dateEnd != null">
-                #{dateEnd, jdbcType=TIMESTAMP},
+            <if test="carTypeId != null">
+                #{carTypeId,jdbcType=VARCHAR},
             </if>
-            <if test="platform != null">
-                #{platform, jdbcType=INTEGER},
+            <if test="carTypeName != null">
+                #{carTypeName,jdbcType=VARCHAR},
             </if>
-            <if test="amount != null">
-                #{amount, jdbcType=BIGINT},
+            <if test="protocolId != null">
+                #{protocolId,jdbcType=VARCHAR},
             </if>
-            <if test="dueAmount != null">
-                #{dueAmount, jdbcType=BIGINT},
+            <if test="protocolName != null">
+                #{protocolName,jdbcType=VARCHAR},
             </if>
-            <if test="receiveAmount != null">
-                #{receiveAmount, jdbcType=BIGINT},
+            <if test="beginDate != null">
+                #{beginDate,jdbcType=BIGINT},
             </if>
-            <if test="discountType != null">
-                #{discountType, jdbcType=INTEGER},
+            <if test="endDate != null">
+                #{endDate,jdbcType=BIGINT},
             </if>
-            <if test="discountValue != null">
-                #{discountValue, jdbcType=BIGINT},
+            <if test="maxRefundAmount != null">
+                #{maxRefundAmount,jdbcType=INTEGER},
             </if>
-            <if test="remark != null">
-                #{remark, jdbcType=VARCHAR},
+            <if test="refundAmount != null">
+                #{refundAmount,jdbcType=INTEGER},
+            </if>
+            <if test="payChannel != null">
+                #{payChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userMobile != null">
+                #{userMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="orderState != null">
+                #{orderState,jdbcType=VARCHAR},
+            </if>
+            <if test="projectNo != null">
+                #{projectNo,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
             </if>
             <if test="dateCreated != null">
-                #{dateCreated, jdbcType=TIMESTAMP},
+                #{dateCreated,jdbcType=TIMESTAMP},
             </if>
             <if test="dateUpdated != null">
-                #{dateUpdated, jdbcType=TIMESTAMP},
+                #{dateUpdated,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
 
-    <update id="update" parameterType="cn.suparking.order.entity.OtherOrderDO">
-        UPDATE spk_other_order
-        <set>
-            <if test="orderNo != null">
-                order_no = #{orderNo, jdbcType=VARCHAR},
-            </if>
-            <if test="type != null">
-                type = #{type, jdbcType=INTEGER},
-            </if>
-            <if test="dateBegin != null">
-                date_begin = #{dateBegin, jdbcType=TIMESTAMP},
-            </if>
-            <if test="dateEnd != null">
-                date_end = #{dateEnd, jdbcType=TIMESTAMP},
-            </if>
-            <if test="platform != null">
-                platform = #{platform, jdbcType=INTEGER},
-            </if>
-            <if test="amount != null">
-                amount = #{amount, jdbcType=BIGINT},
-            </if>
-            <if test="dueAmount != null">
-                due_amount = #{dueAmount, jdbcType=BIGINT},
-            </if>
-            <if test="receiveAmount != null">
-                receive_amount = #{receiveAmount, jdbcType=BIGINT},
-            </if>
-            <if test="discountType != null">
-                discount_type = discount_type = #{discountType, jdbcType=INTEGER},
-            </if>
-            <if test="discountValue != null">
-                discount_value = #{discountValue, jdbcType=BIGINT},
-            </if>
-            <if test="remark != null">
-                remark = #{remark, jdbcType=VARCHAR},
-            </if>
-            <if test="dateCreated != null">
-                date_created = #{dateCreated, jdbcType=TIMESTAMP},
-            </if>
-            <if test="dateUpdated != null">
-                date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        WHERE id = #{id, jdbcType=BIGINT}
+    <update id="update" parameterType="cn.suparking.order.entity.CarGroupRefundOrderDO">
+        UPDATE spk_car_group_refund_order <set>
+        <if test="userId != null">
+            user_id = #{userId,jdbcType=BIGINT} , </if>
+        <if test="orderNo != null">
+            order_no = #{orderNo,jdbcType=VARCHAR} , </if>
+        <if test="payOrderNo != null">
+            pay_order_no = #{payOrderNo,jdbcType=VARCHAR} , </if>
+        <if test="carGroupId != null">
+            car_group_id = #{carGroupId,jdbcType=BIGINT} , </if>
+        <if test="carTypeId != null">
+            car_type_id = #{carTypeId,jdbcType=VARCHAR} , </if>
+        <if test="carTypeName != null">
+            car_type_name = #{carTypeName,jdbcType=VARCHAR} , </if>
+        <if test="protocolId != null">
+            protocol_id = #{protocolId,jdbcType=VARCHAR} , </if>
+        <if test="protocolName != null">
+            protocol_name = #{protocolName,jdbcType=VARCHAR} , </if>
+        <if test="beginDate != null">
+            begin_date = #{beginDate,jdbcType=BIGINT} , </if>
+        <if test="endDate != null">
+            end_date = #{endDate,jdbcType=BIGINT} , </if>
+        <if test="maxRefundAmount != null">
+            max_refund_amount = #{maxRefundAmount,jdbcType=INTEGER} , </if>
+        <if test="refundAmount != null">
+            refund_amount = #{refundAmount,jdbcType=INTEGER} , </if>
+        <if test="payChannel != null">
+            pay_channel = #{payChannel,jdbcType=VARCHAR} , </if>
+        <if test="payType != null">
+            pay_type = #{payType,jdbcType=VARCHAR} , </if>
+        <if test="userName != null">
+            user_name = #{userName,jdbcType=VARCHAR} , </if>
+        <if test="userMobile != null">
+            user_mobile = #{userMobile,jdbcType=VARCHAR} , </if>
+        <if test="orderState != null">
+            order_state = #{orderState,jdbcType=VARCHAR} , </if>
+        <if test="projectNo != null">
+            project_no = #{projectNo,jdbcType=VARCHAR} , </if>
+        <if test="creator != null">
+            creator = #{creator,jdbcType=VARCHAR} , </if>
+        <if test="modifier != null">
+            modifier = #{modifier,jdbcType=VARCHAR} , </if>
+        <if test="dateCreated != null">
+            date_created = #{dateCreated,jdbcType=TIMESTAMP} , </if>
+        <if test="dateUpdated != null">
+            date_updated = #{dateUpdated,jdbcType=TIMESTAMP}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
     </update>
+
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from spk_car_group_refund_order
+        where
+            id = #{id,jdbcType=BIGINT}
+
+    </select>
 </mapper>

@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.mapper.ParkingOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.ParkingOrderDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="pay_parking_id" jdbcType="VARCHAR" property="payParkingId" />
+        <result column="temp_type" jdbcType="BIT" property="tempType" />
+        <result column="car_type_class" jdbcType="VARCHAR" property="carTypeClass" />
+        <result column="car_type_name" jdbcType="VARCHAR" property="carTypeName" />
+        <result column="car_type_id" jdbcType="VARCHAR" property="carTypeId" />
+        <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
+        <result column="end_time" jdbcType="BIGINT" property="endTime" />
+        <result column="next_aggregate_begin_time" jdbcType="BIGINT" property="nextAggregateBeginTime" />
+        <result column="aggregated_max_amount" jdbcType="INTEGER" property="aggregatedMaxAmount" />
+        <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
+        <result column="total_amount" jdbcType="INTEGER" property="totalAmount" />
+        <result column="discounted_minutes" jdbcType="INTEGER" property="discountedMinutes" />
+        <result column="discounted_amount" jdbcType="INTEGER" property="discountedAmount" />
+        <result column="charge_amount" jdbcType="INTEGER" property="chargeAmount" />
+        <result column="extra_amount" jdbcType="INTEGER" property="extraAmount" />
+        <result column="due_amount" jdbcType="INTEGER" property="dueAmount" />
+        <result column="charge_due_amount" jdbcType="INTEGER" property="chargeDueAmount" />
+        <result column="paid_amount" jdbcType="INTEGER" property="paidAmount" />
+        <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
+        <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+        <result column="received_amount" jdbcType="INTEGER" property="receivedAmount" />
+        <result column="term_no" jdbcType="VARCHAR" property="termNo" />
+        <result column="operator" jdbcType="VARCHAR" property="operator" />
+        <result column="expire_time" jdbcType="BIGINT" property="expireTime" />
+        <result column="invoice_state" jdbcType="VARCHAR" property="invoiceState" />
+        <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		user_id,
+		order_no,
+		pay_parking_id,
+		temp_type,
+		car_type_class,
+		car_type_name,
+		car_type_id,
+		begin_time,
+		end_time,
+		next_aggregate_begin_time,
+		aggregated_max_amount,
+		parking_minutes,
+		total_amount,
+		discounted_minutes,
+		discounted_amount,
+		charge_amount,
+		extra_amount,
+		due_amount,
+		charge_due_amount,
+		paid_amount,
+		pay_channel,
+		pay_type,
+		pay_time,
+		received_amount,
+		term_no,
+		operator,
+		expire_time,
+		invoice_state,
+		refund_state,
+		project_no,
+		creator,
+		modifier,
+		date_created,
+		date_updated
+    </sql>
+
+    <insert id="insert" parameterType="cn.suparking.order.entity.ParkingOrderDO">
+        INSERT INTO spk_parking_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="payParkingId != null">
+                pay_parking_id,
+            </if>
+            <if test="tempType != null">
+                temp_type,
+            </if>
+            <if test="carTypeClass != null">
+                car_type_class,
+            </if>
+            <if test="carTypeName != null">
+                car_type_name,
+            </if>
+            <if test="carTypeId != null">
+                car_type_id,
+            </if>
+            <if test="beginTime != null">
+                begin_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="nextAggregateBeginTime != null">
+                next_aggregate_begin_time,
+            </if>
+            <if test="aggregatedMaxAmount != null">
+                aggregated_max_amount,
+            </if>
+            <if test="parkingMinutes != null">
+                parking_minutes,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="discountedMinutes != null">
+                discounted_minutes,
+            </if>
+            <if test="discountedAmount != null">
+                discounted_amount,
+            </if>
+            <if test="chargeAmount != null">
+                charge_amount,
+            </if>
+            <if test="extraAmount != null">
+                extra_amount,
+            </if>
+            <if test="dueAmount != null">
+                due_amount,
+            </if>
+            <if test="chargeDueAmount != null">
+                charge_due_amount,
+            </if>
+            <if test="paidAmount != null">
+                paid_amount,
+            </if>
+            <if test="payChannel != null">
+                pay_channel,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="receivedAmount != null">
+                received_amount,
+            </if>
+            <if test="termNo != null">
+                term_no,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+            <if test="expireTime != null">
+                expire_time,
+            </if>
+            <if test="invoiceState != null">
+                invoice_state,
+            </if>
+            <if test="refundState != null">
+                refund_state,
+            </if>
+            <if test="projectNo != null">
+                project_no,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payParkingId != null">
+                #{payParkingId,jdbcType=VARCHAR},
+            </if>
+            <if test="tempType != null">
+                #{tempType,jdbcType=BIT},
+            </if>
+            <if test="carTypeClass != null">
+                #{carTypeClass,jdbcType=VARCHAR},
+            </if>
+            <if test="carTypeName != null">
+                #{carTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="carTypeId != null">
+                #{carTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null">
+                #{beginTime,jdbcType=BIGINT},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=BIGINT},
+            </if>
+            <if test="nextAggregateBeginTime != null">
+                #{nextAggregateBeginTime,jdbcType=BIGINT},
+            </if>
+            <if test="aggregatedMaxAmount != null">
+                #{aggregatedMaxAmount,jdbcType=INTEGER},
+            </if>
+            <if test="parkingMinutes != null">
+                #{parkingMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=INTEGER},
+            </if>
+            <if test="discountedMinutes != null">
+                #{discountedMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="discountedAmount != null">
+                #{discountedAmount,jdbcType=INTEGER},
+            </if>
+            <if test="chargeAmount != null">
+                #{chargeAmount,jdbcType=INTEGER},
+            </if>
+            <if test="extraAmount != null">
+                #{extraAmount,jdbcType=INTEGER},
+            </if>
+            <if test="dueAmount != null">
+                #{dueAmount,jdbcType=INTEGER},
+            </if>
+            <if test="chargeDueAmount != null">
+                #{chargeDueAmount,jdbcType=INTEGER},
+            </if>
+            <if test="paidAmount != null">
+                #{paidAmount,jdbcType=INTEGER},
+            </if>
+            <if test="payChannel != null">
+                #{payChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=VARCHAR},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=BIGINT},
+            </if>
+            <if test="receivedAmount != null">
+                #{receivedAmount,jdbcType=INTEGER},
+            </if>
+            <if test="termNo != null">
+                #{termNo,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="expireTime != null">
+                #{expireTime,jdbcType=BIGINT},
+            </if>
+            <if test="invoiceState != null">
+                #{invoiceState,jdbcType=VARCHAR},
+            </if>
+            <if test="refundState != null">
+                #{refundState,jdbcType=VARCHAR},
+            </if>
+            <if test="projectNo != null">
+                #{projectNo,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.entity.ParkingOrderDO">
+        UPDATE spk_parking_order <set>
+        <if test="userId != null">
+            user_id = #{userId,jdbcType=BIGINT} , </if>
+        <if test="orderNo != null">
+            order_no = #{orderNo,jdbcType=VARCHAR} , </if>
+        <if test="payParkingId != null">
+            pay_parking_id = #{payParkingId,jdbcType=VARCHAR} , </if>
+        <if test="tempType != null">
+            temp_type = #{tempType,jdbcType=BIT} , </if>
+        <if test="carTypeClass != null">
+            car_type_class = #{carTypeClass,jdbcType=VARCHAR} , </if>
+        <if test="carTypeName != null">
+            car_type_name = #{carTypeName,jdbcType=VARCHAR} , </if>
+        <if test="carTypeId != null">
+            car_type_id = #{carTypeId,jdbcType=VARCHAR} , </if>
+        <if test="beginTime != null">
+            begin_time = #{beginTime,jdbcType=BIGINT} , </if>
+        <if test="endTime != null">
+            end_time = #{endTime,jdbcType=BIGINT} , </if>
+        <if test="nextAggregateBeginTime != null">
+            next_aggregate_begin_time = #{nextAggregateBeginTime,jdbcType=BIGINT} , </if>
+        <if test="aggregatedMaxAmount != null">
+            aggregated_max_amount = #{aggregatedMaxAmount,jdbcType=INTEGER} , </if>
+        <if test="parkingMinutes != null">
+            parking_minutes = #{parkingMinutes,jdbcType=INTEGER} , </if>
+        <if test="totalAmount != null">
+            total_amount = #{totalAmount,jdbcType=INTEGER} , </if>
+        <if test="discountedMinutes != null">
+            discounted_minutes = #{discountedMinutes,jdbcType=INTEGER} , </if>
+        <if test="discountedAmount != null">
+            discounted_amount = #{discountedAmount,jdbcType=INTEGER} , </if>
+        <if test="chargeAmount != null">
+            charge_amount = #{chargeAmount,jdbcType=INTEGER} , </if>
+        <if test="extraAmount != null">
+            extra_amount = #{extraAmount,jdbcType=INTEGER} , </if>
+        <if test="dueAmount != null">
+            due_amount = #{dueAmount,jdbcType=INTEGER} , </if>
+        <if test="chargeDueAmount != null">
+            charge_due_amount = #{chargeDueAmount,jdbcType=INTEGER} , </if>
+        <if test="paidAmount != null">
+            paid_amount = #{paidAmount,jdbcType=INTEGER} , </if>
+        <if test="payChannel != null">
+            pay_channel = #{payChannel,jdbcType=VARCHAR} , </if>
+        <if test="payType != null">
+            pay_type = #{payType,jdbcType=VARCHAR} , </if>
+        <if test="payTime != null">
+            pay_time = #{payTime,jdbcType=BIGINT} , </if>
+        <if test="receivedAmount != null">
+            received_amount = #{receivedAmount,jdbcType=INTEGER} , </if>
+        <if test="termNo != null">
+            term_no = #{termNo,jdbcType=VARCHAR} , </if>
+        <if test="operator != null">
+            operator = #{operator,jdbcType=VARCHAR} , </if>
+        <if test="expireTime != null">
+            expire_time = #{expireTime,jdbcType=BIGINT} , </if>
+        <if test="invoiceState != null">
+            invoice_state = #{invoiceState,jdbcType=VARCHAR} , </if>
+        <if test="refundState != null">
+            refund_state = #{refundState,jdbcType=VARCHAR} , </if>
+        <if test="projectNo != null">
+            project_no = #{projectNo,jdbcType=VARCHAR} , </if>
+        <if test="creator != null">
+            creator = #{creator,jdbcType=VARCHAR} , </if>
+        <if test="modifier != null">
+            modifier = #{modifier,jdbcType=VARCHAR} , </if>
+        <if test="dateCreated != null">
+            date_created = #{dateCreated,jdbcType=TIMESTAMP} , </if>
+        <if test="dateUpdated != null">
+            date_updated = #{dateUpdated,jdbcType=TIMESTAMP}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from spk_parking_order
+        where
+            id = #{id,jdbcType=BIGINT}
+    </select>
+</mapper>

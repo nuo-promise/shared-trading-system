@@ -1,7 +1,7 @@
-package cn.suparking.invoice.service.impl;
+package cn.suparking.order.service.impl;
 
 import api.beans.ChargeDetailDTO;
-import cn.suparking.invoice.service.ChargeDetailService;
+import cn.suparking.order.service.ChargeDetailService;
 import cn.suparking.order.entity.ChargeDetailDO;
 import cn.suparking.order.mapper.ChargeDetailMapper;
 import org.apache.commons.lang3.StringUtils;

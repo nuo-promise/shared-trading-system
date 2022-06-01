@@ -1,9 +1,10 @@
 server:
-  port: 20000
+  port: 20002
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
-
+  servlet:
+    context-path: /order-center
 spring:
 #    application:
 #  #   定义项目名称
@@ -191,19 +192,19 @@ spring:
     concurrent-consumer: 2
     enable: true
     # redis 配置
-    redis:
-      host: localhost
-      port: 6378
-      password:
-      database: 0
-      timeout: 6000
-      lettuce:
-        pool:
-          enabled: true
-          max-active: 8
-          max-idle: 8
-          min-idle: 4
-          max-wait: 1
+  redis:
+    host: localhost
+    port: 6378
+    password:
+    database: 0
+    timeout: 6000
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 8
+        max-idle: 8
+        min-idle: 4
+        max-wait: 1
   #   cloud-nacos 配置
   cloud:
     alibaba:

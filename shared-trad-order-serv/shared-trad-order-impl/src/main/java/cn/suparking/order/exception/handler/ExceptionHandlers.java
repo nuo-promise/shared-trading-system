@@ -1,4 +1,4 @@
-package cn.suparking.invoice.exception;
+package cn.suparking.order.exception.handler;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.exception.SpkCommonCode;
@@ -98,7 +98,7 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler(SpkCommonException.class)
-    protected SpkCommonResult handleShenyuException(final SpkCommonException exception) {
+    protected SpkCommonResult handleSharedUserException(final SpkCommonException exception) {
         log.error("shared order exception ", exception);
         return SpkCommonResult.error(SpkCommonCode.ERROR, exception.getMessage());
 

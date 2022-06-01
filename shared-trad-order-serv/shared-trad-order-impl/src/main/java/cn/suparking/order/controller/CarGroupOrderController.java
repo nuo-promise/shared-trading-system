@@ -1,10 +1,10 @@
-package cn.suparking.invoice.controller;
+package cn.suparking.order.controller;
 
 import api.beans.CarGroupOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
-import cn.suparking.invoice.service.CarGroupOrderService;
+import cn.suparking.order.service.CarGroupOrderService;
 import cn.suparking.order.entity.CarGroupOrderDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

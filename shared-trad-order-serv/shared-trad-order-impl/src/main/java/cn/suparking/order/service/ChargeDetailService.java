@@ -1,4 +1,4 @@
-package cn.suparking.invoice.service;
+package cn.suparking.order.service;
 
 import api.beans.ChargeDetailDTO;
 import cn.suparking.order.entity.ChargeDetailDO;
