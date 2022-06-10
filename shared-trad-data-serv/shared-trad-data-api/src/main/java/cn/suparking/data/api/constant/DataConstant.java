@@ -12,5 +12,14 @@ public class DataConstant {
     public static final String CTP_REQUEST_PARK_STATUS_ACK = "ParkStatusACK";
 
     // 根据设备编号获取车位信息
-    public static final String REQUEST_LOCK_DEVICE_RESOURCE = "getParkInfoByDeviceNo";
+    public static final String REQUEST_LOCK_DEVICE_RESOURCE = "/device/getParkInfoByDeviceNo";
+
+    // 获取项目配置
+    public static final String REQUEST_PROJECT_CONFIG = "/data/getAllProjectConfig";
+
+    // 配置资源名称
+
+    public static final String RESOURCE_PROJECT = "PROJECT_CONFIG";
+
+
 }

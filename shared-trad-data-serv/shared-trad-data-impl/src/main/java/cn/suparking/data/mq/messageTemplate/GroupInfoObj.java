@@ -1,8 +1,7 @@
-package cn.suparking.data.mq.messagehandler;
+package cn.suparking.data.mq.messageTemplate;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.amqp.core.Message;
 
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -24,5 +23,5 @@ public class GroupInfoObj {
     private Vector<String> projectNos;
 
     // 存放需要处理的消息队列
-    private ConcurrentLinkedQueue<ParkingLockMessageModel> messages;
+    private ConcurrentLinkedQueue<MessageTemplate> messages;
 }

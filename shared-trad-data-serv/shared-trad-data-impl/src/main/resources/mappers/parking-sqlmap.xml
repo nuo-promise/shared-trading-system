@@ -39,16 +39,14 @@
 
     <sql id="Base_Column_List">
         id,
-		user_id,
-		project_id,
-		park_id,
+		user_id, project_id, park_id,
 		park_no,
 		park_name,
 		device_no,
 		car_group_id,
 		special_type,
 		enter,
-		leave,
+		`leave`,
 		parking_events,
 		first_enter_trigger_time,
 		latest_trigger_time,
@@ -78,6 +76,16 @@
         <include refid="Base_Column_List"/>
         FROM spk_parking
         WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="findByProjectIdAndParkId" parameterType="java.util.Map" resultMap="BaseResultMap">
+       SELECT
+       <include refid="Base_Column_List" />
+       FROM spk_parking
+       WHERE project_id = #{projectId, jdbcType=BIGINT} AND
+             project_no = #{projectNo, jdbcType=VARCHAR} AND
+             park_id = #{parkId, jdbcType=VARCHAR}
+       ORDER BY latest_trigger_time DESC LIMIT 1
     </select>
 
     <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingDO">
@@ -114,7 +122,7 @@
                 enter,
             </if>
             <if test="leave != null">
-                leave,
+                `leave`,
             </if>
             <if test="parkingEvents != null">
                 parking_events,
@@ -307,7 +315,7 @@
         <if test="enter != null">
             enter = #{enter,jdbcType=BIGINT} , </if>
         <if test="leave != null">
-            leave = #{leave,jdbcType=BIGINT} , </if>
+            `leave` = #{leave,jdbcType=BIGINT} , </if>
         <if test="parkingEvents != null">
             parking_events = #{parkingEvents,jdbcType=VARCHAR} , </if>
         <if test="firstEnterTriggerTime != null">

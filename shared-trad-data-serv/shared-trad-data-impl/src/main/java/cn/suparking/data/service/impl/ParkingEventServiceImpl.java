@@ -22,11 +22,17 @@ public class ParkingEventServiceImpl implements ParkingEventService {
     }
 
     @Override
-    public Integer createOrUpdate(final ParkingEventDTO parkingEventDTO) {
+    public Long createOrUpdate(final ParkingEventDTO parkingEventDTO) {
         ParkingEventDO parkingEventDO = ParkingEventDO.buildParkingEventDO(parkingEventDTO);
         if (StringUtils.isEmpty(parkingEventDTO.getId())) {
-            return parkingEventMapper.insert(parkingEventDO);
+            if (parkingEventMapper.insert(parkingEventDO) == 1) {
+                return parkingEventDO.getId();
+            } else {
+                return -1L;
+            }
+        } else {
+            parkingEventMapper.update(parkingEventDO);
         }
-        return parkingEventMapper.update(parkingEventDO);
+        return parkingEventDO.getId();
     }
 }

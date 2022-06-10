@@ -63,6 +63,6 @@ public class ParkController {
      */
     @PostMapping("saveParkEvent")
     public SpkCommonResult saveParkEvent(@RequestHeader("from") final String from, @RequestBody final String params) {
-
+        return SpkCommonResult.success("操作成功");
     }
 }

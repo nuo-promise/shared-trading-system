@@ -1,5 +1,6 @@
-package cn.suparking.data.mq.messagehandler;
+package cn.suparking.data.mq.messageTemplate;
 
+import cn.suparking.data.api.beans.ParkStatusModel;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +12,11 @@ import org.springframework.amqp.core.Message;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkingLockMessageModel {
+public class MessageTemplate {
 
     private Message message;
 
     private ParkingLockModel parkingLockModel;
+
+    private ParkStatusModel parkStatusModel;
 }

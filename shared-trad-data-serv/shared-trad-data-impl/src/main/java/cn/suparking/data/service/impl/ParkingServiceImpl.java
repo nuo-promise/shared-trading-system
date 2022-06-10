@@ -7,6 +7,8 @@ import cn.suparking.data.service.ParkingService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class ParkingServiceImpl implements ParkingService {
 
@@ -18,7 +20,7 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public ParkingDO findById(final String id) {
-        return parkingMapper.selectById(id);
+        return parkingMapper.selectById(Long.valueOf(id));
     }
 
     @Override
@@ -28,5 +30,10 @@ public class ParkingServiceImpl implements ParkingService {
             return parkingMapper.insert(parkingDO);
         }
         return parkingMapper.update(parkingDO);
+    }
+
+    @Override
+    public ParkingDO findByProjectIdAndParkId(final Map<String, Object> params) {
+        return parkingMapper.findByProjectIdAndParkId(params);
     }
 }

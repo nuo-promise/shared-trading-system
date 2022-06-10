@@ -1,6 +1,5 @@
 package cn.suparking.data.api.beans;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

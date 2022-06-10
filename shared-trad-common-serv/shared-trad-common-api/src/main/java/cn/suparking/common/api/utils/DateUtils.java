@@ -27,6 +27,14 @@ public class DateUtils {
     }
 
     /**
+     * get current second.
+     * @return {@link Long}
+     */
+    public static Long getCurrentSecond() {
+        return System.currentTimeMillis() / 1000;
+    }
+
+    /**
      * get current Mills.
      * @return {@link Long}
      */

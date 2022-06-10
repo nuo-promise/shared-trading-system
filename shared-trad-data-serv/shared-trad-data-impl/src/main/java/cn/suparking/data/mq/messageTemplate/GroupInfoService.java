@@ -1,4 +1,4 @@
-package cn.suparking.data.mq.messagehandler;
+package cn.suparking.data.mq.messageTemplate;
 
 import cn.suparking.common.api.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class GroupInfoService {
      * @param groupId 组ID
      * @return {@link Message}
      */
-    public static ParkingLockMessageModel pollMessage(final String groupId) {
+    public static MessageTemplate pollMessage(final String groupId) {
         return GROUP_INFO_MAP.get(groupId).getMessages().poll();
     }
 
@@ -106,7 +106,7 @@ public class GroupInfoService {
      * @param groupId 组ID
      * @param projectNo 项目编号
      */
-    public static void setMessageInfo(final ParkingLockMessageModel message, final String groupId, final String projectNo) {
+    public static void setMessageInfo(final MessageTemplate message, final String groupId, final String projectNo) {
 
         // 入队之前判断下此组中是否存在此项目编号,如果不存在 加入,如果存在 则 忽略
         if (!GROUP_INFO_MAP.get(groupId).getProjectNos().contains(projectNo)) {

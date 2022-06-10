@@ -90,7 +90,6 @@ public class ParkingDO extends BaseDO {
         return Optional.ofNullable(parkingDTO).map(item -> {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             ParkingDO parkingDO = ParkingDO.builder()
-                    .userId(Long.valueOf(item.getUserId()))
                     .projectId(Long.valueOf(item.getProjectId()))
                     .parkId(item.getParkId())
                     .parkNo(item.getParkNo())

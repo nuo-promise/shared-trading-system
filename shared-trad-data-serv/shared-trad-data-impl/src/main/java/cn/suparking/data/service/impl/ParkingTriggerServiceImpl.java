@@ -22,11 +22,17 @@ public class ParkingTriggerServiceImpl implements ParkingTriggerService {
     }
 
     @Override
-    public Integer createOrUpdate(final ParkingTriggerDTO parkingTriggerDTO) {
+    public Long createOrUpdate(final ParkingTriggerDTO parkingTriggerDTO) {
         ParkingTriggerDO parkingTriggerDO = ParkingTriggerDO.buildParkingTriggerDO(parkingTriggerDTO);
         if (StringUtils.isEmpty(parkingTriggerDTO.getId())) {
-            return parkingTriggerMapper.insert(parkingTriggerDO);
+            if (parkingTriggerMapper.insert(parkingTriggerDO) == 1) {
+                return parkingTriggerDO.getId();
+            } else {
+                return -1L;
+            }
+        } else {
+            parkingTriggerMapper.update(parkingTriggerDO);
         }
-        return parkingTriggerMapper.update(parkingTriggerDO);
+        return parkingTriggerDO.getId();
     }
 }

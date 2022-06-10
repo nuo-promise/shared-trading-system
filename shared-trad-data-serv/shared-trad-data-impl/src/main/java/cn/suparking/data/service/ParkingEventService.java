@@ -16,5 +16,5 @@ public interface ParkingEventService {
      * @param parkingEventDTO {@link ParkingEventDTO}
      * @return int
      */
-    Integer createOrUpdate(ParkingEventDTO parkingEventDTO);
+    Long createOrUpdate(ParkingEventDTO parkingEventDTO);
 }

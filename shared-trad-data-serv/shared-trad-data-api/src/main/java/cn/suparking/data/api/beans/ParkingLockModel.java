@@ -26,6 +26,14 @@ public class ParkingLockModel {
     // 设备编号
     private String deviceNo;
 
+    private String inSubAreaId;
+
+    private String inSubAreaName;
+
+    private String outSubAreaId;
+
+    private String outSubAreaName;
+
     // 充电桩 编号
     private String chargeNo;
 

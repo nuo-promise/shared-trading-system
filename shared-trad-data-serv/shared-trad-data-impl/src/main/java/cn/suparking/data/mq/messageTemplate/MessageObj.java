@@ -1,4 +1,4 @@
-package cn.suparking.data.mq.messagehandler;
+package cn.suparking.data.mq.messageTemplate;
 
 import lombok.Builder;
 import lombok.Data;

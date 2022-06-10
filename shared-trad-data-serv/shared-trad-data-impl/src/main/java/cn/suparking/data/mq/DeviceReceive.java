@@ -1,17 +1,18 @@
 package cn.suparking.data.mq;
 
 import cn.suparking.common.api.utils.HttpUtils;
+import cn.suparking.data.Application;
 import cn.suparking.data.api.beans.ParkStatusModel;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.PublishData;
 import cn.suparking.data.api.constant.DataConstant;
 import cn.suparking.data.configuration.properties.MQConfigProperties;
 import cn.suparking.data.configuration.properties.SparkProperties;
-import cn.suparking.data.mq.messagehandler.DeviceMessageThread;
-import cn.suparking.data.mq.messagehandler.GroupInfoObj;
-import cn.suparking.data.mq.messagehandler.GroupInfoService;
-import cn.suparking.data.mq.messagehandler.MessageObj;
-import cn.suparking.data.mq.messagehandler.ParkingLockMessageModel;
+import cn.suparking.data.mq.messageTemplate.DeviceMessageThread;
+import cn.suparking.data.mq.messageTemplate.GroupInfoObj;
+import cn.suparking.data.mq.messageTemplate.GroupInfoService;
+import cn.suparking.data.mq.messageTemplate.MessageObj;
+import cn.suparking.data.mq.messageTemplate.MessageTemplate;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static cn.suparking.data.api.constant.DataConstant.CTP_TYPE;
 
 @Slf4j
-@Component
+@Component("DeviceReceive")
 public class DeviceReceive implements MessageListener {
 
     @Resource
@@ -41,11 +42,7 @@ public class DeviceReceive implements MessageListener {
     @Resource
     private MQConfigProperties mqConfigProperties;
 
-    private final DeviceMessageThread deviceMessageThread;
-
-    public DeviceReceive(final DeviceMessageThread deviceMessageThread) {
-        this.deviceMessageThread = deviceMessageThread;
-    }
+    private final DeviceMessageThread deviceMessageThread = Application.getBean("DeviceMessageThread", DeviceMessageThread.class);
 
     @Override
     public void onMessage(final Message message) {
@@ -56,9 +53,10 @@ public class DeviceReceive implements MessageListener {
             String body = new String(message.getBody());
             PublishData publishData = JSON.parseObject(body, PublishData.class);
             String lockCode = "";
+            ParkStatusModel parkStatusModel = null;
             if (CTP_TYPE.equals(from) && topic.contains("device.status")) {
                 if (Objects.nonNull(publishData)) {
-                    ParkStatusModel parkStatusModel = JSON.parseObject(publishData.getData(), ParkStatusModel.class);
+                    parkStatusModel = JSON.parseObject(publishData.getData(), ParkStatusModel.class);
                     lockCode = parkStatusModel.getLockCode();
                 } else {
                     log.warn("Device Receive CTP MQ Data Error: " + body);
@@ -71,10 +69,12 @@ public class DeviceReceive implements MessageListener {
                 // 地锁编号不为空,并且可以在缓存中查询到此地锁,并且可以查到对应厂库编号
                 ParkingLockModel parkingLockModel = getParkInfoByDeviceNo(lockCode);
                 if (Objects.nonNull(parkingLockModel) && StringUtils.isNotBlank(parkingLockModel.getProjectNo())) {
+                    parkingLockModel.setParkId(parkingLockModel.getId());
                     MessageObj messageObj = GroupInfoService.findGroupInfoObj(parkingLockModel.getProjectNo(), mqConfigProperties.getQueueLength());
                     // 如果 返回不为null 那么就直接将消息存入队列
-                    ParkingLockMessageModel parkingLockModelMessage = ParkingLockMessageModel.builder()
+                    MessageTemplate parkingLockModelMessage = MessageTemplate.builder()
                             .parkingLockModel(parkingLockModel)
+                            .parkStatusModel(parkStatusModel)
                             .message(message)
                             .build();
                     if (Optional.ofNullable(messageObj).isPresent()) {
@@ -100,7 +100,7 @@ public class DeviceReceive implements MessageListener {
         }
     }
 
-    private String buildGroupInfo(final ParkingLockMessageModel message, final String projectNo) {
+    private String buildGroupInfo(final MessageTemplate message, final String projectNo) {
         GroupInfoObj groupInfoObj = GroupInfoObj.builder().build();
         AtomicBoolean atomicBoolean = new AtomicBoolean();
         atomicBoolean.set(false);
@@ -111,7 +111,7 @@ public class DeviceReceive implements MessageListener {
         Vector<String> vector = new Vector<>(1);
         vector.add(projectNo);
         groupInfoObj.setProjectNos(vector);
-        ConcurrentLinkedQueue<ParkingLockMessageModel> messages = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MessageTemplate> messages = new ConcurrentLinkedQueue<>();
         messages.offer(message);
         groupInfoObj.setMessages(messages);
         return GroupInfoService.insertGroupInfoObj(groupInfoObj);

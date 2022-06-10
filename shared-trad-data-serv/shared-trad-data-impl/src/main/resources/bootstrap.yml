@@ -5,7 +5,7 @@ spring:
   cloud:
     nacos:
       config:
-        enabled: true
+        enabled: false
         # nacos config服务器的地址
         server-addr: 47.98.44.236:8848
         file-extension: yml

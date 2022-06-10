@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.suparking.data.dao.mapper.">
-    <resultMap id="BaseResultMap" type="com.dao.entity.datadic.SpkParkingTrigger0">
+<mapper namespace="cn.suparking.data.dao.mapper.ParkingTriggerMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.data.dao.entity.ParkingTriggerDO">
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="project_id" jdbcType="BIGINT" property="projectId" />
         <result column="recog_time" jdbcType="BIGINT" property="recogTime" />
@@ -50,7 +50,7 @@
         where
             id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="cn.suparking.customer.dao.entity.SpkParkingTrigger0">
+    <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingTriggerDO">
         INSERT INTO spk_parking_trigger_0
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -219,7 +219,7 @@
         </foreach >
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.dao.entity.datadic.SpkParkingTrigger0">
+    <update id="updateByPrimaryKey" parameterType="cn.suparking.data.dao.entity.ParkingTriggerDO">
         UPDATE spk_parking_trigger_0 <set>
         <if test="projectId != null">
             project_id = #{projectId,jdbcType=BIGINT} , </if>
@@ -318,7 +318,7 @@
             #{id}
         </foreach>
     </update>
-    <select id="search"  parameterType="map" resultType="com.dao.entity.datadic.SpkParkingTrigger0">
+    <select id="search"  parameterType="map" resultType="cn.suparking.data.dao.entity.ParkingTriggerDO">
         select
         a.id as id,
 

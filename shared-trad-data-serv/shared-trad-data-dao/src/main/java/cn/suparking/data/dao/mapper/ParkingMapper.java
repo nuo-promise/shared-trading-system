@@ -3,6 +3,8 @@ package cn.suparking.data.dao.mapper;
 import cn.suparking.data.dao.entity.ParkingDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 @Mapper
 public interface ParkingMapper {
 
@@ -11,7 +13,7 @@ public interface ParkingMapper {
      * @param id parking id
      * @return {@link ParkingDO}
      */
-    ParkingDO selectById(String id);
+    ParkingDO selectById(Long id);
 
 
     /**
@@ -27,4 +29,12 @@ public interface ParkingMapper {
      * @return int
      */
     int update(ParkingDO parkingDO);
+
+
+    /**
+     * get parking by project id.
+     * @param params {@link Map}
+     * @return {@link ParkingDO}
+     */
+    ParkingDO findByProjectIdAndParkId(Map<String, Object> params);
 }

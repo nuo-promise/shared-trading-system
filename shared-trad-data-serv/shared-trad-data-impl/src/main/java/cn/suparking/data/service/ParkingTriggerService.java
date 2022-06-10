@@ -17,5 +17,5 @@ public interface ParkingTriggerService {
      * @param parkingTriggerDTO {@link ParkingTriggerDTO}
      * @return int
      */
-    Integer createOrUpdate(ParkingTriggerDTO parkingTriggerDTO);
+    Long createOrUpdate(ParkingTriggerDTO parkingTriggerDTO);
 }
