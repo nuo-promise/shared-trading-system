@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.suparking.order.mapper.CarGroupOrderMapper">
-    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.CarGroupOrderDO">
+<mapper namespace="cn.suparking.order.dao.mapper.CarGroupOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.CarGroupOrderDO">
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
@@ -47,7 +47,7 @@
         WHERE id = #{id, jdbcType=BIGINT}
     </select>
 
-    <insert id="insert" parameterType="cn.suparking.order.entity.CarGroupOrderDO">
+    <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
         INSERT INTO spk_car_group_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -217,7 +217,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="cn.suparking.order.entity.CarGroupOrderDO">
+    <update id="update" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
         UPDATE spk_car_group_order <set>
         <if test="userId != null">
             user_id = #{userId,jdbcType=BIGINT} , </if>

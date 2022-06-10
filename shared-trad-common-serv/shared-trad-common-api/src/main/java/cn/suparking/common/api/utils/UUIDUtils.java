@@ -1,6 +1,7 @@
 package cn.suparking.common.api.utils;
 
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * UUIDUtils.
@@ -53,6 +54,14 @@ public final class UUIDUtils {
         this.workerId = workerId;
         this.datacenterId = datacenterId;
         this.idepoch = idepoch;
+    }
+
+    /**
+     * get uuid.
+     * @return String
+     */
+    public static String getUuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
     }
 
     /**

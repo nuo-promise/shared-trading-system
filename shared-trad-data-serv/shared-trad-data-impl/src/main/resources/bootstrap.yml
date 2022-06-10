@@ -1,0 +1,35 @@
+spring:
+  # 必须把name属性从application.yml迁移出来,否则无法动态刷新
+  application:
+    name: shared-trad-data-serv
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        # nacos config服务器的地址
+        server-addr: 47.98.44.236:8848
+        file-extension: yml
+        # prefix: 文件名前缀,默认是spring.application.name
+        # 如果没有指定命名空间,则默认是PUBLIC,很重要,要与nacos 配置文件的 命名空间ID 为主
+        namespace: dev
+        # 如果没有配置Group,则默认值为DEFAULT_GROUP
+        group: DEFAULT_GROUP
+        # 从Nacos 读取配置项的超时时间
+        timeout: 5000
+        # 长轮询超时时间
+        config-long-poll-timeout: 10000
+        # 轮询的重试时间
+        config-retry-time: 2000
+        # 轮询最大重试次数
+        max-retry: 3
+        # 开启监听和自动刷新
+        refresh-enabled: true
+        # Nacos 的拓展配置项,数字越大优先级越高
+        extension-configs:
+          - dataId: redis-config.yml
+            group: EXT_GROUP
+            # 动态刷新
+            refresh: true
+          - dataId: rabbitmq-config.yml
+            group: EXT_GROUP
+            refresh: true

@@ -1,7 +1,7 @@
 package cn.suparking.order.service;
 
-import api.beans.ChargeDetailDTO;
-import cn.suparking.order.entity.ChargeDetailDO;
+import cn.suparking.order.api.beans.ChargeDetailDTO;
+import cn.suparking.order.dao.entity.ChargeDetailDO;
 
 public interface ChargeDetailService {
 

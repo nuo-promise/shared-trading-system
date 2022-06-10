@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.data.dao.mapper.ParkingMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.data.dao.entity.ParkingDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="project_id" jdbcType="BIGINT" property="projectId" />
+        <result column="park_id" jdbcType="VARCHAR" property="parkId" />
+        <result column="park_no" jdbcType="VARCHAR" property="parkNo" />
+        <result column="park_name" jdbcType="VARCHAR" property="parkName" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="car_group_id" jdbcType="VARCHAR" property="carGroupId" />
+        <result column="special_type" jdbcType="VARCHAR" property="specialType" />
+        <result column="enter" jdbcType="BIGINT" property="enter" />
+        <result column="leave" jdbcType="BIGINT" property="leave" />
+        <result column="parking_events" jdbcType="VARCHAR" property="parkingEvents" />
+        <result column="first_enter_trigger_time" jdbcType="BIGINT" property="firstEnterTriggerTime" />
+        <result column="latest_trigger_time" jdbcType="BIGINT" property="latestTriggerTime" />
+        <result column="latest_trigger_park_id" jdbcType="VARCHAR" property="latestTriggerParkId" />
+        <result column="latest_trigger_temp" jdbcType="INTEGER" property="latestTriggerTemp" />
+        <result column="latest_trigger_type_class" jdbcType="VARCHAR" property="latestTriggerTypeClass" />
+        <result column="latest_trigger_type_name" jdbcType="VARCHAR" property="latestTriggerTypeName" />
+        <result column="parking_state" jdbcType="VARCHAR" property="parkingState" />
+        <result column="abnormal_reason" jdbcType="VARCHAR" property="abnormalReason" />
+        <result column="number_of_night" jdbcType="INTEGER" property="numberOfNight" />
+        <result column="allow_correct" jdbcType="INTEGER" property="allowCorrect" />
+        <result column="matched_parking_id" jdbcType="BIGINT" property="matchedParkingId" />
+        <result column="valid" jdbcType="INTEGER" property="valid" />
+        <result column="pending_order" jdbcType="BIGINT" property="pendingOrder" />
+        <result column="pay_parking_id" jdbcType="VARCHAR" property="payParkingId" />
+        <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		user_id,
+		project_id,
+		park_id,
+		park_no,
+		park_name,
+		device_no,
+		car_group_id,
+		special_type,
+		enter,
+		leave,
+		parking_events,
+		first_enter_trigger_time,
+		latest_trigger_time,
+		latest_trigger_park_id,
+		latest_trigger_temp,
+		latest_trigger_type_class,
+		latest_trigger_type_name,
+		parking_state,
+		abnormal_reason,
+		number_of_night,
+		allow_correct,
+		matched_parking_id,
+		valid,
+		pending_order,
+		pay_parking_id,
+		parking_minutes,
+		remark,
+		project_no,
+		creator,
+		modifier,
+		date_created,
+		date_updated
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_parking
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingDO">
+        INSERT INTO spk_parking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="parkId != null">
+                park_id,
+            </if>
+            <if test="parkNo != null">
+                park_no,
+            </if>
+            <if test="parkName != null">
+                park_name,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="carGroupId != null">
+                car_group_id,
+            </if>
+            <if test="specialType != null">
+                special_type,
+            </if>
+            <if test="enter != null">
+                enter,
+            </if>
+            <if test="leave != null">
+                leave,
+            </if>
+            <if test="parkingEvents != null">
+                parking_events,
+            </if>
+            <if test="firstEnterTriggerTime != null">
+                first_enter_trigger_time,
+            </if>
+            <if test="latestTriggerTime != null">
+                latest_trigger_time,
+            </if>
+            <if test="latestTriggerParkId != null">
+                latest_trigger_park_id,
+            </if>
+            <if test="latestTriggerTemp != null">
+                latest_trigger_temp,
+            </if>
+            <if test="latestTriggerTypeClass != null">
+                latest_trigger_type_class,
+            </if>
+            <if test="latestTriggerTypeName != null">
+                latest_trigger_type_name,
+            </if>
+            <if test="parkingState != null">
+                parking_state,
+            </if>
+            <if test="abnormalReason != null">
+                abnormal_reason,
+            </if>
+            <if test="numberOfNight != null">
+                number_of_night,
+            </if>
+            <if test="allowCorrect != null">
+                allow_correct,
+            </if>
+            <if test="matchedParkingId != null">
+                matched_parking_id,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="pendingOrder != null">
+                pending_order,
+            </if>
+            <if test="payParkingId != null">
+                pay_parking_id,
+            </if>
+            <if test="parkingMinutes != null">
+                parking_minutes,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="projectNo != null">
+                project_no,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=BIGINT},
+            </if>
+            <if test="parkId != null">
+                #{parkId,jdbcType=VARCHAR},
+            </if>
+            <if test="parkNo != null">
+                #{parkNo,jdbcType=VARCHAR},
+            </if>
+            <if test="parkName != null">
+                #{parkName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carGroupId != null">
+                #{carGroupId,jdbcType=VARCHAR},
+            </if>
+            <if test="specialType != null">
+                #{specialType,jdbcType=VARCHAR},
+            </if>
+            <if test="enter != null">
+                #{enter,jdbcType=BIGINT},
+            </if>
+            <if test="leave != null">
+                #{leave,jdbcType=BIGINT},
+            </if>
+            <if test="parkingEvents != null">
+                #{parkingEvents,jdbcType=VARCHAR},
+            </if>
+            <if test="firstEnterTriggerTime != null">
+                #{firstEnterTriggerTime,jdbcType=BIGINT},
+            </if>
+            <if test="latestTriggerTime != null">
+                #{latestTriggerTime,jdbcType=BIGINT},
+            </if>
+            <if test="latestTriggerParkId != null">
+                #{latestTriggerParkId,jdbcType=VARCHAR},
+            </if>
+            <if test="latestTriggerTemp != null">
+                #{latestTriggerTemp,jdbcType=INTEGER},
+            </if>
+            <if test="latestTriggerTypeClass != null">
+                #{latestTriggerTypeClass,jdbcType=VARCHAR},
+            </if>
+            <if test="latestTriggerTypeName != null">
+                #{latestTriggerTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="parkingState != null">
+                #{parkingState,jdbcType=VARCHAR},
+            </if>
+            <if test="abnormalReason != null">
+                #{abnormalReason,jdbcType=VARCHAR},
+            </if>
+            <if test="numberOfNight != null">
+                #{numberOfNight,jdbcType=INTEGER},
+            </if>
+            <if test="allowCorrect != null">
+                #{allowCorrect,jdbcType=INTEGER},
+            </if>
+            <if test="matchedParkingId != null">
+                #{matchedParkingId,jdbcType=BIGINT},
+            </if>
+            <if test="valid != null">
+                #{valid,jdbcType=INTEGER},
+            </if>
+            <if test="pendingOrder != null">
+                #{pendingOrder,jdbcType=BIGINT},
+            </if>
+            <if test="payParkingId != null">
+                #{payParkingId,jdbcType=VARCHAR},
+            </if>
+            <if test="parkingMinutes != null">
+                #{parkingMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="projectNo != null">
+                #{projectNo,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.data.dao.entity.ParkingDO">
+        UPDATE spk_parking <set>
+        <if test="userId != null">
+            user_id = #{userId,jdbcType=BIGINT} , </if>
+        <if test="projectId != null">
+            project_id = #{projectId,jdbcType=BIGINT} , </if>
+        <if test="parkId != null">
+            park_id = #{parkId,jdbcType=VARCHAR} , </if>
+        <if test="parkNo != null">
+            park_no = #{parkNo,jdbcType=VARCHAR} , </if>
+        <if test="parkName != null">
+            park_name = #{parkName,jdbcType=VARCHAR} , </if>
+        <if test="deviceNo != null">
+            device_no = #{deviceNo,jdbcType=VARCHAR} , </if>
+        <if test="carGroupId != null">
+            car_group_id = #{carGroupId,jdbcType=VARCHAR} , </if>
+        <if test="specialType != null">
+            special_type = #{specialType,jdbcType=VARCHAR} , </if>
+        <if test="enter != null">
+            enter = #{enter,jdbcType=BIGINT} , </if>
+        <if test="leave != null">
+            leave = #{leave,jdbcType=BIGINT} , </if>
+        <if test="parkingEvents != null">
+            parking_events = #{parkingEvents,jdbcType=VARCHAR} , </if>
+        <if test="firstEnterTriggerTime != null">
+            first_enter_trigger_time = #{firstEnterTriggerTime,jdbcType=BIGINT} , </if>
+        <if test="latestTriggerTime != null">
+            latest_trigger_time = #{latestTriggerTime,jdbcType=BIGINT} , </if>
+        <if test="latestTriggerParkId != null">
+            latest_trigger_park_id = #{latestTriggerParkId,jdbcType=VARCHAR} , </if>
+        <if test="latestTriggerTemp != null">
+            latest_trigger_temp = #{latestTriggerTemp,jdbcType=INTEGER} , </if>
+        <if test="latestTriggerTypeClass != null">
+            latest_trigger_type_class = #{latestTriggerTypeClass,jdbcType=VARCHAR} , </if>
+        <if test="latestTriggerTypeName != null">
+            latest_trigger_type_name = #{latestTriggerTypeName,jdbcType=VARCHAR} , </if>
+        <if test="parkingState != null">
+            parking_state = #{parkingState,jdbcType=VARCHAR} , </if>
+        <if test="abnormalReason != null">
+            abnormal_reason = #{abnormalReason,jdbcType=VARCHAR} , </if>
+        <if test="numberOfNight != null">
+            number_of_night = #{numberOfNight,jdbcType=INTEGER} , </if>
+        <if test="allowCorrect != null">
+            allow_correct = #{allowCorrect,jdbcType=INTEGER} , </if>
+        <if test="matchedParkingId != null">
+            matched_parking_id = #{matchedParkingId,jdbcType=BIGINT} , </if>
+        <if test="valid != null">
+            valid = #{valid,jdbcType=INTEGER} , </if>
+        <if test="pendingOrder != null">
+            pending_order = #{pendingOrder,jdbcType=BIGINT} , </if>
+        <if test="payParkingId != null">
+            pay_parking_id = #{payParkingId,jdbcType=VARCHAR} , </if>
+        <if test="parkingMinutes != null">
+            parking_minutes = #{parkingMinutes,jdbcType=INTEGER} , </if>
+        <if test="remark != null">
+            remark = #{remark,jdbcType=VARCHAR} , </if>
+        <if test="projectNo != null">
+            project_no = #{projectNo,jdbcType=VARCHAR} , </if>
+        <if test="creator != null">
+            creator = #{creator,jdbcType=VARCHAR} , </if>
+        <if test="modifier != null">
+            modifier = #{modifier,jdbcType=VARCHAR} , </if>
+        <if test="dateCreated != null">
+            date_created = #{dateCreated,jdbcType=TIMESTAMP} , </if>
+        <if test="dateUpdated != null">
+            date_updated = #{dateUpdated,jdbcType=TIMESTAMP}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

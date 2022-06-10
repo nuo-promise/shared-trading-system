@@ -10,6 +10,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,5 +53,16 @@ public class ParkController {
     @GetMapping("allLocation")
     public SpkCommonResult allPark() {
         return SpkCommonResult.success(parkService.allLocation());
+    }
+
+    /**
+     * 如果MQ存储数据失败,那么就通过HTTP.
+     * @param from Lock from MB CTP
+     * @param params params
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("saveParkEvent")
+    public SpkCommonResult saveParkEvent(@RequestHeader("from") final String from, @RequestBody final String params) {
+
     }
 }

@@ -1,0 +1,244 @@
+server:
+  port: 20003
+  # 返回给页面的结果里,把错误信息添加到message里
+  error:
+    include-message: always
+  servlet:
+    context-path: /data-center
+spring:
+#  application:
+##   定义项目名称
+#    name: shared-trad-data-serv
+#  main:
+#    allow-bean-definition-overriding: true
+#  shardingsphere:
+#    enabled: true
+#    mode:
+#      type: Memory
+#    props:
+#      sql-show: true
+#    schema:
+#      name: multi-tenant
+#    datasource:
+#      names: write-ds,write-ds-read-ds-0,write-ds-read-ds-1
+#      write-ds:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://47.98.44.236:3306/tbl_data?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#        username: SPKRoot
+#        password: SPKRoot2017!
+#        max-active: 16
+#        hikari:
+#          pool-name: SharedTradUserMHikari
+#          connection-timeout: 5000
+#          idle-timeout: 30000
+#          maximum-pool-size: 10
+#          minimum-idle: 5
+#          max-lifetime: 60000
+#          auto-commit: true
+#      write-ds-read-ds-0:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_data?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#        username: SPKRoot
+#        password: SPKRoot2017!
+#        max-active: 16
+#        hikari:
+#          pool-name: SharedTradUserSHikari
+#          connection-timeout: 5000
+#          idle-timeout: 30000
+#          maximum-pool-size: 10
+#          minimum-idle: 5
+#          max-lifetime: 60000
+#          auto-commit: true
+#      write-ds-read-ds-1:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_data?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#        username: SPKRoot
+#        password: SPKRoot2017!
+#        max-active: 16
+#        hikari:
+#          pool-name: SharedTradUserSSHikari
+#          connection-timeout: 5000
+#          idle-timeout: 30000
+#          maximum-pool-size: 10
+#          minimum-idle: 5
+#          max-lifetime: 60000
+#          auto-commit: true
+#    # 读写分离配置
+#    rules:
+#      sharding:
+#        bindings-tables[0]: spk_parking, spk_parking_event, spk_parking_trigger
+#        tables:
+#          # 停车表
+#          spk_parking:
+#            # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..4}
+#            actual-data-nodes: ds.spk_parking_$->{0..9}
+#            table-strategy:
+#              standard:
+#                sharding-column: project_id
+#                sharding-algorithm-name: spk-parking-inline
+#            key-generate-strategy:
+#              column: project_id
+#              key-generator-name: snowflake
+#              #停车事件表
+#          spk_parking_event:
+#            # 数据库 必须填 ds 如果分库时候 那就是 ds-$->{0..4}
+#            actual-data-nodes: ds.spk_parking_event_$->{0..9}
+#            table-strategy:
+#              standard:
+#                sharding-column: project_id
+#                sharding-algorithm-name: spk-parking-event-inline
+#            key-generate-strategy:
+#              column: project_id
+#              key-generator-name: snowflake
+#              #停车触发表
+#          spk_parking_trigger:
+#            actual-data-nodes: ds.spk_parking_trigger_$->{0..9}
+#            table-strategy:
+#              standard:
+#                sharding-column: project_id
+#                sharding-algorithm-name: spk-parking-trigger-inline
+#            key-generate-strategy:
+#              column: project_id
+#              key-generator-name: snowflake
+#        sharding-algorithms:
+#          spk-parking-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_parking_$->{project_id % 10}
+#              allow-range-query-with-inline-sharding: false
+#          spk-parking-event-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_parking_event_$->{project_id % 10}
+#              allow-range-query-with-inline-sharding: false
+#          spk-parking-trigger-inline:
+#            type: INLINE
+#            props:
+#              algorithm-expression: spk_parking_trigger_$->{project_id % 10}
+#              allow-range-query-with-inline-sharding: false
+#        key-generators:
+#          snowflake:
+#            type: SNOWFLAKE
+#            props:
+#              worker-id: 0
+#              max-vibration-offset: 1
+#              max-tolerate-time-difference-milliseconds: 10
+#      readwrite-splitting:
+#        data-sources:
+#          ds:
+#            type: Static
+#            props:
+#              write-data-source-name: write-ds
+#              read-data-source-names: write-ds-read-ds-0, write-ds-read-ds-1
+#            load-balancer-name: round_robin
+#        load-balancers:
+#          round_robin:
+#            type: ROUND_ROBIN
+  # rabbitmq 配置
+  rabbitmq:
+    host: ms.suparking.cn
+    port: 5666
+    username: shared
+    password: shared2019
+    exchange: spk.device
+    consumer-prefetch: 5
+    concurrent-consumer: 2
+    enable: true
+  # cloud-nacos 配置
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: seata-server-group
+    nacos:
+      discovery:
+        # 服务发现默认开关打开
+        enabled: true
+        # 服务地址,集群用逗号分开
+        server-addr: 47.98.44.236:8848
+        # 注册中心服务名称 application name,一般不用配置
+        service: shared-trad-data-serv
+        # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
+        heart-beat-interval: 5000
+        # 服务端没有接受到客户端心跳请求就将其设为不健康的时间间隔,默认15s
+        heart-beat-timeout: 15000
+        # [注意] 这个IP地址如果更换网络后变化,会导致服务调用失败,建议先不要设置
+        # ip: 127.0.0.1
+        # 元数据部分 - 可以自己随便定制
+        metadata:
+          mydata: abc
+        # 客户端在启动时是否读取本地配置项(一个文件)来获取服务列表
+        # 注: 推荐该值为false,若改成true。则客户端会在本地的一个文件中保存服务信息,当下次宕机时候,会优先读取本地的配置对外提供服务
+        naming-load-cache-at-start: false
+        # 创建不同的集群
+        cluster-name: Shared-Trading-Cluster-A
+        # 命令空间ID，Nacos通过不同的命名空间来区分不同的环境,进行数据隔离
+        # 服务消费时只能消费到对应的命名空间下的服务
+        # [注意]需要在nacos-server中创建好namespace,然后把id copy进来
+        namespace: dev
+        # [注意] 两个服务如果存在上下游调用关系,必须配置相同的group才能发起访问
+        group: myGroup
+        # 向注册中心注册服务,默认为true
+        # 如果只消费服务,不作为服务提供方,倒是可以设置为false,减少开销
+        register-enabled: true
+        # 类似长连接监听服务端信息变化的功能
+        watch:
+          enabled: true
+        watch-delay: 30000
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: false
+  data-source-proxy-mode: AT
+  tx-service-group: seata-server-group
+  service:
+    vgroup-mapping:
+      seata-server-group: default
+    grouplist:
+      node1: 47.98.44.236:8091
+      node2: 47.98.44.236:8092
+      node3: 47.98.44.236:8093
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 47.98.44.236:8848
+      namespace: dev
+      group: myGroup
+      cluster: default
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+
+logging:
+  level:
+    cn.suparking.data: debug
+    org.apache.shardingsphere: debug
+feign:
+  client:
+    config:
+      #全局配置
+      default:
+        #网络连接阶段1秒超时
+        connectTimeout: 1000
+        # 服务器请求超时阶段5秒超时
+        readTimeout: 5000
+      # 针对某个特定服务的超时配置
+      coupon-template-serv:
+        connectTimeout: 1000
+        readTimeout: 2000
+  circuitbreaker:
+    enabled: true
+# thread pool,wx 配置
+sparking:
+  bs:
+    url: http://192.168.1.133:10088/spms/api/device
+  message:
+    queueLength: 5
+    threadTimeout: 60000
+  pool:
+    core-size: 8
+    max-size: 32
+    keep-alive: 360
+    queue-capacity: 100

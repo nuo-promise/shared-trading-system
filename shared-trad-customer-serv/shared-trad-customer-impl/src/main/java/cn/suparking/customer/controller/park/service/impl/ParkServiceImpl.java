@@ -1,6 +1,6 @@
 package cn.suparking.customer.controller.park.service.impl;
 
-import cn.suparking.common.tools.HttpUtils;
+import cn.suparking.common.api.utils.HttpUtils;
 import cn.suparking.customer.api.constant.ParkConstant;
 import cn.suparking.customer.beans.park.LocationDTO;
 import cn.suparking.customer.configuration.properties.SparkProperties;

@@ -1,11 +1,11 @@
 package cn.suparking.order.controller;
 
-import api.beans.ParkingRefundOrderDTO;
+import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.order.service.ParkingRefundOrderService;
-import cn.suparking.order.entity.ParkingRefundOrderDO;
+import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;

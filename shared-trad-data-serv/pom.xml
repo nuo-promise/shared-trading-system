@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>shared-trad-data-serv</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>shared-trad-data-api</module>
+        <module>shared-trad-data-dao</module>
+        <module>shared-trad-data-impl</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

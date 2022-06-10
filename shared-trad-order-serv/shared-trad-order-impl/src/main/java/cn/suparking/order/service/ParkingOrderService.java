@@ -1,7 +1,7 @@
 package cn.suparking.order.service;
 
-import api.beans.ParkingOrderDTO;
-import cn.suparking.order.entity.ParkingOrderDO;
+import cn.suparking.order.api.beans.ParkingOrderDTO;
+import cn.suparking.order.dao.entity.ParkingOrderDO;
 
 public interface ParkingOrderService {
 

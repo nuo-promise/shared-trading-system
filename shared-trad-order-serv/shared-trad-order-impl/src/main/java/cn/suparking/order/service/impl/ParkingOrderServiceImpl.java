@@ -1,9 +1,9 @@
 package cn.suparking.order.service.impl;
 
-import api.beans.ParkingOrderDTO;
+import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.service.ParkingOrderService;
-import cn.suparking.order.entity.ParkingOrderDO;
-import cn.suparking.order.mapper.ParkingOrderMapper;
+import cn.suparking.order.dao.entity.ParkingOrderDO;
+import cn.suparking.order.dao.mapper.ParkingOrderMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
 package cn.suparking.order.service.impl;
 
-import api.beans.ChargeDetailDTO;
+import cn.suparking.order.api.beans.ChargeDetailDTO;
 import cn.suparking.order.service.ChargeDetailService;
-import cn.suparking.order.entity.ChargeDetailDO;
-import cn.suparking.order.mapper.ChargeDetailMapper;
+import cn.suparking.order.dao.entity.ChargeDetailDO;
+import cn.suparking.order.dao.mapper.ChargeDetailMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

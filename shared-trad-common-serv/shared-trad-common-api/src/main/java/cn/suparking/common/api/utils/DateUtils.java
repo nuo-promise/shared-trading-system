@@ -1,10 +1,12 @@
 package cn.suparking.common.api.utils;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 /**
  * DateUtils.
@@ -14,6 +16,23 @@ public class DateUtils {
     private static final String DATE_FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT_DATETIME);
+
+    /**
+     * 获取当前时间.
+     * @return String
+     */
+    public static String timestamp() {
+        SimpleDateFormat timestampFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return timestampFormat.format(new Date());
+    }
+
+    /**
+     * get current Mills.
+     * @return {@link Long}
+     */
+    public static Long getCurrentMillis() {
+        return System.currentTimeMillis();
+    }
 
     /**
      * parse LocalDateTime.

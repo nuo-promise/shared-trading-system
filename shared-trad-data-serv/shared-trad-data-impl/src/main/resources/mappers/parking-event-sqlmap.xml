@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.data.dao.mapper.ParkingEventMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.data.dao.entity.ParkingEventDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="project_id" jdbcType="BIGINT" property="projectId" />
+        <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+        <result column="event_time" jdbcType="BIGINT" property="eventTime" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="park_id" jdbcType="VARCHAR" property="parkId" />
+        <result column="park_no" jdbcType="VARCHAR" property="parkNo" />
+        <result column="park_name" jdbcType="VARCHAR" property="parkName" />
+        <result column="recog_id" jdbcType="BIGINT" property="recogId" />
+        <result column="in_sub_area_id" jdbcType="VARCHAR" property="inSubAreaId" />
+        <result column="in_sub_area_name" jdbcType="VARCHAR" property="inSubAreaName" />
+        <result column="out_sub_area_id" jdbcType="VARCHAR" property="outSubAreaId" />
+        <result column="out_sub_area_name" jdbcType="VARCHAR" property="outSubAreaName" />
+        <result column="left_day" jdbcType="INTEGER" property="leftDay" />
+        <result column="space_quantity" jdbcType="INTEGER" property="spaceQuantity" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+        <result column="operator" jdbcType="VARCHAR" property="operator" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		project_id,
+		event_type,
+		event_time,
+        device_no,
+		park_id,
+		park_no,
+		park_name,
+		recog_id,
+		in_sub_area_id,
+		in_sub_area_name,
+		out_sub_area_id,
+		out_sub_area_name,
+		left_day,
+		space_quantity,
+		date_created,
+		date_updated,
+		operator
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_parking_event
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingEventDO">
+        INSERT INTO spk_parking_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="eventType != null">
+                event_type,
+            </if>
+            <if test="eventTime != null">
+                event_time,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="parkId != null">
+                park_id,
+            </if>
+            <if test="parkNo != null">
+                park_no,
+            </if>
+            <if test="parkName != null">
+                park_name,
+            </if>
+            <if test="recogId != null">
+                recog_id,
+            </if>
+            <if test="inSubAreaId != null">
+                in_sub_area_id,
+            </if>
+            <if test="inSubAreaName != null">
+                in_sub_area_name,
+            </if>
+            <if test="outSubAreaId != null">
+                out_sub_area_id,
+            </if>
+            <if test="outSubAreaName != null">
+                out_sub_area_name,
+            </if>
+            <if test="leftDay != null">
+                left_day,
+            </if>
+            <if test="spaceQuantity != null">
+                space_quantity,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=BIGINT},
+            </if>
+            <if test="eventType != null">
+                #{eventType,jdbcType=VARCHAR},
+            </if>
+            <if test="eventTime != null">
+                #{eventTime,jdbcType=BIGINT},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="parkId != null">
+                #{parkId,jdbcType=VARCHAR},
+            </if>
+            <if test="parkNo != null">
+                #{parkNo,jdbcType=VARCHAR},
+            </if>
+            <if test="parkName != null">
+                #{parkName,jdbcType=VARCHAR},
+            </if>
+            <if test="recogId != null">
+                #{recogId,jdbcType=BIGINT},
+            </if>
+            <if test="inSubAreaId != null">
+                #{inSubAreaId,jdbcType=VARCHAR},
+            </if>
+            <if test="inSubAreaName != null">
+                #{inSubAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="outSubAreaId != null">
+                #{outSubAreaId,jdbcType=VARCHAR},
+            </if>
+            <if test="outSubAreaName != null">
+                #{outSubAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="leftDay != null">
+                #{leftDay,jdbcType=INTEGER},
+            </if>
+            <if test="spaceQuantity != null">
+                #{spaceQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.data.dao.entity.ParkingEventDO">
+        UPDATE spk_parking_event <set>
+        <if test="projectId != null">
+            project_id = #{projectId,jdbcType=BIGINT} , </if>
+        <if test="eventType != null">
+            event_type = #{eventType,jdbcType=VARCHAR} , </if>
+        <if test="eventTime != null">
+            event_time = #{eventTime,jdbcType=BIGINT} , </if>
+        <if test="parkId != null">
+            park_id = #{parkId,jdbcType=VARCHAR} , </if>
+        <if test="parkNo != null">
+            park_no = #{parkNo,jdbcType=VARCHAR} , </if>
+        <if test="parkName != null">
+            park_name = #{parkName,jdbcType=VARCHAR} , </if>
+        <if test="recogId != null">
+            recog_id = #{recogId,jdbcType=BIGINT} , </if>
+        <if test="inSubAreaId != null">
+            in_sub_area_id = #{inSubAreaId,jdbcType=VARCHAR} , </if>
+        <if test="inSubAreaName != null">
+            in_sub_area_name = #{inSubAreaName,jdbcType=VARCHAR} , </if>
+        <if test="outSubAreaId != null">
+            out_sub_area_id = #{outSubAreaId,jdbcType=VARCHAR} , </if>
+        <if test="outSubAreaName != null">
+            out_sub_area_name = #{outSubAreaName,jdbcType=VARCHAR} , </if>
+        <if test="leftDay != null">
+            left_day = #{leftDay,jdbcType=INTEGER} , </if>
+        <if test="spaceQuantity != null">
+            space_quantity = #{spaceQuantity,jdbcType=INTEGER} , </if>
+        <if test="dateCreated != null">
+            date_created = #{dateCreated,jdbcType=TIMESTAMP} , </if>
+        <if test="dateUpdated != null">
+            date_updated = #{dateUpdated,jdbcType=TIMESTAMP} , </if>
+        <if test="operator != null">
+            operator = #{operator,jdbcType=VARCHAR}  </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.suparking.order.mapper.CarGroupRefundOrderMapper">
-    <resultMap id="BaseResultMap" type="cn.suparking.order.entity.CarGroupRefundOrderDO">
+<mapper namespace="cn.suparking.order.dao.mapper.CarGroupRefundOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
@@ -53,7 +53,7 @@
 		date_updated
     </sql>
 
-    <insert id="insert" parameterType="cn.suparking.order.entity.CarGroupRefundOrderDO">
+    <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         INSERT INTO spk_car_group_refund_order_0
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -199,7 +199,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="cn.suparking.order.entity.CarGroupRefundOrderDO">
+    <update id="update" parameterType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         UPDATE spk_car_group_refund_order <set>
         <if test="userId != null">
             user_id = #{userId,jdbcType=BIGINT} , </if>
