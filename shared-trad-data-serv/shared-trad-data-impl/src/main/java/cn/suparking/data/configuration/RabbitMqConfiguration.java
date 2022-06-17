@@ -1,5 +1,6 @@
 package cn.suparking.data.configuration;
 
+import cn.suparking.data.Application;
 import cn.suparking.data.configuration.properties.RabbitmqProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ShutdownSignalException;
@@ -19,6 +20,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionListener;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +40,7 @@ public class RabbitMqConfiguration {
     @Resource
     private RabbitmqProperties rabbitmqProperties;
 
-    public RabbitMqConfiguration(final MessageListener deviceReceive) {
+    public RabbitMqConfiguration(@Qualifier("DeviceReceive")final MessageListener deviceReceive) {
         this.deviceReceive = deviceReceive;
     }
 

@@ -37,4 +37,12 @@ public interface ParkingMapper {
      * @return {@link ParkingDO}
      */
     ParkingDO findByProjectIdAndParkId(Map<String, Object> params);
+
+
+    /**
+     * get parking by project and parking state.
+     * @param params {@link Map}
+     * @return {@link ParkingDO}
+     */
+    ParkingDO findByParkIdAndParkState(Map<String, Object> params);
 }

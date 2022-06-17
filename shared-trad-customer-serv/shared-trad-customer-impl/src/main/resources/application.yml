@@ -32,7 +32,7 @@ spring:
         # 服务发现默认开关打开
         enabled: true
         # 服务地址,集群用逗号分开
-        server-addr: 47.98.44.236:8848
+        server-addr: 47.98.44.236:8084
         # 注册中心服务名称 application name,一般不用配置
         service: shared-trad-customer-serv
         # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
@@ -103,7 +103,7 @@ seata:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 47.98.44.236:8848
+      server-addr: 47.98.44.236:8084
       namespace: dev
       group: myGroup
       cluster: default
@@ -120,11 +120,12 @@ feign:
         # 服务器请求超时阶段5秒超时
         readTimeout: 10000
       # 针对某个特定服务的超时配置
-      shared-trad-user-serv:
-        connectTimeout: 6000
-        readTimeout: 10000
+#      shared-trad-user-serv:
+#        connectTimeout: 6000
+#        readTimeout: 10000
   circuitbreaker:
     enabled: true
 sparking:
   bs:
     url: http://192.168.1.133:10088/spms/api/wxapp
+  secret: 9fdfff5ec6ac41c1a83269241e09f4ce

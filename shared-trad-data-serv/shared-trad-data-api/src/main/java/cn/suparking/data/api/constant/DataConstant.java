@@ -18,8 +18,11 @@ public class DataConstant {
     public static final String REQUEST_PROJECT_CONFIG = "/data/getAllProjectConfig";
 
     // 配置资源名称
-
     public static final String RESOURCE_PROJECT = "PROJECT_CONFIG";
 
+    public static final String DATA_ARM_SAVE = "arm_save";
 
+    public static final String DATA_SAVE = "save";
+
+    public static final String DATA_EVENT = "event";
 }

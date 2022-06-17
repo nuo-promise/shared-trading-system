@@ -27,6 +27,15 @@ public class DateUtils {
     }
 
     /**
+     * sign date.
+     * @return String
+     */
+    public static String currentDate() {
+        SimpleDateFormat timestampFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return timestampFormat.format(currentTime());
+    }
+
+    /**
      * get current second.
      * @return {@link Long}
      */
@@ -129,5 +138,9 @@ public class DateUtils {
     public static String localDateTimeToString(final LocalDateTime localDateTime, final String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return localDateTime.format(formatter);
+    }
+
+    private static Date currentTime() {
+        return new Date();
     }
 }

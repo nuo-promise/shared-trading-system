@@ -88,6 +88,18 @@
        ORDER BY latest_trigger_time DESC LIMIT 1
     </select>
 
+    <select id="findByParkIdAndParkState" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+            FROM spk_parking
+        WHERE project_id = #{projectId, jdbcType=BIGINT} AND
+              project_no = #{projectNo, jdbcType=VARCHAR} AND
+              park_id = #{parkId, jdbcType=VARCHAR} AND
+              valid = true AND
+              parking_state = "ENTERED"
+        ORDER BY latest_trigger_time DESC LIMIT 1
+    </select>
+
     <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingDO">
         INSERT INTO spk_parking
         <trim prefix="(" suffix=")" suffixOverrides=",">

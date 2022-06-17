@@ -133,7 +133,7 @@ public class RabbitMqConfiguration {
     public Binding cloudBinding(@Qualifier("MQCloudAMQPAdmin")final AmqpAdmin admin,
                                 @Qualifier("MQCloudQueue")final Queue queue,
                                 @Qualifier("MQCloudExchange")final TopicExchange exchange) {
-        Binding binding = BindingBuilder.bind(queue).to(exchange).with("*.shared_customer_ack.#");
+        Binding binding = BindingBuilder.bind(queue).to(exchange).with("*.shared.#");
         binding.setAdminsThatShouldDeclare(admin);
         binding.setShouldDeclare(true);
         return binding;

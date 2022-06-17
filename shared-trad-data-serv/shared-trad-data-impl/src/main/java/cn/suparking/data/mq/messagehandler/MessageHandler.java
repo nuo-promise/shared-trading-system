@@ -6,7 +6,6 @@ import cn.suparking.data.Application;
 import cn.suparking.data.exception.SharedTradException;
 import cn.suparking.data.mq.messageTemplate.MessageTemplate;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;

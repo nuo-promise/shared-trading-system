@@ -215,7 +215,7 @@ spring:
         # 服务发现默认开关打开
         enabled: true
         # 服务地址,集群用逗号分开
-        server-addr: 47.98.44.236:8848
+        server-addr: 47.98.44.236:8084
         # 注册中心服务名称 application name,一般不用配置
         service: shared-trad-order-serv
         # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
