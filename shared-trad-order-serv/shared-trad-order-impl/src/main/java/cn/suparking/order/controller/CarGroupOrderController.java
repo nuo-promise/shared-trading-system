@@ -2,7 +2,6 @@ package cn.suparking.order.controller;
 
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
-import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.order.service.CarGroupOrderService;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
@@ -24,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("car-group")
+@RequestMapping("car-group-order")
 public class CarGroupOrderController {
 
     private final CarGroupOrderService carGroupOrderService;
@@ -53,14 +52,9 @@ public class CarGroupOrderController {
      * @param carGroupOrderDTO 合约订单信息
      * @return Integer
      */
-    @PostMapping("")
-    public SpkCommonResult createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
-        return Optional.ofNullable(carGroupOrderDTO)
-                .map(item -> {
-                    SpkCommonAssert.notBlank(item.getOrderNo(), "订单号不能为空");
-                    Integer count = carGroupOrderService.createOrUpdate(item);
-                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
-                }).orElseGet(() -> SpkCommonResult.error("合约订单信息不能为空"));
+    @PostMapping("createCarGroupOrder")
+    public Integer createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
+        return carGroupOrderService.createOrUpdate(carGroupOrderDTO);
     }
 
 }

@@ -73,8 +73,8 @@ spring:
     enable: true
     # redis 配置
   redis:
-    host: localhost
-    port: 6378
+    host: 192.168.1.123
+    port: 6379
     password:
     database: 0
     timeout: 6000
@@ -107,8 +107,12 @@ seata:
       namespace: dev
       group: myGroup
       cluster: default
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+
 logging:
   level:
+    cn.suparking.customer: debug
     cn.suparking.customer.feign.user.UserTemplateService: debug
 feign:
   client:
@@ -125,6 +129,11 @@ feign:
 #        readTimeout: 10000
   circuitbreaker:
     enabled: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 sparking:
   bs:
     url: http://192.168.1.133:10088/spms/api/wxapp

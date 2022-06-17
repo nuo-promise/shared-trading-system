@@ -6,8 +6,10 @@ import cn.suparking.common.api.exception.SpkCommonException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 外部api请求工具类.
@@ -34,7 +36,7 @@ public class HttpRequestUtils {
      * @param timeout   超时时间
      * @return String
      */
-     private static JSONObject sendGet(final String url, final Map<String, Object> paramsMap, final int timeout) {
+    private static JSONObject sendGet(final String url, final Map<String, Object> paramsMap, final int timeout) {
         try {
             String params = httpHeaderParams(paramsMap);
             log.info("[GET]请求外部api ======> 请求路径 [{}]    请求参数 [{}]", url, params);
@@ -69,7 +71,7 @@ public class HttpRequestUtils {
      */
     private static JSONObject sendPost(final String url, final Map<String, Object> paramsMap, final int timeout) {
         try {
-            String params = JSONObject.toJSONString(paramsMap);
+            String params = Objects.isNull(paramsMap) ? new JSONObject().toJSONString() : JSONObject.toJSONString(paramsMap);
             log.info("[POST]请求外部api ======> 请求路径 [{}]    请求参数 [{}]", url, params);
             HttpResponse response = HttpRequest.post(url).body(params).timeout(timeout).execute();
             String body = response.body();
@@ -88,6 +90,9 @@ public class HttpRequestUtils {
      * @return String
      */
     private static String httpHeaderParams(final Map<String, Object> paramsMap) {
+        if (CollectionUtils.isEmpty(paramsMap)) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder("?");
         paramsMap.keySet().stream()
                 .forEach(key -> sb.append(key).append("=").append(paramsMap.get(key)).append("&"));

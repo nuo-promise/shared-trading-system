@@ -26,7 +26,7 @@
         <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
         <result column="order_type" jdbcType="VARCHAR" property="orderType" />
         <result column="creator" jdbcType="VARCHAR" property="creator" />
-        <result column="modifyer" jdbcType="VARCHAR" property="modifyer" />
+        <result column="modifyer" jdbcType="VARCHAR" property="modifier" />
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
     </resultMap>

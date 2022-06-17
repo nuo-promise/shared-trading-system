@@ -43,6 +43,8 @@ public class CarGroupOrderDO extends BaseDO {
 
     private Integer discountedAmount;
 
+    private Integer dueAmount;
+
     private String payChannel;
 
     private String payType;
@@ -83,13 +85,13 @@ public class CarGroupOrderDO extends BaseDO {
                     .carTypeName(item.getCarTypeName())
                     .protocolId(item.getProtocolId())
                     .protocolName(item.getProtocolName())
-                    .beginDate(item.getBeginDate())
-                    .endDate(item.getEndDate())
+                    .beginDate(item.getBeginTime())
+                    .endDate(item.getEndTime())
+                    .dueAmount(item.getDueAmount())
                     .totalAmount(item.getTotalAmount())
                     .discountedAmount(item.getDiscountedAmount())
                     .payChannel(item.getPayChannel())
                     .payType(item.getPayType())
-                    .userName(item.getUserName())
                     .userMobile(item.getUserMobile())
                     .orderState(item.getOrderState())
                     .invoiceState(item.getInvoiceState())

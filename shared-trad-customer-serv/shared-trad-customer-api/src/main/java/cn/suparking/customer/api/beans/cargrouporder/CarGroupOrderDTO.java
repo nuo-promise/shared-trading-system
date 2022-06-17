@@ -1,4 +1,4 @@
-package cn.suparking.order.api.beans;
+package cn.suparking.customer.api.beans.cargrouporder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -97,7 +96,6 @@ public class CarGroupOrderDTO implements Serializable {
      * 开票服务数据库对应的订单编号(可能含有@).
      */
     private String invoiceOrderNo;
-
 
     private String creator;
 

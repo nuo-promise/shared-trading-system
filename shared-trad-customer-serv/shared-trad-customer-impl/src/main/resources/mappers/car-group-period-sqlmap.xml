@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.customer.dao.mapper.CarGroupPeriodMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.customer.dao.entity.CarGroupPeriod">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="car_group_id" jdbcType="BIGINT" property="carGroupId" />
+        <result column="begin_date" jdbcType="BIGINT" property="beginDate" />
+        <result column="end_date" jdbcType="BIGINT" property="endDate" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        car_group_id,
+        begin_date,
+        end_date,
+        date_created,
+        date_updated
+    </sql>
+    <insert id="insert" parameterType="cn.suparking.customer.dao.entity.CarGroupPeriod">
+        INSERT INTO spk_car_group_period
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                id,
+            <if test="carGroupId != null">
+                car_group_id,
+            </if>
+            <if test="beginDate != null">
+                begin_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{id,jdbcType=BIGINT},
+            <if test="carGroupId != null">
+                #{carGroupId,jdbcType=BIGINT},
+            </if>
+            <if test="beginDate != null">
+                #{beginDate,jdbcType=BIGINT},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=BIGINT},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByCarGroupId">
+        DELETE FROM spk_car_group_period WHERE car_group_id = #{carGroupId,jdbcType = BIGINT}
+    </delete>
+
+    <select id="findByCarGroupId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            spk_car_group_period
+        WHERE
+            car_group_id = #{carGroupId,jdbcType = BIGINT}
+    </select>
+</mapper>
