@@ -1,11 +1,16 @@
 package cn.suparking.data.service.impl;
 
 import cn.suparking.data.api.beans.ParkingEventDTO;
+import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.dao.entity.ParkingEventDO;
 import cn.suparking.data.dao.mapper.ParkingEventMapper;
 import cn.suparking.data.service.ParkingEventService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ParkingEventServiceImpl implements ParkingEventService {
@@ -34,5 +39,13 @@ public class ParkingEventServiceImpl implements ParkingEventService {
             parkingEventMapper.update(parkingEventDO);
         }
         return parkingEventDO.getId();
+    }
+
+    @Override
+    public List<ParkingEventDO> findParkingEvents(final ParkEventQuery parkEventQuery) {
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("projectId", parkEventQuery.getProjectId());
+        params.put("ids", parkEventQuery.getIds());
+        return parkingEventMapper.findByProjectIdAndIds(params);
     }
 }

@@ -14,5 +14,8 @@ public class ParkBaseQueryDTO {
     /**
      * 用户在小程序的OpenID.
      */
-    private String openId;
+    private String miniOpenId;
+
+    // 用户ID.
+    private String userId;
 }

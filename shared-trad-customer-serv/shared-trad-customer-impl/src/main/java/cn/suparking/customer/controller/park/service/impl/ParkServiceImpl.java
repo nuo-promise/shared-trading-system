@@ -12,12 +12,17 @@ import cn.suparking.customer.configuration.properties.SharedProperties;
 import cn.suparking.customer.configuration.properties.SparkProperties;
 import cn.suparking.customer.controller.park.service.ParkService;
 import cn.suparking.customer.feign.data.DataTemplateService;
+import cn.suparking.customer.feign.user.UserTemplateService;
 import cn.suparking.customer.vo.park.ParkInfoVO;
 import cn.suparking.data.api.beans.ParkingLockModel;
+import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.DiscountInfoDO;
 import cn.suparking.data.dao.entity.ParkingDO;
+import cn.suparking.data.dao.entity.ParkingEventDO;
+import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import cn.suparking.data.dao.entity.ValueType;
+import cn.suparking.user.api.vo.UserVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -36,6 +41,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static cn.suparking.customer.api.constant.ParkConstant.SUCCESS;
 
@@ -56,9 +63,13 @@ public class ParkServiceImpl implements ParkService {
 
     private final DataTemplateService dataTemplateService;
 
-    public ParkServiceImpl(final DataTemplateService dataTemplateService, @Qualifier("MQCloudTemplate")final RabbitTemplate rabbitTemplate) {
+    private final UserTemplateService userTemplateService;
+
+    public ParkServiceImpl(final DataTemplateService dataTemplateService, @Qualifier("MQCloudTemplate")final RabbitTemplate rabbitTemplate,
+                           final UserTemplateService userTemplateService) {
         this.dataTemplateService = dataTemplateService;
         this.rabbitTemplate = rabbitTemplate;
+        this.userTemplateService = userTemplateService;
     }
 
     @Override
@@ -86,18 +97,20 @@ public class ParkServiceImpl implements ParkService {
         if (!invoke(sign, parkFeeQueryDTO.getDeviceNo())) {
             return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
         }
+
+        // 获取用户user id.
+        UserVO userVO = userTemplateService.getUserByOpenId(parkFeeQueryDTO.getMiniOpenId());
+        if (Objects.isNull(userVO)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.PARKING_DATE_USER_VALID);
+        }
+        parkFeeQueryDTO.setUserId(userVO.getId());
+
         // 校验 设备
         ParkingLockModel parkingLockModel = dataTemplateService.findParkingLock(parkFeeQueryDTO.getDeviceNo());
         if (Objects.isNull(parkingLockModel)) {
             return SpkCommonResult.error(SpkCommonResultMessage.DEVICE_NOT_SETTING);
         }
-        // 查询是否存在优惠券.
-        DiscountInfoDO discountInfoDO = DiscountInfoDO.builder()
-                .discountNo("1111111111111111111")
-                .quantity(2)
-                .value(100)
-                .valueType(ValueType.AMOUNT)
-                .build();
+
         // 查询设备对应的停车记录.
         ParkQuery parkQuery = ParkQuery.builder()
                 .projectId(Long.valueOf(parkingLockModel.getProjectId()))
@@ -108,15 +121,47 @@ public class ParkServiceImpl implements ParkService {
         if (Objects.isNull(parkingDO)) {
             return SpkCommonResult.error(SpkCommonResultMessage.ENTER_PARKING_NOT_FOUND);
         }
-        // RPC 查询 费用
+
+        ParkingTriggerDO parkingTriggerDO = null;
+        if (Objects.nonNull(parkingDO.getEnter())) {
+            parkingTriggerDO = dataTemplateService.findParkingTrigger(Long.valueOf(parkingLockModel.getProjectId()), parkingDO.getEnter());
+            if (Objects.isNull(parkingTriggerDO)) {
+                return SpkCommonResult.error(SpkCommonResultMessage.PARKING_DATA_TRIGGER_VALID);
+            }
+        }
+
+        List<ParkingEventDO> parkingEvents = null;
+        if (StringUtils.isNotBlank(parkingDO.getParkingEvents())) {
+            String[] events = parkingDO.getParkingEvents().split(",");
+            ParkEventQuery parkEventQuery = ParkEventQuery.builder()
+                    .projectId(Long.valueOf(parkingLockModel.getProjectId()))
+                    .ids(Stream.of(events).map(String::trim).filter(s -> !s.isEmpty())
+                            .map(Long::valueOf).collect(Collectors.toList()))
+                    .build();
+            parkingEvents = dataTemplateService.findParkingEvents(parkEventQuery);
+            if (Objects.isNull(parkingEvents) || parkingDO.getParkingEvents().split(",").length != parkingEvents.size()) {
+                return SpkCommonResult.error(SpkCommonResultMessage.PARKING_DATA_EVENT_VALID);
+            }
+        }
+        // 查询是否存在优惠券.
+        DiscountInfoDO discountInfoDO = DiscountInfoDO.builder()
+                .discountNo("1111111111111111111")
+                .quantity(2)
+                .value(100)
+                .valueType(ValueType.AMOUNT)
+                .build();
         JSONObject request = new JSONObject();
+
+        // RPC 查询 费用
         request.put("parking", parkingDO);
         request.put("discountInfo", discountInfoDO);
-        request.put("phone", parkFeeQueryDTO.getPhone());
-        request.put("openId", parkFeeQueryDTO.getOpenId());
+        request.put("userInfo", parkFeeQueryDTO);
+        request.put("enter", parkingTriggerDO);
+        request.put("parkingEvents", parkingEvents);
+        //TODO 查询费用.
         String retBody = sendRPCQueryFee(request);
         if (StringUtils.isBlank(retBody)) {
-            return SpkCommonResult.error(SpkCommonResultMessage.CHARGE_VALIED);
+            return SpkCommonResult.error(SpkCommonResultMessage.CHARGE_VALID);
         }
         // 组织订单,发送给前端
         return null;

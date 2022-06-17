@@ -5,7 +5,7 @@ import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.data.Application;
 import cn.suparking.data.exception.SharedTradException;
 import cn.suparking.data.mq.messageTemplate.MessageTemplate;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -72,7 +72,7 @@ public abstract class MessageHandler {
                     MessageProperties replyMessageProperties = new MessageProperties();
                     replyMessageProperties.setHeader("method", messageHandler.method);
                     replyMessageProperties.setCorrelationId(messageProperties.getCorrelationId());
-                    Message messageRet = new Message(JSON.toJSONString(retBody).getBytes(), replyMessageProperties);
+                    Message messageRet = new Message(((JSONObject) JSONObject.toJSON(retBody)).toJSONString().getBytes(), replyMessageProperties);
                     RABBIT_TEMPLATE.send(replyTo, messageRet);
                 } else {
                     LOG.error(CTP_REQUEST_PARK_STATUS_ACK + " is discarded as replyTo is null");

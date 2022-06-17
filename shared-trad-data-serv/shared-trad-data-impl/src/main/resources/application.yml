@@ -1,5 +1,5 @@
 server:
-  port: 20003
+  port: 20004
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
@@ -204,7 +204,7 @@ seata:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 47.98.44.236:8848
+      server-addr: 47.98.44.236:8084
       namespace: dev
       group: myGroup
       cluster: default

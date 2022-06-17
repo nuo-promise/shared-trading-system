@@ -3,13 +3,17 @@ package cn.suparking.customer.feign.data.fallback;
 import cn.suparking.customer.feign.data.DataTemplateService;
 import cn.suparking.customer.feign.user.UserTemplateService;
 import cn.suparking.data.api.beans.ParkingLockModel;
+import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
+import cn.suparking.data.dao.entity.ParkingEventDO;
+import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * UserTemplateService hystrix 降级工厂.
@@ -36,6 +40,18 @@ public class DataTemplateFallbackFactory implements FallbackFactory<DataTemplate
             @Override
             public ParkingDO findParking(final ParkQuery parkQuery) {
                 log.error("DataTemplateService: findParking error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public ParkingTriggerDO findParkingTrigger(final Long projectId, final Long triggerId) {
+                log.error("DataTemplateService: findParkingTrigger error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public List<ParkingEventDO> findParkingEvents(final ParkEventQuery parkEventQuery) {
+                log.error("DataTemplateService: findParkingEvents error: " + cause.getMessage());
                 return null;
             }
         };

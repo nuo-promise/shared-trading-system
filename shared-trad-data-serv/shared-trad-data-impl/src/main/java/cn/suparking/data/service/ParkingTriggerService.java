@@ -18,4 +18,13 @@ public interface ParkingTriggerService {
      * @return int
      */
     Long createOrUpdate(ParkingTriggerDTO parkingTriggerDTO);
+
+
+    /**
+     * 根据项目ID,triggerid 查询trigger事件.
+     * @param projectId 项目 id
+     * @param triggerId 触发 id
+     * @return {@link ParkingTriggerDO}
+     */
+    ParkingTriggerDO findByProjectIdAndId(Long projectId, Long triggerId);
 }

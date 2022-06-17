@@ -3,6 +3,9 @@ package cn.suparking.data.dao.mapper;
 import cn.suparking.data.dao.entity.ParkingEventDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface ParkingEventMapper {
     /**
@@ -26,4 +29,11 @@ public interface ParkingEventMapper {
      * @return int
      */
     int update(ParkingEventDO parkingEventDO);
+
+    /**
+     * 根据 projectId, event ids 查询停车事件.
+     * @param params {@link Map}
+     * @return {@link List}
+     */
+    List<ParkingEventDO> findByProjectIdAndIds(Map<String, Object> params);
 }

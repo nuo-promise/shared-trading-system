@@ -1,13 +1,18 @@
 package cn.suparking.data.controller;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
+import cn.suparking.data.api.beans.ParkConfigDTO;
 import cn.suparking.data.api.beans.ParkingLockModel;
+import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
+import cn.suparking.data.dao.entity.ParkingEventDO;
+import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import cn.suparking.data.service.CtpDataService;
-import com.alibaba.fastjson.JSONObject;
-import cn.suparking.data.api.beans.ParkConfigDTO;
 import cn.suparking.data.service.ParkConfigService;
+import cn.suparking.data.service.ParkingEventService;
+import cn.suparking.data.service.ParkingTriggerService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RefreshScope
@@ -27,11 +33,18 @@ public class ParkingController {
 
     private final CtpDataService ctpDataService;
 
+    private final ParkingTriggerService parkingTriggerService;
+
+    private final ParkingEventService parkingEventService;
+
     private final ParkConfigService parkConfigService;
 
-    public ParkingController(final ParkConfigService parkConfigService, final CtpDataService ctpDataService) {
+    public ParkingController(final ParkConfigService parkConfigService, final CtpDataService ctpDataService,
+                             final ParkingTriggerService parkingTriggerService, final ParkingEventService parkingEventService) {
         this.parkConfigService = parkConfigService;
         this.ctpDataService = ctpDataService;
+        this.parkingTriggerService = parkingTriggerService;
+        this.parkingEventService = parkingEventService;
     }
 
     /**
@@ -81,5 +94,26 @@ public class ParkingController {
     @PostMapping("/findParking")
     public ParkingDO findParking(@RequestBody final ParkQuery parkQuery) {
         return ctpDataService.findParking(parkQuery);
+    }
+
+    /**
+     * 根据trigger id 查询 parking trigger event.
+     * @param triggerId parking trigger id.
+     * @param projectId project id.
+     * @return {@link ParkingTriggerDO}
+     */
+    @GetMapping("/findParkingTrigger")
+    public ParkingTriggerDO findParkingTrigger(@RequestParam("projectId")final Long projectId, @RequestParam("triggerId")final Long triggerId) {
+        return parkingTriggerService.findByProjectIdAndId(projectId, triggerId);
+    }
+
+    /**
+     * 根据项目编号,事件ID 查询事件信息.
+     * @param parkEventQuery {@link ParkEventQuery}
+     * @return {@link List}
+     */
+    @PostMapping("/findParkingEvents")
+    public List<ParkingEventDO> findParkingEvents(@RequestBody final ParkEventQuery parkEventQuery) {
+        return parkingEventService.findParkingEvents(parkEventQuery);
     }
 }

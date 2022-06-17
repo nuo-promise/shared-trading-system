@@ -3,6 +3,8 @@ package cn.suparking.data.dao.mapper;
 import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 @Mapper
 public interface ParkingTriggerMapper {
     /**
@@ -26,4 +28,11 @@ public interface ParkingTriggerMapper {
      * @return int
      */
     int update(ParkingTriggerDO parkingTriggerDO);
+
+    /**
+     * 根据项目ID,triggerid 查询trigger事件.
+     * @param params {@link Map}
+     * @return {@link ParkingTriggerDO}
+     */
+    ParkingTriggerDO findByProjectIdAndId(Map<String, Object> params);
 }

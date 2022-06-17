@@ -112,6 +112,7 @@ public class CTPMessageHandler extends MessageHandler {
             return SpkCommonResult.success("Shared Trad minIntervalDupPark no timeout.");
         }
         // 入场数据落库.
+        parkingLockModel.setParkId(parkingLockModel.getId());
         return saveEnterParking(parkingLockModel, parkStatusModel);
     }
 

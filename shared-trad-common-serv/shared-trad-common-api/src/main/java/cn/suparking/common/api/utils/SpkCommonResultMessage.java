@@ -11,7 +11,16 @@ public final class SpkCommonResultMessage {
 
     public static final String ENTER_PARKING_NOT_FOUND = "parking entered record not found.";
 
-    public static final String CHARGE_VALIED = "charge server is valid";
+    public static final String CHARGE_VALID = "charge server is valid";
+
+    // parking user valid.
+    public static final String PARKING_DATE_USER_VALID = "parking user data is valid";
+
+    // parking trigger valid
+    public static final String PARKING_DATA_TRIGGER_VALID = "parking trigger data is valid";
+
+    // parking events valid
+    public static final String PARKING_DATA_EVENT_VALID = "parking events data is valid";
 
     public static final String TOKEN_HAS_NO_PERMISSION = "token has no permission";
 

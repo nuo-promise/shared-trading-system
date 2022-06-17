@@ -13,6 +13,7 @@ import cn.suparking.data.mq.messageTemplate.MessageObj;
 import cn.suparking.data.mq.messageTemplate.MessageTemplate;
 import cn.suparking.data.mq.messageTemplate.RabbitUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.core.Message;
@@ -97,8 +98,7 @@ public class DeviceReceive implements MessageListener {
                     log.warn("来自: " + publishData.getFrom() + " 地锁,编号: " + lockCode + " : 经过核实,该编号不是平台设备,忽略执行以下逻辑.");
                 }
             } else {
-                String retBody = SpkCommonResult.success("Device Receive Type Event, Not Deal.").toString();
-                rabbitUtils.sendRabbitAck(message, from, topic, retBody);
+                rabbitUtils.sendRabbitAck(message, from, topic, (JSONObject) JSONObject.toJSON(SpkCommonResult.success("Device Receive Type Event, Not Deal.")));
             }
 
         } catch (Exception ex) {

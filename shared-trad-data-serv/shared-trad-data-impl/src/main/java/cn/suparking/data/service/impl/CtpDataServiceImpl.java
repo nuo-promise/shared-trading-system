@@ -8,10 +8,13 @@ import cn.suparking.data.api.beans.ParkingState;
 import cn.suparking.data.api.beans.PublishData;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
+import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import cn.suparking.data.dao.mapper.ParkingMapper;
+import cn.suparking.data.dao.mapper.ParkingTriggerMapper;
 import cn.suparking.data.mq.messageTemplate.DeviceMessageThread;
 import cn.suparking.data.mq.messagehandler.CTPMessageHandler;
 import cn.suparking.data.service.CtpDataService;
+import cn.suparking.data.service.ParkingTriggerService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +32,15 @@ public class CtpDataServiceImpl implements CtpDataService {
     private final CTPMessageHandler ctpMessageHandler;
 
     private final ParkingMapper parkingMapper;
+
+    private final ParkingTriggerMapper parkingTriggerMapper;
+
     private final DeviceMessageThread deviceMessageThread = Application.getBean("DeviceMessageThread", DeviceMessageThread.class);
 
-    public CtpDataServiceImpl(final CTPMessageHandler ctpMessageHandler, final ParkingMapper parkingMapper) {
+    public CtpDataServiceImpl(final CTPMessageHandler ctpMessageHandler, final ParkingMapper parkingMapper, final ParkingTriggerMapper parkingTriggerMapper) {
         this.ctpMessageHandler = ctpMessageHandler;
         this.parkingMapper = parkingMapper;
+        this.parkingTriggerMapper = parkingTriggerMapper;
     }
 
     @Override

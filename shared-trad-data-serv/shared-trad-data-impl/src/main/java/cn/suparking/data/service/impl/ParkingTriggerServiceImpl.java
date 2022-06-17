@@ -7,6 +7,9 @@ import cn.suparking.data.service.ParkingTriggerService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class ParkingTriggerServiceImpl implements ParkingTriggerService {
 
@@ -34,5 +37,13 @@ public class ParkingTriggerServiceImpl implements ParkingTriggerService {
             parkingTriggerMapper.update(parkingTriggerDO);
         }
         return parkingTriggerDO.getId();
+    }
+
+    @Override
+    public ParkingTriggerDO findByProjectIdAndId(final Long projectId, final Long triggerId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", triggerId);
+        params.put("projectId", projectId);
+        return parkingTriggerMapper.findByProjectIdAndId(params);
     }
 }

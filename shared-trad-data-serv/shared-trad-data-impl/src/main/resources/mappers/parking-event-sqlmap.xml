@@ -50,6 +50,15 @@
         WHERE id = #{id, jdbcType=BIGINT}
     </select>
 
+    <select id="findByProjectIdAndIds" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List" />
+            FROM spk_parking_event
+        WHERE id in
+        <foreach  item="item" collection="ids" index="index"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
     <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingEventDO">
         INSERT INTO spk_parking_event
         <trim prefix="(" suffix=")" suffixOverrides=",">

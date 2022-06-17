@@ -45,13 +45,22 @@
 		remark
     </sql>
 
-    <delete id="deleteByPrimaryKey" parameterType="map">
-        delete from spk_parking_trigger_0
-        where
-            id = #{id,jdbcType=BIGINT}
-    </delete>
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_parking_trigger
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="findByProjectIdAndId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_parking_trigger
+        WHERE project_id = #{projectId, jdbcType=BIGINT} AND id = #{id, jdbcType=BIGINT}
+    </select>
+
     <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingTriggerDO">
-        INSERT INTO spk_parking_trigger_0
+        INSERT INTO spk_parking_trigger
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -172,55 +181,9 @@
         </trim>
     </insert>
 
-    <insert id="insertBatchList" parameterType="java.util.List">
-        insert into spk_parking_trigger_0 (
-        id ,
-        project_id ,
-        recog_time ,
-        open_time ,
-        park_id ,
-        park_name ,
-        in_sub_area_id ,
-        in_sub_area_name ,
-        out_sub_area_id ,
-        out_sub_area_name ,
-        park_no ,
-        car_type_id ,
-        car_type_name ,
-        left_day ,
-        space_quantity ,
-        date_created ,
-        date_updated ,
-        operator ,
-        remark
-        ) VALUES
-        <foreach collection ="list" item="item" separator =",">
-            (
-            #{item.id,jdbcType=BIGINT} ,
-            #{item.projectId,jdbcType=BIGINT} ,
-            #{item.recogTime,jdbcType=BIGINT} ,
-            #{item.openTime,jdbcType=BIGINT} ,
-            #{item.parkId,jdbcType=VARCHAR} ,
-            #{item.parkName,jdbcType=VARCHAR} ,
-            #{item.inSubAreaId,jdbcType=VARCHAR} ,
-            #{item.inSubAreaName,jdbcType=VARCHAR} ,
-            #{item.outSubAreaId,jdbcType=VARCHAR} ,
-            #{item.outSubAreaName,jdbcType=VARCHAR} ,
-            #{item.parkNo,jdbcType=VARCHAR} ,
-            #{item.carTypeId,jdbcType=VARCHAR} ,
-            #{item.carTypeName,jdbcType=VARCHAR} ,
-            #{item.leftDay,jdbcType=INTEGER} ,
-            #{item.spaceQuantity,jdbcType=INTEGER} ,
-            #{item.dateCreated,jdbcType=TIMESTAMP} ,
-            #{item.dateUpdated,jdbcType=TIMESTAMP} ,
-            #{item.operator,jdbcType=VARCHAR} ,
-            #{item.remark,jdbcType=VARCHAR}
-            )
-        </foreach >
-    </insert>
 
-    <update id="updateByPrimaryKey" parameterType="cn.suparking.data.dao.entity.ParkingTriggerDO">
-        UPDATE spk_parking_trigger_0 <set>
+    <update id="update" parameterType="cn.suparking.data.dao.entity.ParkingTriggerDO">
+        UPDATE spk_parking_trigger <set>
         <if test="projectId != null">
             project_id = #{projectId,jdbcType=BIGINT} , </if>
         <if test="recogTime != null">
@@ -261,112 +224,4 @@
         WHERE
         id = #{id,jdbcType=BIGINT}
     </update>
-
-
-    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-        select  id,project_id,recog_time,open_time,park_id,park_name,in_sub_area_id,in_sub_area_name,out_sub_area_id,out_sub_area_name,park_no,car_type_id,car_type_name,left_day,space_quantity,date_created,date_updated,operator,remark
-        from spk_parking_trigger_0
-        where
-            id = #{id,jdbcType=BIGINT}
-
-    </select>
-    <select id="selectAll" resultMap="BaseResultMap">
-        select
-            id,
-
-            project_id,
-
-            recog_time,
-
-            open_time,
-
-            park_id,
-
-            park_name,
-
-            in_sub_area_id,
-
-            in_sub_area_name,
-
-            out_sub_area_id,
-
-            out_sub_area_name,
-
-            park_no,
-
-            car_type_id,
-
-            car_type_name,
-
-            left_day,
-
-            space_quantity,
-
-            date_created,
-
-            date_updated,
-
-            operator,
-
-            remark
-        from spk_parking_trigger_0
-    </select>
-    <update id="deleteByPrimaryKeys" parameterType="java.lang.String">
-        update spk_parking_trigger_0 set state = -100
-        where id in
-        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-            #{id}
-        </foreach>
-    </update>
-    <select id="search"  parameterType="map" resultType="cn.suparking.data.dao.entity.ParkingTriggerDO">
-        select
-        a.id as id,
-
-        a.project_id as projectId,
-
-        a.recog_time as recogTime,
-
-        a.open_time as openTime,
-
-        a.park_id as parkId,
-
-        a.park_name as parkName,
-
-        a.in_sub_area_id as inSubAreaId,
-
-        a.in_sub_area_name as inSubAreaName,
-
-        a.out_sub_area_id as outSubAreaId,
-
-        a.out_sub_area_name as outSubAreaName,
-
-        a.park_no as parkNo,
-
-        a.car_type_id as carTypeId,
-
-        a.car_type_name as carTypeName,
-
-        a.left_day as leftDay,
-
-        a.space_quantity as spaceQuantity,
-
-        a.date_created as dateCreated,
-
-        a.date_updated as dateUpdated,
-
-        a.operator as operator,
-
-        a.remark as remark
-        from spk_parking_trigger_0 a
-        where a.state != -100
-        <if test="states != null and states.size > 0 ">
-            and a.state in
-            <foreach collection="states" item="state" index="index" open="(" close=")" separator=",">
-                #{state}
-            </foreach>
-        </if>
-
-    </select>
-
-
 </mapper>
