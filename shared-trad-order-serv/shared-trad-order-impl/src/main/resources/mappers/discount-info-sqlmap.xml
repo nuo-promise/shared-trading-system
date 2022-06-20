@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.order.dao.mapper.DiscountInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.DiscountInfoDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="parking_order_id" jdbcType="BIGINT" property="parkingOrderId" />
+        <result column="discount_no" jdbcType="VARCHAR" property="discountNo" />
+        <result column="value_type" jdbcType="VARCHAR" property="valueType" />
+        <result column="value" jdbcType="INTEGER" property="value" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="used_start_time" jdbcType="VARCHAR" property="usedStartTime" />
+        <result column="used_end_time" jdbcType="VARCHAR" property="usedEndTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		parking_order_id,
+		discount_no,
+		value_type,
+		`value`,
+		quantity,
+		used_start_time,
+		used_end_time,
+    </sql>
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_discount_info
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="findByParkingOrderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_discount_info
+        WHERE parking_order_id = #{parkingOrderId, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="cn.suparking.order.dao.entity.DiscountInfoDO">
+        INSERT INTO spk_discount_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parkingOrderId != null">
+                parking_order_id,
+            </if>
+            <if test="discountNo != null">
+                discount_no,
+            </if>
+            <if test="valueType != null">
+                value_type,
+            </if>
+            <if test="value != null">
+                `value`,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="usedStartTime != null">
+                used_start_time,
+            </if>
+            <if test="usedEndTime != null">
+                used_end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="parkingOrderId != null">
+                #{parkingOrderId,jdbcType=BIGINT},
+            </if>
+            <if test="discountNo != null">
+                #{discountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="valueType != null">
+                #{valueType,jdbcType=INTEGER},
+            </if>
+            <if test="value != null">
+                #{value,jdbcType=INTEGER},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="usedStartTime != null">
+                #{usedStartTime,jdbcType=VARCHAR},
+            </if>
+            <if test="usedEndTime != null">
+                #{usedEndTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="cn.suparking.order.dao.entity.DiscountInfoDO">
+        UPDATE spk_discount_info <set>
+        <if test="parkingOrderId != null">
+            parking_order_id = #{parkingOrderId,jdbcType=BIGINT} , </if>
+        <if test="discountNo != null">
+            discount_no = #{discountNo,jdbcType=VARCHAR} , </if>
+        <if test="valueType != null">
+            value_type = #{valueType,jdbcType=VARCHAR} , </if>
+        <if test="value != null">
+             `value` = #{value,jdbcType=INTEGER} , </if>
+        <if test="quantity != null">
+            quantity = #{quantity, jdbcType=INTEGER} , </if>
+        <if test="usedStartTime != null">
+            used_start_time = #{usedStartTime,jdbcType=VARCHAR} , </if>
+        <if test="usedEndTime != null">
+            used_end_time = #{usedEndTime,jdbcType=VARCHAR} , </if>
+    </set>
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

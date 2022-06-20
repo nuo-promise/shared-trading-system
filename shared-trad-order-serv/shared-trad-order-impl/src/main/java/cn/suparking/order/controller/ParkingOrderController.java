@@ -1,11 +1,12 @@
 package cn.suparking.order.controller;
 
-import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
-import cn.suparking.order.service.ParkingOrderService;
+import cn.suparking.order.api.beans.ParkingOrderDTO;
+import cn.suparking.order.api.beans.ParkingQuery;
 import cn.suparking.order.dao.entity.ParkingOrderDO;
+import cn.suparking.order.service.ParkingOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,54 @@ public class ParkingOrderController {
                     SpkCommonAssert.notBlank(item.getOrderNo(), "订单号不能为空");
                     Integer count = parkingOrderService.createOrUpdate(item);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
+                }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    }
+
+    /**
+     * 根据用户ID 和 开始与结束时间范围查询订单数据.
+     * @param parkingQuery {@Link ParkingQuery}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/findByUserIdsAndBeginTimeOrEndTimeRange")
+    public SpkCommonResult findByUserIdsAndBeginTimeOrEndTimeRange(@RequestBody final ParkingQuery parkingQuery) {
+        return Optional.ofNullable(parkingQuery)
+                .map(item -> {
+                    SpkCommonAssert.notNull(item.getUserIds(), "用户信息不能为空");
+                    SpkCommonAssert.notNull(item.getBegin(), "开始时间不能为空");
+                    SpkCommonAssert.notNull(item.getEnd(), "结束时间不能为空");
+                    return parkingOrderService.findByUserIdsAndBeginTimeOrEndTimeRange(parkingQuery);
+                }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    }
+
+    /**
+     * 根据用户ID 和时间段查询订单信息.
+     * @param parkingQuery {@link ParkingQuery}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/findByUserIdsAndEndTimeRange")
+    public SpkCommonResult findByUserIdsAndEndTimeRange(@RequestBody final ParkingQuery parkingQuery) {
+        return Optional.ofNullable(parkingQuery)
+                .map(item -> {
+                    SpkCommonAssert.notNull(item.getUserIds(), "用户信息不能为空");
+                    SpkCommonAssert.notNull(item.getBegin(), "开始时间不能为空");
+                    SpkCommonAssert.notNull(item.getEnd(), "结束时间不能为空");
+                    return parkingOrderService.findByUserIdsAndEndTimeRange(parkingQuery);
+                }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    }
+
+
+    /**
+     * 根据用户ID 查询下一次开始时间.
+     * @param parkingQuery {@Link ParkingQuery}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/findNextAggregateBeginTime")
+    public SpkCommonResult findNextAggregateBeginTime(@RequestBody final ParkingQuery parkingQuery) {
+        return Optional.ofNullable(parkingQuery)
+                .map(item -> {
+
+                    SpkCommonAssert.notNull(item.getUserIds(), "用户信息不能为空");
+                    return parkingOrderService.findNextAggregateBeginTime(parkingQuery);
                 }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
     }
 }

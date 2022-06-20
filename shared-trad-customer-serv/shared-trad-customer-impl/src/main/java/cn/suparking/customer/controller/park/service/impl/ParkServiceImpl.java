@@ -148,7 +148,7 @@ public class ParkServiceImpl implements ParkService {
                 .discountNo("1111111111111111111")
                 .quantity(2)
                 .value(100)
-                .valueType(ValueType.AMOUNT)
+                .valueType(ValueType.AMOUNT.name())
                 .build();
         JSONObject request = new JSONObject();
 

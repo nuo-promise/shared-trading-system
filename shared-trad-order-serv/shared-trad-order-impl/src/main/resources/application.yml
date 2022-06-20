@@ -5,6 +5,8 @@ server:
     include-message: always
   servlet:
     context-path: /order-center
+  # 增加优雅停机
+  shutdown: graceful
 spring:
 #    application:
 #  #   定义项目名称
@@ -69,7 +71,7 @@ spring:
 #      # 读写分离配置
 #      rules:
 #        sharding:
-#          bindings-tables[0]: spk_car_group_order, spk_car_group_refund_order, spk_charge_detail, spk_charge_info, spk_parking_order, spk_parking_refund_order
+#          bindings-tables[0]: spk_car_group_order, spk_car_group_refund_order, spk_charge_detail, spk_charge_info, spk_parking_order, spk_parking_refund_order, spk_discount_info
 #          tables:
 #            # 合约订单
 #            spk_car_group_order:
@@ -133,6 +135,16 @@ spring:
 #              key-generate-strategy:
 #                column: user_id
 #                key-generator-name: snowflake
+#                # 订单优惠券信息
+#            spk_discount_info:
+#              actual-data-nodes: ds.spk_discount_info_$->{0..4}
+#              table-strategy:
+#                standard:
+#                  sharding-column: parking_order_id
+#                  sharding-algorithm-name: spk-discount-info-inline
+#              key-generate-strategy:
+#                column: parking_order_id
+#                key-generator-name: snowflake
 #          sharding-algorithms:
 #            spk-car-group-order-inline:
 #              type: INLINE
@@ -164,6 +176,11 @@ spring:
 #              props:
 #                algorithm-expression: spk_parking_refund_order_$->{user_id % 5}
 #                allow-range-query-with-inline-sharding: false
+#            spk-discount-info-inline:
+#              type: INLINE
+#              props:
+#                algorithm-expression: spk_discount_info_$->{parking_order_id % 5}
+#                allow_range-query-with-inline-sharding: false
 #          key-generators:
 #            snowflake:
 #              type: SNOWFLAKE
@@ -193,8 +210,8 @@ spring:
     enable: true
     # redis 配置
   redis:
-    host: 192.168.1.123
-    port: 6379
+    host: localhost
+    port: 6378
     password:
     database: 0
     timeout: 6000
@@ -262,7 +279,7 @@ seata:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 47.98.44.236:8848
+      server-addr: 47.98.44.236:8084
       namespace: dev
       group: myGroup
       cluster: default
@@ -283,8 +300,8 @@ feign:
         # 服务器请求超时阶段5秒超时
         readTimeout: 5000
       # 针对某个特定服务的超时配置
-      coupon-template-serv:
-        connectTimeout: 1000
-        readTimeout: 2000
+#      coupon-template-serv:
+#        connectTimeout: 1000
+#        readTimeout: 2000
   circuitbreaker:
     enabled: true

@@ -5,6 +5,8 @@ server:
     include-message: always
   servlet:
     context-path: /data-center
+  # 增加优雅停机
+  shutdown: graceful
 spring:
 #  application:
 ##   定义项目名称

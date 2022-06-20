@@ -77,6 +77,41 @@
 		date_updated
     </sql>
 
+    <select id="findByUserIdsAndBeginTimeOrEndTimeRange" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List" />
+            FROM spk_parking_order
+        WHERE project_no = #{projectNo jdbcType=VARCHAR} AND refund_state not in ("PARITAL", "REFUNDED") AND user_id in
+        <foreach item="item" collection="userIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ((end_time &gt;= `begin` AND end_time &lt;= `end`) OR (begin_time &gt;= `begin` AND begin_time &lt;= `end`))
+        ORDER BY begin_time ASC;
+    </select>
+
+    <select id="findByUserIdsAndEndTimeRange" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM spk_parking_order
+        WHERE project_no = #{projectNo jdbcType=VARCHAR} refund_state not in ("PARITAL", "REFUNDED") AND user_id in
+        <foreach item="item" collection="userIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        (end_time &gt;= `begin` AND end_time &lt;= `end`)
+        ORDER BY begin_time ASC;
+    </select>
+
+    <select id="findNextAgregateBeginTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM spk_parking_order
+        WHERE project_no = #{projectNo jdbcType=VARCHAR} refund_state not in ("PARITAL", "REFUNDED") AND user_id in
+        <foreach item="item" collection="userIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY end_time DESC LIMIT 1;
+    </select>
+
     <insert id="insert" parameterType="cn.suparking.order.dao.entity.ParkingOrderDO">
         INSERT INTO spk_parking_order
         <trim prefix="(" suffix=")" suffixOverrides=",">

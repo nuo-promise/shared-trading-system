@@ -11,7 +11,7 @@ public interface ChargeInfoService {
      * @param id 计费ID
      * @return ChargeDetailDO {@linkplain ChargeInfoDO}
      */
-    ChargeInfoDO findById(String id);
+    ChargeInfoDO findById(Long id);
 
     /**
      * 创建或修改计费信息.

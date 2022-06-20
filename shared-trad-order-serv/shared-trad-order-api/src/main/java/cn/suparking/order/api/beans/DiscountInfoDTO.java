@@ -1,4 +1,4 @@
-package cn.suparking.data.dao.entity;
+package cn.suparking.order.api.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,13 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiscountInfoDO implements Serializable {
+public class DiscountInfoDTO implements Serializable {
 
-    private static final long serialVersionUID = -2859712365121070033L;
+    private static final long serialVersionUID = -8949602346357239809L;
+
+    private String id;
+
+    private String parkingOrderId;
 
     private String discountNo;
 

@@ -19,6 +19,8 @@ public class ChargeDetailDTO implements Serializable {
 
     private String changeInfoId;
 
+    private String chargeTypeName;
+
     private Long beginTime;
 
     private Long endTime;
@@ -32,6 +34,8 @@ public class ChargeDetailDTO implements Serializable {
     private Integer discountedMinutes;
 
     private Integer chargingMinutes;
+
+    private Integer chargeAmount;
 
     private String remark;
 }

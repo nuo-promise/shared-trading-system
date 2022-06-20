@@ -175,6 +175,7 @@ public class CTPMessageHandler extends MessageHandler {
                 .deviceNo(parkingLockModel.getDeviceNo())
                 .enter(parkingTriggerId)
                 .parkingEvents(events)
+                .latestTriggerParkId(parkingLockModel.getParkId())
                 .firstEnterTriggerTime(currentTime)
                 .latestTriggerTime(currentTime)
                 .parkingState(String.valueOf(ParkingState.ENTERED))

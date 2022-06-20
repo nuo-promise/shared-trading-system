@@ -5,7 +5,12 @@ server:
     include-message: always
   servlet:
     context-path: /mini-module
+  # 增加优雅停机
+  shutdown: graceful
 spring:
+  lifecycle:
+    # 设置缓冲时间
+    timeout-per-shutdown-phase: 20s
   datasource:
     # mysql数据源
     username: SPKRoot

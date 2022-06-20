@@ -17,7 +17,7 @@ public class ChargeInfoServiceImpl implements ChargeInfoService {
     }
 
     @Override
-    public ChargeInfoDO findById(final String id) {
+    public ChargeInfoDO findById(final Long id) {
         return chargeInfoMapper.selectById(id);
     }
 

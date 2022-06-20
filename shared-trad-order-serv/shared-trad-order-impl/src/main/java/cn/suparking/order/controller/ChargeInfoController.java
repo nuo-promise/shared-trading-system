@@ -37,7 +37,7 @@ public class ChargeInfoController {
      */
     @GetMapping("/{id}")
     public SpkCommonResult detailChargeInfo(@PathVariable("id") final String id) {
-        ChargeInfoDO chargeInfoDO = chargeInfoService.findById(id);
+        ChargeInfoDO chargeInfoDO = chargeInfoService.findById(Long.valueOf(id));
         return Optional.ofNullable(chargeInfoDO)
                 .map(item -> SpkCommonResult.success(SpkCommonResultMessage.DETAIL_SUCCESS, item))
                 .orElseGet(() -> SpkCommonResult.error("计费信息不存在"));

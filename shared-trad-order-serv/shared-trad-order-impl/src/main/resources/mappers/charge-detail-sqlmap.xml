@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.ChargeDetailDO">
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="charge_info_id" jdbcType="BIGINT" property="chargeInfoId" />
+        <result column="charge_type_name" jdbcType="VARCHAR" property="charTypeName" />
         <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
         <result column="end_time" jdbcType="BIGINT" property="endTime" />
         <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
@@ -18,6 +19,7 @@
     <sql id="Base_Column_List">
         id,
 		charge_info_id,
+        charge_type_name,
 		begin_time,
 		end_time,
 		parking_minutes,
@@ -37,6 +39,9 @@
             </if>
             <if test="chargeInfoId != null">
                 charge_info_id,
+            </if>
+            <if test="chargeTypeName != null">
+                charge_type_name,
             </if>
             <if test="beginTime != null">
                 begin_time,
@@ -73,6 +78,9 @@
             <if test="chargeInfoId != null">
                 #{chargeInfoId,jdbcType=BIGINT},
             </if>
+            <if test="chargeTypeName != null">
+                #{chargeTypeName,jdbcType=VARCHAR},
+            </if>
             <if test="beginTime != null">
                 #{beginTime,jdbcType=BIGINT},
             </if>
@@ -107,6 +115,8 @@
         UPDATE spk_charge_detail_0 <set>
         <if test="chargeInfoId != null">
             charge_info_id = #{chargeInfoId,jdbcType=BIGINT} , </if>
+        <if test="chargeTypeName != null">
+            charge_type_name = #{chargeTypeName,jdbcType=BIGINT} , </if>
         <if test="beginTime != null">
             begin_time = #{beginTime,jdbcType=BIGINT} , </if>
         <if test="endTime != null">
@@ -138,5 +148,12 @@
         where
             id = #{id,jdbcType=BIGINT}
 
+    </select>
+
+    <select id="findByChargeInfoId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_charge_detail
+        WHERE parking_order_id = #{parkingOrderId, jdbcType=BIGINT}
     </select>
 </mapper>
