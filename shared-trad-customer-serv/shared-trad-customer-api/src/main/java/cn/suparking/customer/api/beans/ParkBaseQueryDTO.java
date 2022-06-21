@@ -16,6 +16,11 @@ public class ParkBaseQueryDTO {
      */
     private String miniOpenId;
 
+    /**
+     * 用户在数泊平台关注的 unionId.
+     */
+    private String unionId;
+
     // 用户ID.
     private String userId;
 }

@@ -4,6 +4,7 @@ import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
+import cn.suparking.customer.api.beans.ParkPayDTO;
 import cn.suparking.customer.beans.park.LocationDTO;
 import cn.suparking.customer.controller.park.service.ParkService;
 import lombok.extern.slf4j.Slf4j;
@@ -76,5 +77,16 @@ public class ParkController {
     @PostMapping("scanCodeQueryFee")
     public SpkCommonResult scanCodeQueryFee(@RequestHeader("sign") final String sign, @RequestBody final ParkFeeQueryDTO parkFeeQueryDTO) {
         return parkService.scanCodeQueryFee(sign, parkFeeQueryDTO);
+    }
+
+    /**
+     * 小程序下单接口.
+     * @param sign C 端 使用 tmpOrderNo 进行 签名制作.
+     * @param parkPayDTO {@link ParkPayDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("miniToPay")
+    public SpkCommonResult miniToPay(@RequestHeader("sign") final String sign, @RequestBody final ParkPayDTO parkPayDTO) {
+        return parkService.miniToPay(sign, parkPayDTO);
     }
 }

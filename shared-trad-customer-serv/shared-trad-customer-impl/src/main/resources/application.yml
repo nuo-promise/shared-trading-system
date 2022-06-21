@@ -78,8 +78,8 @@ spring:
     enable: true
     # redis 配置
   redis:
-    host: 192.168.1.123
-    port: 6379
+    host: localhost
+    port: 6378
     password:
     database: 0
     timeout: 6000
@@ -143,3 +143,4 @@ sparking:
   bs:
     url: http://192.168.1.133:10088/spms/api/wxapp
   secret: 9fdfff5ec6ac41c1a83269241e09f4ce
+  discountUrl: http://discount.suparking.cn:25863/

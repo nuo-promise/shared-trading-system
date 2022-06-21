@@ -3,6 +3,7 @@ package cn.suparking.data.controller;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.data.api.beans.ParkConfigDTO;
 import cn.suparking.data.api.beans.ParkingLockModel;
+import cn.suparking.data.api.beans.ProjectConfig;
 import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
@@ -115,5 +116,15 @@ public class ParkingController {
     @PostMapping("/findParkingEvents")
     public List<ParkingEventDO> findParkingEvents(@RequestBody final ParkEventQuery parkEventQuery) {
         return parkingEventService.findParkingEvents(parkEventQuery);
+    }
+
+    /**
+     * 根据项目编号获取场库配置信息.
+     * @param projectNo String
+     * @return {@link ProjectConfig}
+     */
+    @GetMapping("/getProjectConfig")
+    public ProjectConfig getProjectConfig(@RequestParam("projectNo") final String projectNo) {
+       return ctpDataService.getProjectConfig(projectNo);
     }
 }

@@ -1,27 +1,36 @@
 package cn.suparking.customer.controller.park.service.impl;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
+import cn.suparking.common.api.configuration.SnowflakeConfig;
 import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.common.api.utils.HttpUtils;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
+import cn.suparking.common.api.utils.Utils;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
+import cn.suparking.customer.api.beans.ParkPayDTO;
+import cn.suparking.customer.api.beans.parkfee.DiscountCustomer;
+import cn.suparking.customer.api.beans.parkfee.ParkFeeRet;
+import cn.suparking.customer.api.beans.parkfee.Parking;
+import cn.suparking.customer.api.beans.parkfee.ParkingOrder;
 import cn.suparking.customer.api.constant.ParkConstant;
 import cn.suparking.customer.beans.park.LocationDTO;
 import cn.suparking.customer.configuration.properties.RabbitmqProperties;
 import cn.suparking.customer.configuration.properties.SharedProperties;
 import cn.suparking.customer.configuration.properties.SparkProperties;
 import cn.suparking.customer.controller.park.service.ParkService;
+import cn.suparking.customer.dao.vo.user.ParkFeeQueryVO;
 import cn.suparking.customer.feign.data.DataTemplateService;
 import cn.suparking.customer.feign.user.UserTemplateService;
+import cn.suparking.customer.tools.ReactiveRedisUtils;
 import cn.suparking.customer.vo.park.ParkInfoVO;
 import cn.suparking.data.api.beans.ParkingLockModel;
+import cn.suparking.data.api.beans.ProjectConfig;
 import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.DiscountInfoDO;
 import cn.suparking.data.dao.entity.ParkingDO;
 import cn.suparking.data.dao.entity.ParkingEventDO;
 import cn.suparking.data.dao.entity.ParkingTriggerDO;
-import cn.suparking.data.dao.entity.ValueType;
 import cn.suparking.user.api.vo.UserVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -36,9 +45,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -143,18 +155,28 @@ public class ParkServiceImpl implements ParkService {
                 return SpkCommonResult.error(SpkCommonResultMessage.PARKING_DATA_EVENT_VALID);
             }
         }
-        // 查询是否存在优惠券.
-        DiscountInfoDO discountInfoDO = DiscountInfoDO.builder()
-                .discountNo("1111111111111111111")
-                .quantity(2)
-                .value(100)
-                .valueType(ValueType.AMOUNT.name())
-                .build();
+
+        // 查询项目对应的 ProjectConfig
+        ProjectConfig projectConfig = dataTemplateService.getProjectConfig(parkingLockModel.getProjectNo());
+        if (Objects.isNull(projectConfig)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.PARKING_CONFIG_VALID);
+        }
+
         JSONObject request = new JSONObject();
 
         // RPC 查询 费用
+        request.put("projectConfig", projectConfig);
         request.put("parking", parkingDO);
-        request.put("discountInfo", discountInfoDO);
+        // 根据前端传递的 优惠券编号,或者优惠券实体, 重新计费
+        if (Objects.nonNull(parkFeeQueryDTO.getDiscountInfo())) {
+            request.put("discountInfo", parkFeeQueryDTO.getDiscountInfo());
+        } else {
+            if (StringUtils.isNotBlank(parkFeeQueryDTO.getDiscountNo())) {
+                request.put("discountInfo", getDiscountInfoByNo(parkFeeQueryDTO.getDiscountNo(), parkingDO.getProjectNo()));
+            }
+            request.put("discountInfo", null);
+        }
+
         request.put("userInfo", parkFeeQueryDTO);
         request.put("enter", parkingTriggerDO);
         request.put("parkingEvents", parkingEvents);
@@ -163,7 +185,71 @@ public class ParkServiceImpl implements ParkService {
         if (StringUtils.isBlank(retBody)) {
             return SpkCommonResult.error(SpkCommonResultMessage.CHARGE_VALID);
         }
+
         // 组织订单,发送给前端
+        ParkFeeRet parkFeeRet = JSON.parseObject(retBody, ParkFeeRet.class);
+        if (Objects.isNull(parkFeeRet) || !parkFeeRet.getCode().equals("00000")) {
+            return SpkCommonResult.error(SpkCommonResultMessage.CHARGE_CHANGE_DATA_VALID);
+        }
+        // 生成临时订单号
+        String tmpOrderNo = String.valueOf(SnowflakeConfig.snowflakeId());
+        log.info("用户: [" + parkFeeRet.getParking().getUserId() + " ], 设备编号: [" + parkFeeRet.getParking().getDeviceNo() + " ],获取临时订单号为: [" + tmpOrderNo + " ]");
+        parkFeeRet.setTmpOrderNo(tmpOrderNo);
+        Parking parking = parkFeeRet.getParking();
+        if (Objects.isNull(parking)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.CHARGE_CHANGE_DATA_VALID);
+        }
+
+        ParkingOrder parkingOrder = parkFeeRet.getParkingOrder();
+        if (Objects.isNull(parkingOrder)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.CHARGE_CHANGE_DATA_VALID);
+        }
+        // 拼接返回前端数据
+        ParkFeeQueryVO parkFeeQueryVO = ParkFeeQueryVO.builder()
+                .tmpOrderNo(tmpOrderNo)
+                .parkingId(parking.getId())
+                .projectNo(parking.getProjectNo())
+                .userId(parking.getUserId().toString())
+                .totalAmount(parkingOrder.getTotalAmount())
+                .dueAmount(parkingOrder.getDueAmount())
+                .discountedMinutes(parkingOrder.getDiscountedMinutes())
+                .discountedAmount(parkingOrder.getDiscountedAmount())
+                .carTypeClass(parkingOrder.getCarTypeClass())
+                .carTypeName(parkingOrder.getCarTypeName())
+                .beginTime(parkingOrder.getBeginTime())
+                .endTime(parkingOrder.getEndTime())
+                .parkingMinutes(parkingOrder.getParkingMinutes())
+                .paidAmount(parkingOrder.getPaidAmount())
+                .parkNo(parking.getParkNo())
+                .parkName(parking.getParkName())
+                .parkId(parking.getParkId())
+                .deviceNo(parking.getDeviceNo())
+                .expireTime(parkingOrder.getExpireTime())
+                .build();
+
+        if (Objects.nonNull(parkingOrder.getDiscountInfo())) {
+            parkFeeQueryVO.setDiscountInfo(parkingOrder.getDiscountInfo());
+        }
+
+        // 根据UnionId 获取优惠券信息
+        List<DiscountInfoDO> discountInfoDOList = getDiscountInfoListByUnionId(parking.getProjectNo(), parkFeeQueryDTO.getUnionId());
+        if (Objects.nonNull(discountInfoDOList)) {
+            parkFeeQueryVO.setDiscountInfoList(discountInfoDOList);
+        }
+
+        // 将临时数据根据 过期时间 存入Redis
+        opsValue(parkFeeRet, parking.getParkingConfig().getTxTTL() * 60);
+        log.info("用户: [" + parking.getUserId() + " ]" + " 查询车位费用成功:￥ [" + Utils.rmbFenToYuan(parkFeeQueryVO.getDueAmount()) + "] \n");
+        log.info("用户: [" + parking.getUserId() + " ]" + " 其他业务数据: [" + parkFeeQueryVO + " ] \n");
+        return SpkCommonResult.success(parkFeeQueryVO);
+    }
+
+    @Override
+    public SpkCommonResult miniToPay(final String sign, final ParkPayDTO parkPayDTO) {
+        // 校验 sign
+        if (!invoke(sign, parkPayDTO.getTmpOrderNo())) {
+            return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        }
         return null;
     }
 
@@ -180,7 +266,7 @@ public class ParkServiceImpl implements ParkService {
         }
         JSONObject retJson = JSON.parseObject(new String((byte[]) receiveMessage));
         log.info("接收计费服务消费返回: [" + retJson.toJSONString() + "]");
-        if (!retJson.containsKey("code") || retJson.getInteger("code").equals(200)) {
+        if (!retJson.containsKey("code") || !retJson.getString("code").equals("00000")) {
             return null;
         }
         return retJson.toJSONString();
@@ -225,5 +311,106 @@ public class ParkServiceImpl implements ParkService {
             });
             return parkInfoVOList;
         }).orElse(null);
+    }
+
+    /**
+     * save data.
+     * @param parkFeeRet {@link ParkFeeRet}
+     */
+    private void opsValue(final ParkFeeRet parkFeeRet, final Integer expireTime) {
+        ReactiveRedisUtils.putValue(parkFeeRet.getTmpOrderNo(), JSON.toJSONString(parkFeeRet), expireTime).subscribe(
+            flag -> {
+                if (flag) {
+                    log.info("临时订单 Key= " + parkFeeRet.getTmpOrderNo() + " save redis success! expireTime: " + expireTime);
+                } else {
+                    log.info("临时订单 Key= " + parkFeeRet.getTmpOrderNo() + " save redis failed!");
+                }
+            }
+        );
+    }
+
+    /**
+     * 根据wx union id 获取优惠券.
+     * @param unionId union id
+     * @return {@link List}
+     */
+    private List<DiscountInfoDO> getDiscountInfoListByUnionId(final String projectNo, final String unionId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("projectNo", projectNo);
+        params.put("appType", "wx");
+        params.put("appUserId", unionId);
+        params.put("listType", "notUse");
+        log.info("请求未使用优惠券参数: [ " + params + " ]");
+        try {
+            List<DiscountInfoDO> discountInfoDOList = new ArrayList<>();
+            JSONObject result = HttpUtils.sendGet(sharedProperties.getDiscountUrl() + "discountUser/list", params);
+            if (Objects.nonNull(result)) {
+                List<JSONObject> discountObjList = JSONObject.parseArray(result.getString("notUse_list"), JSONObject.class);
+                discountObjList.forEach(item -> {
+                    JSONObject discount = item.getJSONObject("discount");
+                    DiscountInfoDO discountInfoDO = DiscountInfoDO.builder()
+                            .discountNo(discount.getString("discountNo"))
+                            .value(discount.getInteger("value"))
+                            .quantity(1)
+                            .valueType(discount.getString("valueType"))
+                            .build();
+                    discountInfoDOList.add(discountInfoDO);
+                });
+            }
+            if (discountInfoDOList.size() > 0) {
+                return discountInfoDOList;
+            }
+        } catch (Exception ex) {
+            log.error("请求优惠券查询服务异常: " + ex);
+        }
+        return null;
+    }
+
+    /**
+     * 根据优惠券编号查询优惠券信息.
+     *
+     * @param discountNo discount no
+     * @return String
+     */
+    private DiscountInfoDO getDiscountInfoByNo(final String discountNo, final String projectNo) {
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("discountNo", discountNo);
+            log.info("根据优惠券编号获取优惠券信息请求参数 = [ " + param + " ]");
+            JSONObject result = HttpUtils.sendGet(sharedProperties.getDiscountUrl() + "discount/getDiscountByNo", param);
+            if (Objects.nonNull(result) && result.containsKey("code") && result.getString("code").equals("200")
+                    && result.containsKey("data") && Objects.nonNull(result.getJSONObject("data"))) {
+                log.info("获取优惠券信息： [ " + result.toJSONString() + " ]");
+                DiscountCustomer discountCustomer = JSON.parseObject(result.getString("data"), DiscountCustomer.class);
+                if (Objects.nonNull(discountCustomer) && discountCustomer.getEnabled()
+                        && discountCustomer.getUsedCount() < discountCustomer.getMaxAvailableCount()
+                        && discountCustomer.getProjectNo().equals(projectNo) && !judgeDiscountDate(discountCustomer.getExpireDate())) {
+                    return DiscountInfoDO.builder()
+                            .discountNo(discountCustomer.getDiscountNo())
+                            .valueType(discountCustomer.getValueType())
+                            .value(discountCustomer.getValue())
+                            .quantity(1)
+                            .build();
+
+                } else {
+                    log.error("根据优惠券编号: " + discountNo + " 查询经过判断优惠券无法使用: " + result.getString("data"));
+                }
+            }
+        } catch (Exception e) {
+            log.error("请求优惠劵信息查询服务异常----------->msg = " + e);
+        }
+        return null;
+    }
+
+    /**
+     * 判断优惠券是否过期.
+     * @param expireTime 过期时间
+     * @return {@link Boolean}
+     */
+    private Boolean judgeDiscountDate(final Long expireTime) {
+        if (DateUtils.getCurrentSecond() > expireTime) {
+            return true;
+        }
+        return false;
     }
 }

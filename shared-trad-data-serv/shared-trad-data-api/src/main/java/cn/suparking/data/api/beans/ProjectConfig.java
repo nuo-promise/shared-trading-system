@@ -15,7 +15,7 @@ public class ProjectConfig {
     private Integer txTTL;
 
     // 车位重复上报最小时间
-    private Long minIntervalForDupPark;
+    private Integer minIntervalForDupPark;
 
     // 付费免费时间
     private Integer prepayFreeMinutes;

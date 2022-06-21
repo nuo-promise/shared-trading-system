@@ -95,13 +95,13 @@ public class CTPMessageHandler extends MessageHandler {
         // 判断事件是入场 -> 查询数据库时间最近的记录 ; 如果是入场,那么比对两者时间差
         JSONObject json = JSON.parseObject((String) obj, JSONObject.class);
         if (Objects.isNull(json) || Objects.isNull(json.getJSONObject("parkingConfig"))) {
-            log.warn("操作停车记录时候,未获取到项目: " + parkingLockModel.getProjectNo() + ", 配置信息,默认做落库操作");
+            log.warn("操作停车记录时候,未获取到项目: " + parkingLockModel.getProjectNo() + ", 配置信息,默认不做落库操作");
             return SpkCommonResult.success("Shared Trad Data ProjectConfig Not Exists");
         }
 
         ProjectConfig projectConfig = JSON.parseObject(json.getJSONObject("parkingConfig").toJSONString(), ProjectConfig.class);
         if (Objects.isNull(projectConfig)) {
-            log.warn("操作停车记录时候,未获取到项目: " + parkingLockModel.getProjectNo() + ", 配置信息,默认做落库操作");
+            log.warn("操作停车记录时候,未获取到项目: " + parkingLockModel.getProjectNo() + ", 配置信息,默认不做落库操作");
             return SpkCommonResult.success("Shared Trad Data ProjectConfig Not Exists");
         }
 
@@ -192,7 +192,7 @@ public class CTPMessageHandler extends MessageHandler {
         return SpkCommonResult.error("操作失败");
     }
 
-    private Boolean notimeout(final Long latestTriggerTime, final Long minIntervalForDupPark) {
+    private Boolean notimeout(final Long latestTriggerTime, final Integer minIntervalForDupPark) {
         return (DateUtils.getCurrentMillis() - latestTriggerTime * 1000) < minIntervalForDupPark;
     }
 }

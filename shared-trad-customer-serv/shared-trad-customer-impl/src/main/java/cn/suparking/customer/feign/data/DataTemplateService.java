@@ -2,6 +2,7 @@ package cn.suparking.customer.feign.data;
 
 import cn.suparking.customer.feign.data.fallback.DataTemplateFallbackFactory;
 import cn.suparking.data.api.beans.ParkingLockModel;
+import cn.suparking.data.api.beans.ProjectConfig;
 import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
@@ -50,4 +51,12 @@ public interface DataTemplateService {
      */
     @PostMapping("/data-api/findParkingEvents")
     List<ParkingEventDO> findParkingEvents(@RequestBody ParkEventQuery parkEventQuery);
+
+    /**
+     * 根据项目编号获取项目配置基础信息.
+     * @param projectNo String
+     * @return {@link ProjectConfig}
+     */
+    @GetMapping("/data-api/getProjectConfig")
+    ProjectConfig getProjectConfig(@RequestParam("projectNo") String projectNo);
 }

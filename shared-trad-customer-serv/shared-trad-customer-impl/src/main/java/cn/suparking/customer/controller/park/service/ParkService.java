@@ -2,6 +2,7 @@ package cn.suparking.customer.controller.park.service;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
+import cn.suparking.customer.api.beans.ParkPayDTO;
 import cn.suparking.customer.beans.park.LocationDTO;
 import cn.suparking.customer.vo.park.ParkInfoVO;
 
@@ -29,4 +30,12 @@ public interface ParkService {
      * @return {@link SpkCommonResult}
      */
     SpkCommonResult scanCodeQueryFee(String sign, ParkFeeQueryDTO parkFeeQueryDTO);
+
+    /**
+     * 小程序下单接口.
+     * @param sign C 端 下单签名
+     * @param parkPayDTO {@link ParkPayDTO}
+     * @return {@link SpkCommonResult}
+     */
+    SpkCommonResult miniToPay(String sign, ParkPayDTO parkPayDTO);
 }

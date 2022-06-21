@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "sparking")
 public class SharedProperties {
     private String secret;
+
+    private String discountUrl;
 }

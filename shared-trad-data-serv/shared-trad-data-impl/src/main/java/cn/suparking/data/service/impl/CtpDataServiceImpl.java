@@ -5,16 +5,17 @@ import cn.suparking.data.Application;
 import cn.suparking.data.api.beans.ParkStatusModel;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ParkingState;
+import cn.suparking.data.api.beans.ProjectConfig;
 import cn.suparking.data.api.beans.PublishData;
+import cn.suparking.data.api.constant.DataConstant;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
-import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import cn.suparking.data.dao.mapper.ParkingMapper;
 import cn.suparking.data.dao.mapper.ParkingTriggerMapper;
 import cn.suparking.data.mq.messageTemplate.DeviceMessageThread;
 import cn.suparking.data.mq.messagehandler.CTPMessageHandler;
 import cn.suparking.data.service.CtpDataService;
-import cn.suparking.data.service.ParkingTriggerService;
+import cn.suparking.data.tools.ProjectConfigUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -97,5 +98,18 @@ public class CtpDataServiceImpl implements CtpDataService {
         sqlParams.put("projectNo", parkQuery.getProjectNo());
         sqlParams.put("parkId", parkQuery.getParkId());
         return parkingMapper.findByParkIdAndParkState(sqlParams);
+    }
+
+    @Override
+    public ProjectConfig getProjectConfig(final String projectNo) {
+        Object obj = ProjectConfigUtils.poll(projectNo, DataConstant.RESOURCE_PROJECT);
+        if (Objects.nonNull(obj)) {
+            // 判断事件是入场 -> 查询数据库时间最近的记录 ; 如果是入场,那么比对两者时间差
+            JSONObject json = JSON.parseObject((String) obj, JSONObject.class);
+            if (Objects.nonNull(json) && json.containsKey("parkingConfig") && Objects.nonNull(json.getJSONObject("parkingConfig"))) {
+                return JSON.parseObject(json.getJSONObject("parkingConfig").toJSONString(), ProjectConfig.class);
+            }
+        }
+        return null;
     }
 }
