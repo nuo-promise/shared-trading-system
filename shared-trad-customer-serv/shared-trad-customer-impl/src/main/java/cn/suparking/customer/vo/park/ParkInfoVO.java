@@ -43,7 +43,7 @@ public class ParkInfoVO {
     /**
      * 每小时多少钱.
      */
-    private Integer perCharge;
+    private String perCharge;
 
     /**
      * 距离.

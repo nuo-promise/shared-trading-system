@@ -8,12 +8,14 @@ import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.common.api.utils.Utils;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
 import cn.suparking.customer.api.beans.ParkPayDTO;
+import cn.suparking.customer.api.beans.ProjectQueryDTO;
 import cn.suparking.customer.api.beans.parkfee.DiscountCustomer;
 import cn.suparking.customer.api.beans.parkfee.ParkFeeRet;
 import cn.suparking.customer.api.beans.parkfee.Parking;
 import cn.suparking.customer.api.beans.parkfee.ParkingOrder;
 import cn.suparking.customer.api.constant.ParkConstant;
 import cn.suparking.customer.beans.park.LocationDTO;
+import cn.suparking.customer.beans.park.RegularLocationDTO;
 import cn.suparking.customer.configuration.properties.RabbitmqProperties;
 import cn.suparking.customer.configuration.properties.SharedProperties;
 import cn.suparking.customer.configuration.properties.SparkProperties;
@@ -23,6 +25,7 @@ import cn.suparking.customer.feign.data.DataTemplateService;
 import cn.suparking.customer.feign.user.UserTemplateService;
 import cn.suparking.customer.tools.ReactiveRedisUtils;
 import cn.suparking.customer.vo.park.ParkInfoVO;
+import cn.suparking.customer.vo.park.ParkPayVO;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ProjectConfig;
 import cn.suparking.data.api.query.ParkEventQuery;
@@ -253,6 +256,28 @@ public class ParkServiceImpl implements ParkService {
         return null;
     }
 
+    @Override
+    public SpkCommonResult regularByPark(final RegularLocationDTO regularLocationDTO) {
+        JSONObject request = new JSONObject();
+        request.put("userId", regularLocationDTO.getUserId());
+        JSONObject result = HttpUtils.sendPost(sparkProperties.getUrl() + ParkConstant.INTERFACE_REGULARPARK, request.toJSONString());
+        List<ParkInfoVO> parkInfoVOList = new LinkedList<>();
+        return SpkCommonResult.success(getParkInfoVOS(parkInfoVOList, result));
+    }
+
+    @Override
+    public SpkCommonResult projectInfoByDeviceNo(final String sign, final ProjectQueryDTO projectQueryDTO) {
+        // 校验 sign
+        if (!invoke(sign, projectQueryDTO.getDeviceNo())) {
+            return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        }
+        JSONObject request = new JSONObject();
+        request.put("deviceNo", projectQueryDTO.getDeviceNo());
+        JSONObject result = HttpUtils.sendPost(sparkProperties.getUrl() + ParkConstant.INTERFACE_PARKBYDEVICE, request.toJSONString());
+        return Optional.ofNullable(result).filter(res -> SUCCESS.equals(res.getString("code"))).map(item ->
+                SpkCommonResult.success(JSON.parseObject(item.getString("data"), ParkPayVO.class))).orElseGet(null);
+    }
+
     private String sendRPCQueryFee(final JSONObject params) {
         log.info("Sender 发送RPC 请求,询问停车费用: [" + params + "]");
         MessageProperties properties = new MessageProperties();
@@ -299,12 +324,18 @@ public class ParkServiceImpl implements ParkService {
         return false;
     }
 
+    /**
+     * 根据获取BS 数据组织 C 端所需要的数据.
+     * @param parkInfoVOList {@link List}
+     * @param result  {@link JSONObject}
+     * @return {@link SpkCommonResult}
+     */
     private List<ParkInfoVO> getParkInfoVOS(final List<ParkInfoVO> parkInfoVOList, final JSONObject result) {
         return Optional.ofNullable(result).filter(res -> SUCCESS.equals(res.getString("code"))).map(item -> {
             JSONArray jsonArray = item.getJSONArray("list");
             jsonArray.forEach(obj -> {
                 try {
-                    parkInfoVOList.add(JSON.toJavaObject((JSONObject) obj, ParkInfoVO.class));
+                    parkInfoVOList.add(JSON.parseObject(obj.toString(), ParkInfoVO.class));
                 } catch (Exception e) {
                     Arrays.stream(e.getStackTrace()).forEach(err -> log.error(err.toString()));
                 }

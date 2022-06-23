@@ -5,8 +5,11 @@ import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
 import cn.suparking.customer.api.beans.ParkPayDTO;
+import cn.suparking.customer.api.beans.ProjectQueryDTO;
 import cn.suparking.customer.beans.park.LocationDTO;
+import cn.suparking.customer.beans.park.RegularLocationDTO;
 import cn.suparking.customer.controller.park.service.ParkService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +52,21 @@ public class ParkController {
     }
 
     /**
+     * 根据用户ID获取常去的场库.
+     * @param regularLocationDTO {@link RegularLocationDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("regularLocations")
+    public SpkCommonResult regularByPark(@Valid @RequestBody final RegularLocationDTO regularLocationDTO) {
+        return Optional.ofNullable(regularLocationDTO)
+                .map(item -> {
+                    SpkCommonAssert.notBlank(item.getUserId(), SpkCommonResultMessage.PARAMETER_ERROR + " userId 不能为空");
+                    return SpkCommonResult.success(parkService.regularByPark(item));
+                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR + " userId 不能为 null"));
+
+    }
+
+    /**
      * 获取所有的厂库坐标打点.
      * @return {@link SpkCommonResult}
      */
@@ -88,5 +106,16 @@ public class ParkController {
     @PostMapping("miniToPay")
     public SpkCommonResult miniToPay(@RequestHeader("sign") final String sign, @RequestBody final ParkPayDTO parkPayDTO) {
         return parkService.miniToPay(sign, parkPayDTO);
+    }
+
+    /**
+     * 根据设备编号查询项目信息.
+     * @param sign C 端 使用 deviceNo 进行签名制作.
+     * @param projectQueryDTO {@link ProjectQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("projectInfoByDeviceNo")
+    public SpkCommonResult projectInfoByDeviceNo(@RequestHeader("sign") final String sign, @RequestBody final ProjectQueryDTO projectQueryDTO) {
+        return parkService.projectInfoByDeviceNo(sign, projectQueryDTO);
     }
 }

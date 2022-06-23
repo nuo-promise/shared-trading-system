@@ -13,4 +13,14 @@ public class ParkConstant {
      * 获取所有场库信息.
      */
     public static final String INTERFACE_ALLPARK = "/map/getAllCoordinate";
+
+    /**
+     * 获取常去场库.
+     */
+    public static final String INTERFACE_REGULARPARK = "/map/regularLocations";
+
+    /**
+     * 根据设备编号获取场库信息.
+     */
+    public static final String INTERFACE_PARKBYDEVICE = "/map/projectInfoByDeviceNo";
 }

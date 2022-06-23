@@ -3,7 +3,9 @@ package cn.suparking.customer.controller.park.service;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
 import cn.suparking.customer.api.beans.ParkPayDTO;
+import cn.suparking.customer.api.beans.ProjectQueryDTO;
 import cn.suparking.customer.beans.park.LocationDTO;
+import cn.suparking.customer.beans.park.RegularLocationDTO;
 import cn.suparking.customer.vo.park.ParkInfoVO;
 
 import java.util.List;
@@ -38,4 +40,19 @@ public interface ParkService {
      * @return {@link SpkCommonResult}
      */
     SpkCommonResult miniToPay(String sign, ParkPayDTO parkPayDTO);
+
+    /**
+     * 根据用户ID获取常去的场库.
+     * @param regularLocationDTO {@link RegularLocationDTO}
+     * @return {@link SpkCommonResult}
+     */
+    SpkCommonResult regularByPark(RegularLocationDTO regularLocationDTO);
+
+    /**
+     * 根据设备编号查询项目信息.
+     * @param sign C 端 使用 deviceNo 进行签名制作.
+     * @param projectQueryDTO {@link ProjectQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    SpkCommonResult projectInfoByDeviceNo(String sign, ProjectQueryDTO projectQueryDTO);
 }
