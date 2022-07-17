@@ -2,6 +2,8 @@ package cn.suparking.data.api.constant;
 
 public class DataConstant {
 
+
+
     // CTP
     public static final String CTP_TYPE = "CTP";
 

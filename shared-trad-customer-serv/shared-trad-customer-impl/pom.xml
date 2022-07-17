@@ -157,6 +157,10 @@
             <version>1.1.12</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>cn.suparking</groupId>
+            <artifactId>SparkPay</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>

@@ -5,6 +5,16 @@ package cn.suparking.common.api.utils;
  */
 public final class SpkCommonResultMessage {
 
+    // ======================= order ===========================
+
+    public static final String DISCOUNT_ACTIVE = "discount active";
+
+    public static final String ORDER_ACTIVE = "order active";
+
+    public static final String ORDER_VALID = "order valid";
+
+    public static final String ORDER_EXPIRE = "order have expired";
+
     public static final String SIGN_NOT_VALID = "sign not valid.";
 
     public static final String DEVICE_NOT_SETTING = "device not set park.";

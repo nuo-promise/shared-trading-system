@@ -1,6 +1,6 @@
 package cn.suparking.customer.configuration;
 
-import cn.suparking.customer.configuration.properties.RabbitmqProperties;
+import cn.suparking.customer.configuration.properties.ParkmqProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ShutdownSignalException;
 import org.slf4j.Logger;
@@ -22,56 +22,71 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import javax.annotation.Resource;
 
-@Configuration("RabbitMqConfiguration")
-public class RabbitMqConfiguration {
+@Configuration("ParkMqConfiguration")
+public class ParkMqConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RabbitMqConfiguration.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ParkMqConfiguration.class);
+
+    private final ParkConsumer parkConsumer;
 
     @Resource
-    private RabbitmqProperties rabbitmqProperties;
+    private ParkmqProperties parkmqProperties;
+
+    public ParkMqConfiguration(final ParkConsumer parkConsumer) {
+        this.parkConsumer = parkConsumer;
+    }
 
     /**
      * MQ Factory.
      * @return {@link CachingConnectionFactory}
      */
-    @Bean("MQCloudConnectionFactory")
-    @Primary
+    @Bean("ParkMQCloudConnectionFactory")
     public CachingConnectionFactory cloudConnectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
-                rabbitmqProperties.getHost(), rabbitmqProperties.getPort());
-        connectionFactory.setUsername(rabbitmqProperties.getUserName());
-        connectionFactory.setPassword(rabbitmqProperties.getPassWord());
+                parkmqProperties.getHost(), parkmqProperties.getPort());
+        connectionFactory.setUsername(parkmqProperties.getUserName());
+        connectionFactory.setPassword(parkmqProperties.getPassWord());
 
         connectionFactory.addConnectionListener(new ConnectionListener() {
+
             @Override
             public void onCreate(final Connection connection) {
-                LOG.info("MQ cloud connection is created");
+                LOG.info("Park MQ Cloud Connection is created");
             }
 
             @Override
             public void onShutDown(final ShutdownSignalException signal) {
-                LOG.warn("MQ cloud connection is shutdown due to " + signal.getMessage());
+                LOG.warn("Park MQ Cloud Connection is shutdown due to " + signal.getMessage());
             }
         });
+
         connectionFactory.addChannelListener(new ChannelListener() {
 
             @Override
             public void onCreate(final Channel channel, final boolean b) {
-                LOG.info("MQ cloud channel is created");
+                LOG.info("Park MQ Cloud Channel is created");
             }
 
-            @Override
             public void onShutDown(final ShutdownSignalException signal) {
-                LOG.warn("MQ cloud channel is shutdown due to " + signal.getMessage());
+                LOG.warn("Park MQ Cloud Channel is shutdown due to " + signal.getMessage());
             }
         });
         return connectionFactory;
+    }
+
+    /**
+     * cloud template.
+     * @param factory {@link CachingConnectionFactory}
+     * @return {@link RabbitTemplate}
+     */
+    @Bean("ParkMQCloudTemplate")
+    public RabbitTemplate mqCloudTemplate(@Qualifier("ParkMQCloudConnectionFactory") final CachingConnectionFactory factory) {
+        return new RabbitTemplate(factory);
     }
 
     /**
@@ -79,8 +94,8 @@ public class RabbitMqConfiguration {
      * @param template {@link RabbitTemplate}
      * @return {@link AmqpAdmin}
      */
-    @Bean("MQCloudAMQPAdmin")
-    public AmqpAdmin cloudAmqpAdmin(@Qualifier("MQCloudTemplate") final RabbitTemplate template) {
+    @Bean("ParkMQCloudAMQPAdmin")
+    public AmqpAdmin cloudAmqpAdmin(@Qualifier("ParkMQCloudTemplate") final RabbitTemplate template) {
         RabbitAdmin admin = new RabbitAdmin(template);
         RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setRetryPolicy(new AlwaysRetryPolicy());
@@ -93,21 +108,11 @@ public class RabbitMqConfiguration {
      * @param admin {@link AmqpAdmin}
      * @return {@link TopicExchange}
      */
-    @Bean("MQCloudExchange")
-    public TopicExchange cloudExchange(@Qualifier("MQCloudAMQPAdmin")final AmqpAdmin admin) {
-        TopicExchange exchange = new TopicExchange(rabbitmqProperties.getExchange());
+    @Bean("ParkMQCloudExchange")
+    public TopicExchange cloudExchange(@Qualifier("ParkMQCloudAMQPAdmin")final AmqpAdmin admin) {
+        TopicExchange exchange = new TopicExchange(parkmqProperties.getExchange());
         exchange.setShouldDeclare(false);
         return exchange;
-    }
-
-    /**
-     * cloud template.
-     * @param factory {@link CachingConnectionFactory}
-     * @return {@link RabbitTemplate}
-     */
-    @Bean("MQCloudTemplate")
-    public RabbitTemplate mqCloudTemplate(@Qualifier("MQCloudConnectionFactory") final CachingConnectionFactory factory) {
-        return new RabbitTemplate(factory);
     }
 
     /**
@@ -115,9 +120,9 @@ public class RabbitMqConfiguration {
      * @param admin {@link AmqpAdmin}
      * @return {@link Queue}
      */
-    @Bean("MQCloudQueue")
-    public Queue cloudQueue(@Qualifier("MQCloudAMQPAdmin") final AmqpAdmin admin) {
-        String queueName = "suaprking.shared.customer.ack";
+    @Bean("ParkMQCloudQueue")
+    public Queue cloudQueue(@Qualifier("ParkMQCloudAMQPAdmin") final AmqpAdmin admin) {
+        String queueName = "shared.customer.payLib";
         Queue queue = new Queue(queueName, false, true, true);
         queue.setAdminsThatShouldDeclare(admin);
         queue.setShouldDeclare(true);
@@ -131,15 +136,16 @@ public class RabbitMqConfiguration {
      * @param exchange {@link TopicExchange}
      * @return {@link Binding}
      */
-    @Bean("MQCloudBinding")
-    public Binding cloudBinding(@Qualifier("MQCloudAMQPAdmin")final AmqpAdmin admin,
-                                @Qualifier("MQCloudQueue")final Queue queue,
-                                @Qualifier("MQCloudExchange")final TopicExchange exchange) {
-        Binding binding = BindingBuilder.bind(queue).to(exchange).with("*.shared.#");
+    @Bean("ParkMQCloudBinding")
+    public Binding cloudBinding(@Qualifier("ParkMQCloudAMQPAdmin")final AmqpAdmin admin,
+                                @Qualifier("ParkMQCloudQueue")final Queue queue,
+                                @Qualifier("ParkMQCloudExchange")final TopicExchange exchange) {
+        Binding binding = BindingBuilder.bind(queue).to(exchange).with("#.pay_config");
         binding.setAdminsThatShouldDeclare(admin);
         binding.setShouldDeclare(true);
         return binding;
     }
+
 
     /**
      * cloud container.
@@ -148,21 +154,21 @@ public class RabbitMqConfiguration {
      * @param queue {@link Queue}
      * @return {@link DirectMessageListenerContainer}
      */
-    @Bean("MQCloudMessageListenerContainer")
-    @ConditionalOnProperty(name = "spring.rabbitmq.enable", matchIfMissing = true)
+    @Bean("ParkMQCloudMessageListenerContainer")
+    @ConditionalOnProperty(name = "spring.parkmq.enable", matchIfMissing = true)
     public DirectMessageListenerContainer cloudMessageListenerContainer(
-            @Qualifier("MQCloudConnectionFactory")final CachingConnectionFactory connectionFactory,
-            @Qualifier("MQCloudAMQPAdmin")final AmqpAdmin admin,
-            @Qualifier("MQCloudQueue")final Queue queue
+            @Qualifier("ParkMQCloudConnectionFactory")final CachingConnectionFactory connectionFactory,
+            @Qualifier("ParkMQCloudAMQPAdmin")final AmqpAdmin admin,
+            @Qualifier("ParkMQCloudQueue")final Queue queue
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setAmqpAdmin(admin);
         container.setQueueNames(queue.getName());
-        container.setPrefetchCount(rabbitmqProperties.getConsumerPrefetch());
-        container.setConsumersPerQueue(rabbitmqProperties.getConcurrentConsumer());
+        container.setPrefetchCount(parkmqProperties.getConsumerPrefetch());
+        container.setConsumersPerQueue(parkmqProperties.getConcurrentConsumer());
         container.setAcknowledgeMode(AcknowledgeMode.NONE);
-//        container.setMessageListener(CloudConsumer::consume);
+        container.setMessageListener(parkConsumer);
         return container;
     }
 }

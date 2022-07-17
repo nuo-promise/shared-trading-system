@@ -5,21 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkPayDTO {
-
-    private String tmpOrderNo;
-
-    private String parkingId;
-
+public class ProjectInfoQueryDTO {
+    @NotBlank
     private String projectNo;
 
-    private String userId;
-
-    private String miniOpenId;
-
-    private String discountNo;
+    private String parkNo;
 }

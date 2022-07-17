@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static cn.suparking.user.constant.UserConstant.ACCESS_TOKEN_EXPIRED_CODE;
+import static cn.suparking.user.constant.UserConstant.ACCESS_TOKEN_EXPIRED_CODE_40001;
 
 @Slf4j
 @Service
@@ -89,7 +90,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         if (Objects.nonNull(result) && StringUtils.isNotBlank(result.getString("errcode"))) {
             throw new SpkCommonException(" getAccessToken ==========> 请求失败 [" + result.toJSONString() + "]");
         }
-        opsAccessToken(result.getString("access_token"), result.getInteger("expires_in") * 1000);
+        opsAccessToken(result.getString("access_token"), result.getInteger("expires_in"));
     }
 
     @Override
@@ -102,12 +103,15 @@ public class UserLoginServiceImpl implements UserLoginService {
 
             return Optional.ofNullable(result).map(item -> {
                 if (item.getInteger("errcode") != 0) {
-                    if (item.getInteger("errcode").equals(ACCESS_TOKEN_EXPIRED_CODE)) {
+                    /*
+                    if (item.getInteger("errcode").equals(ACCESS_TOKEN_EXPIRED_CODE)
+                            || item.getInteger("errcode").equals(ACCESS_TOKEN_EXPIRED_CODE_40001)) {
                         getAccessToken();
                         return getPhoneInfo(phoneCode);
                     } else {
                         throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
-                    }
+                    }*/
+                    throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
                 }
                 JSONObject phoneInfo = item.getJSONObject("phone_info");
                 JSONObject waterMark = phoneInfo.getJSONObject("watermark");

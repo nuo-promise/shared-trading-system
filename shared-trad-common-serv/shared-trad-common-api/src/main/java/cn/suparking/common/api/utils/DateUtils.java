@@ -17,6 +17,42 @@ public class DateUtils {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT_DATETIME);
 
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_DATETIME);
+
+    /**
+     * 将秒转x天x时x分x秒.
+     * @param seconds 秒
+     * @return String
+     */
+    public static String formatSeconds(final Long seconds) {
+        String timeStr = seconds + "秒";
+        if (seconds > 60) {
+            long second = seconds % 60;
+            long min = seconds / 60;
+            timeStr = min + "分" + second + "秒";
+            if (min > 60) {
+                min = (seconds / 60) % 60;
+                long hour = (seconds / 60) / 60;
+                timeStr = hour + "小时" + min + "分" + second + "秒";
+                if (hour > 24) {
+                    hour = ((seconds / 60) / 60) % 24;
+                    long day = ((seconds / 60) / 60) / 24;
+                    timeStr = day + "天" + hour + "小时" + min + "分" + second + "秒";
+                }
+            }
+        }
+        return timeStr;
+    }
+
+    /**
+     * 秒转时间字符串.
+     * @param second Long
+     * @return String
+     */
+    public static String secondToDateTime(final Long second) {
+        return SIMPLE_DATE_FORMAT.format(new Date(second * 1000L));
+    }
+
     /**
      * 获取当前时间.
      * @return String

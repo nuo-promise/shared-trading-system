@@ -47,6 +47,7 @@ public class HttpUtils {
             }
         } catch (Exception ex) {
             Arrays.stream(ex.getStackTrace()).forEach(item -> LOG.error(item.toString()));
+            return null;
         }
         return null;
     }

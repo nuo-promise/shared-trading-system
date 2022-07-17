@@ -1,4 +1,4 @@
-package cn.suparking.customer.api.beans;
+package cn.suparking.customer.api.beans.discount;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,17 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkPayDTO {
-
-    private String tmpOrderNo;
-
-    private String parkingId;
+public class DiscountDTO {
 
     private String projectNo;
-
-    private String userId;
-
-    private String miniOpenId;
 
     private String discountNo;
 }

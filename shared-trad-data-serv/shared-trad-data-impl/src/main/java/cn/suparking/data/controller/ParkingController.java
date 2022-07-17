@@ -125,6 +125,6 @@ public class ParkingController {
      */
     @GetMapping("/getProjectConfig")
     public ProjectConfig getProjectConfig(@RequestParam("projectNo") final String projectNo) {
-       return ctpDataService.getProjectConfig(projectNo);
+        return ctpDataService.getProjectConfig(projectNo);
     }
 }

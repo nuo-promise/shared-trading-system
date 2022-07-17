@@ -35,7 +35,7 @@ public class ParkingOrder {
 
     private Integer aggregatedMaxAmount;
 
-    private Integer parkingMinutes;
+    private Long parkingMinutes;
 
     private DiscountInfo discountInfo;
 

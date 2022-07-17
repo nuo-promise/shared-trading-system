@@ -47,7 +47,10 @@ public class UserServiceImpl implements UserService {
         //1.根据code获取openId和sessionKey
         SessionVO sessionVO = userTemplateService.getSessionKey(miniRegisterDTO.getCode());
         return Optional.ofNullable(sessionVO).map(item -> {
-            // 解析手机号码,然后注册用户
+            /**
+             * 解析手机号码,然后注册用户
+             * 1. 线上接口获取accessToken
+             * */
             PhoneInfoVO phoneInfoVO = userTemplateService.getPhoneInfo(miniRegisterDTO.getPhoneCode());
             return Optional.ofNullable(phoneInfoVO).map(phone -> {
                 // 调用用户创建接口准备落库

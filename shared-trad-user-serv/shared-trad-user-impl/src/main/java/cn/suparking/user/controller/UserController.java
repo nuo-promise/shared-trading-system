@@ -47,6 +47,7 @@ public class UserController {
         return Optional.ofNullable(userDTO)
                 .map(item -> {
                     SpkCommonAssert.notBlank(item.getIphone(), SpkCommonResultMessage.PARAMETER_ERROR + ": iphone is not blank");
+                    SpkCommonAssert.notBlank(item.getMiniOpenId(), SpkCommonResultMessage.PARAMETER_ERROR + ": mini_open_id is not blank");
                     SpkCommonAssert.notNull(item.getRegisterType(), SpkCommonResultMessage.PARAMETER_ERROR + ": registerType is not null");
                     return userService.createOrUpdate(userDTO);
                 }).orElse(0);
