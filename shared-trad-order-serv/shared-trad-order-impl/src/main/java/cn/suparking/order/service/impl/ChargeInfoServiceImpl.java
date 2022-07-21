@@ -22,11 +22,17 @@ public class ChargeInfoServiceImpl implements ChargeInfoService {
     }
 
     @Override
-    public Integer createOrUpdate(final ChargeInfoDTO chargeInfoDTO) {
+    public Long createOrUpdate(final ChargeInfoDTO chargeInfoDTO) {
         ChargeInfoDO chargeInfoDO = ChargeInfoDO.buildChargeInfoDO(chargeInfoDTO);
         if (StringUtils.isEmpty(chargeInfoDTO.getId())) {
-            return chargeInfoMapper.insert(chargeInfoDO);
+            if (chargeInfoMapper.insert(chargeInfoDO) == 1) {
+                return chargeInfoDO.getId();
+            } else {
+                return -1L;
+            }
+        } else {
+            chargeInfoMapper.update(chargeInfoDO);
         }
-        return chargeInfoMapper.update(chargeInfoDO);
+        return chargeInfoDO.getId();
     }
 }

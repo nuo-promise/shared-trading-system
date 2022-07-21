@@ -17,7 +17,7 @@ public class ChargeDetailDTO implements Serializable {
 
     private String id;
 
-    private String changeInfoId;
+    private String chargeInfoId;
 
     private String chargeTypeName;
 

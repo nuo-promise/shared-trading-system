@@ -44,6 +44,7 @@
         <hutool.version>5.7.22</hutool.version>
         <commons.version>2.9.0</commons.version>
         <spring.seata.version>1.4.2</spring.seata.version>
+        <spark.pay.version>0.0.2</spark.pay.version>
     </properties>
 
     <dependencyManagement>
@@ -133,6 +134,7 @@
                 <artifactId>seata-spring-boot-starter</artifactId>
                 <version>${spring.seata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-seata</artifactId>

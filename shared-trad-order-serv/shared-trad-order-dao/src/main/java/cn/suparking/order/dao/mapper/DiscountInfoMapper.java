@@ -13,7 +13,7 @@ public interface DiscountInfoMapper {
      * @param id primary id
      * @return {@linkplain DiscountInfoDO}
      */
-    DiscountInfoDO selectById(String id);
+    DiscountInfoDO selectById(Long id);
 
     /**
      * 新增优惠券信息.

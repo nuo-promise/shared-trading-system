@@ -20,7 +20,7 @@ public class ParkingTriggerServiceImpl implements ParkingTriggerService {
     }
 
     @Override
-    public ParkingTriggerDO findById(final String id) {
+    public ParkingTriggerDO findById(final Long id) {
         return parkingTriggerMapper.selectById(id);
     }
 

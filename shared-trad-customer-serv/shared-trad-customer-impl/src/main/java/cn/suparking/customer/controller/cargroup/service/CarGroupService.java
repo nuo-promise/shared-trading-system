@@ -3,7 +3,6 @@ package cn.suparking.customer.controller.cargroup.service;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
 import cn.suparking.customer.api.beans.cargroup.CarGroupQueryDTO;
-import cn.suparking.customer.dao.entity.CarGroup;
 import cn.suparking.customer.dao.vo.cargroup.CarGroupVO;
 import com.github.pagehelper.PageInfo;
 

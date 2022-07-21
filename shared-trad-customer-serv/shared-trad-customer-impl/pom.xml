@@ -20,17 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>shared-trad-data-dao</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>shared-trad-user-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>shared-trad-common-tools</artifactId>
+            <artifactId>shared-trad-customer-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -157,6 +147,13 @@
             <version>1.1.12</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>cn.suparking</groupId>
+            <artifactId>SparkPay</artifactId>
+            <version>${spark.pay.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/lib/ShuBoPaymentUtils-jar-with-dependencies.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -181,6 +178,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

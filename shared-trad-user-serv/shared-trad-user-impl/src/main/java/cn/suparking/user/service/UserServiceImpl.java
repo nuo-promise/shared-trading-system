@@ -10,7 +10,6 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 
@@ -33,7 +32,6 @@ public class UserServiceImpl implements UserService {
      * @return update or create int
      */
     @Override
-    @Transactional
     public int createOrUpdate(final UserDTO userDTO) {
         UserDO userDO = UserDO.buildUserDO(userDTO);
         // create new user

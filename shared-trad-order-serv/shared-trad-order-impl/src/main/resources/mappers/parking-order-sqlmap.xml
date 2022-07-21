@@ -32,6 +32,7 @@
         <result column="expire_time" jdbcType="BIGINT" property="expireTime" />
         <result column="invoice_state" jdbcType="VARCHAR" property="invoiceState" />
         <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
         <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
         <result column="creator" jdbcType="VARCHAR" property="creator" />
         <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -70,6 +71,7 @@
 		expire_time,
 		invoice_state,
 		refund_state,
+        status,
 		project_no,
 		creator,
 		modifier,
@@ -205,6 +207,9 @@
             <if test="refundState != null">
                 refund_state,
             </if>
+            <if test="status != null">
+                status,
+            </if>
             <if test="projectNo != null">
                 project_no,
             </if>
@@ -312,6 +317,9 @@
             <if test="refundState != null">
                 #{refundState,jdbcType=VARCHAR},
             </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
             <if test="projectNo != null">
                 #{projectNo,jdbcType=VARCHAR},
             </if>
@@ -390,6 +398,8 @@
             invoice_state = #{invoiceState,jdbcType=VARCHAR} , </if>
         <if test="refundState != null">
             refund_state = #{refundState,jdbcType=VARCHAR} , </if>
+        <if test="status != null">
+            status = #{status,jdbcType=VARCHAR} , </if>
         <if test="projectNo != null">
             project_no = #{projectNo,jdbcType=VARCHAR} , </if>
         <if test="creator != null">
@@ -412,5 +422,14 @@
         from spk_parking_order
         where
             id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="findOrderByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from spk_parking_order
+        where
+        user_id = #{userId,jdbcType=BIGINT} AND date_created &gt;= #{startDate,jdbcType=TIMESTAMP} AND date_created &lt;= #{endDate,jdbcType=TIMESTAMP}
+        ORDER BY begin_time DESC
     </select>
 </mapper>

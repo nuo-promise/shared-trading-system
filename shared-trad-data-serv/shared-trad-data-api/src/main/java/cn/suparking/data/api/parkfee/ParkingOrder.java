@@ -1,4 +1,4 @@
-package cn.suparking.customer.api.beans.parkfee;
+package cn.suparking.data.api.parkfee;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +35,7 @@ public class ParkingOrder {
 
     private Integer aggregatedMaxAmount;
 
-    private Integer parkingMinutes;
+    private Long parkingMinutes;
 
     private DiscountInfo discountInfo;
 
@@ -85,6 +85,8 @@ public class ParkingOrder {
     private String invoiceState;
 
     private String refundState;
+
+    private String status;
 
     private String projectNo;
 

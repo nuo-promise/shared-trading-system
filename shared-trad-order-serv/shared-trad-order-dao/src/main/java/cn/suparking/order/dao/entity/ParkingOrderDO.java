@@ -81,6 +81,8 @@ public class ParkingOrderDO extends BaseDO {
 
     private String projectNo;
 
+    private String status;
+
     private String creator;
 
     private String modifier;
@@ -105,7 +107,7 @@ public class ParkingOrderDO extends BaseDO {
                     .endTime(item.getEndTime())
                     .nextAggregateBeginTime(item.getNextAggregateBeginTime())
                     .aggregatedMaxAmount(item.getAggregatedMaxAmount())
-                    .parkingMinutes(item.getParkingMinutes())
+                    .parkingMinutes(Math.toIntExact(item.getParkingMinutes()))
                     .totalAmount(item.getTotalAmount())
                     .discountedMinutes(item.getDiscountedMinutes())
                     .discountedAmount(item.getDiscountedAmount())
@@ -123,6 +125,7 @@ public class ParkingOrderDO extends BaseDO {
                     .expireTime(item.getExpireTime())
                     .invoiceState(item.getInvoiceState())
                     .refundState(item.getRefundState())
+                    .status(item.getStatus())
                     .projectNo(item.getProjectNo())
                     .creator(item.getCreator())
                     .modifier(item.getModifier())

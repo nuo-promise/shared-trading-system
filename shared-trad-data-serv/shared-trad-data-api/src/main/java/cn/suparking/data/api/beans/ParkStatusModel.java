@@ -30,7 +30,7 @@ public class ParkStatusModel implements Serializable {
     private Integer status;
 
     // 停车状态 false: 无车  true: 有车
-    private Boolean parkStatus;
+    private String parkStatus;
 
 
     // 挡板 UP 上升 DOWN 下降

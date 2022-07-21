@@ -1,20 +1,29 @@
 package cn.suparking.data.service.impl;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
+import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.data.Application;
+import cn.suparking.data.api.beans.EventType;
 import cn.suparking.data.api.beans.ParkStatusModel;
+import cn.suparking.data.api.beans.ParkingDTO;
+import cn.suparking.data.api.beans.ParkingEventDTO;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ParkingState;
+import cn.suparking.data.api.beans.ParkingTriggerDTO;
 import cn.suparking.data.api.beans.ProjectConfig;
 import cn.suparking.data.api.beans.PublishData;
 import cn.suparking.data.api.constant.DataConstant;
+import cn.suparking.data.api.parkfee.Parking;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
+import cn.suparking.data.dao.entity.ParkingTriggerDO;
 import cn.suparking.data.dao.mapper.ParkingMapper;
-import cn.suparking.data.dao.mapper.ParkingTriggerMapper;
 import cn.suparking.data.mq.messageTemplate.DeviceMessageThread;
 import cn.suparking.data.mq.messagehandler.CTPMessageHandler;
 import cn.suparking.data.service.CtpDataService;
+import cn.suparking.data.service.ParkingEventService;
+import cn.suparking.data.service.ParkingService;
+import cn.suparking.data.service.ParkingTriggerService;
 import cn.suparking.data.tools.ProjectConfigUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -23,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,14 +44,22 @@ public class CtpDataServiceImpl implements CtpDataService {
 
     private final ParkingMapper parkingMapper;
 
-    private final ParkingTriggerMapper parkingTriggerMapper;
+    private final ParkingTriggerService parkingTriggerService;
+
+    private final ParkingEventService parkingEventService;
+
+    private final ParkingService parkingService;
 
     private final DeviceMessageThread deviceMessageThread = Application.getBean("DeviceMessageThread", DeviceMessageThread.class);
 
-    public CtpDataServiceImpl(final CTPMessageHandler ctpMessageHandler, final ParkingMapper parkingMapper, final ParkingTriggerMapper parkingTriggerMapper) {
+    public CtpDataServiceImpl(final CTPMessageHandler ctpMessageHandler, final ParkingMapper parkingMapper,
+                              final ParkingTriggerService parkingTriggerService,
+                              final ParkingEventService parkingEventService, final ParkingService parkingService) {
         this.ctpMessageHandler = ctpMessageHandler;
         this.parkingMapper = parkingMapper;
-        this.parkingTriggerMapper = parkingTriggerMapper;
+        this.parkingTriggerService = parkingTriggerService;
+        this.parkingEventService = parkingEventService;
+        this.parkingService = parkingService;
     }
 
     @Override
@@ -111,5 +129,100 @@ public class CtpDataServiceImpl implements CtpDataService {
             }
         }
         return null;
+    }
+
+    @Override
+    public Boolean createAndUpdateParking(final Parking parking) {
+        // 生成 trigger
+        // 生成 event.
+        // 更新 parking
+        ParkingTriggerDO enterTrigger = parkingTriggerService.findById(Long.valueOf(parking.getEnter().getRecogId()));
+        if (Objects.isNull(enterTrigger)) {
+            log.error("createAndUpdateParking enterTrigger null");
+            return false;
+        }
+        Long currentTime = DateUtils.getCurrentSecond();
+        ParkingTriggerDTO parkingTriggerDTO = ParkingTriggerDTO.builder()
+                .projectId(enterTrigger.getProjectId().toString())
+                .recogTime(currentTime)
+                .openTime(currentTime)
+                .deviceNo(enterTrigger.getDeviceNo())
+                .parkId(enterTrigger.getParkId())
+                .parkName(enterTrigger.getParkName())
+                .parkNo(enterTrigger.getParkNo())
+                .inSubAreaId(enterTrigger.getInSubAreaId())
+                .inSubAreaName(enterTrigger.getInSubAreaName())
+                .outSubAreaId(enterTrigger.getOutSubAreaId())
+                .outSubAreaName(enterTrigger.getOutSubAreaName())
+                .operator("system")
+                .build();
+        Long parkingTriggerId = parkingTriggerService.createOrUpdate(parkingTriggerDTO);
+        if (parkingTriggerId == -1L) {
+            log.error("操作停车记录数据库 ParkingTrigger 失败 " + JSON.toJSONString(parkingTriggerDTO));
+            return false;
+        }
+        // 存储event.
+        ParkingEventDTO parkingEventDTO = ParkingEventDTO.builder()
+                .projectId(enterTrigger.getProjectId().toString())
+                .eventType(EventType.EV_LEAVE.name())
+                .eventTime(currentTime)
+                .deviceNo(enterTrigger.getDeviceNo())
+                .parkId(enterTrigger.getParkId())
+                .parkNo(enterTrigger.getParkNo())
+                .parkName(enterTrigger.getParkName())
+                .recogId(parkingTriggerId.toString())
+                .inSubAreaId(enterTrigger.getInSubAreaId())
+                .inSubAreaName(enterTrigger.getOutSubAreaName())
+                .outSubAreaId(enterTrigger.getInSubAreaId())
+                .outSubAreaName(enterTrigger.getOutSubAreaName())
+                .operator("system")
+                .build();
+        Long parkingEventId = parkingEventService.createOrUpdate(parkingEventDTO);
+        if (parkingEventId == -1L) {
+            log.error("操作停车记录数据库 ParkingEvent 失败 " + JSON.toJSONString(parkingTriggerDTO));
+            return false;
+        }
+
+        ParkingDO parkingDO = parkingService.findById(Long.valueOf(parking.getId()));
+        if (Objects.isNull(parkingDO)) {
+            log.error("createAndUpdateParking parkingDO null");
+            return false;
+        }
+        // 存入Parking 数据
+        LinkedList<String> events = new LinkedList<>();
+        events.add(parking.getEnter().getRecogId());
+        events.add(parkingEventId.toString());
+        ParkingDTO parkingDTO = ParkingDTO.builder()
+                .id(parking.getId())
+                .projectId(enterTrigger.getProjectId().toString())
+                .userId(parking.getUserId().toString())
+                .parkId(enterTrigger.getParkId())
+                .parkNo(enterTrigger.getParkNo())
+                .parkName(enterTrigger.getParkName())
+                .deviceNo(enterTrigger.getDeviceNo())
+                .carGroupId(parking.getCarGroupId())
+                .specialType(parking.getSpecialType())
+                .enter(Long.valueOf(parking.getEnter().getRecogId()))
+                .leave(parkingTriggerId)
+                .parkingEvents(events)
+                .firstEnterTriggerTime(parking.getFirstEnterTriggerTime())
+                .latestTriggerTime(currentTime)
+                .latestTriggerParkId(enterTrigger.getParkId())
+                .latestTriggerTemp(Objects.nonNull(parking.getLatestTriggerTemp()) ? parking.getLatestTriggerTemp() ? 0 : 1 : 1)
+                .latestTriggerTypeClass(parking.getLatestTriggerTypeClass())
+                .latestTriggerTypeName(parking.getLatestTriggerTypeName())
+                .parkingState(String.valueOf(ParkingState.LEFT))
+                .allowCorrect(1)
+                .valid(1)
+                .payParkingId(parking.getPayParkingId())
+                .parkingMinutes(parking.getParkingMinutes())
+                .projectNo(parking.getProjectNo())
+                .matchedParkingId(Long.valueOf(parking.getId()))
+                .creator("system")
+                .build();
+        if (parkingService.createOrUpdate(parkingDTO) > 0) {
+            return true;
+        }
+        return false;
     }
 }

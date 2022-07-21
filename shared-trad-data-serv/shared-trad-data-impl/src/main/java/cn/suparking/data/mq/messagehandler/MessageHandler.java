@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static cn.suparking.data.api.constant.DataConstant.CTP_REQUEST_PARK_STATUS_ACK;
+import static cn.suparking.data.api.constant.DataConstant.TOPIC_DATA;
 
 public abstract class MessageHandler {
 
@@ -50,7 +51,7 @@ public abstract class MessageHandler {
         String reqBody = new String(message.getBody());
         String method = "MQ_" + from + "_" + headers.get("method");
 
-        if (Application.containsBean(method)) {
+        if (Application.containsBean(method) && topic.contains(TOPIC_DATA)) {
             LOG.info("#" + from + "-" + method + " <== " + reqBody + " from cloud rabbit at " + rcvts);
             MessageHandler messageHandler = Application.getBean(method, MessageHandler.class);
             try {
@@ -79,7 +80,7 @@ public abstract class MessageHandler {
                 }
             }
         } else {
-            LOG.warn("方法: " + method + " ,未查询到系统存在此方法,忽略");
+            LOG.warn("方法: " + method + " 数据类型: " + topic + " ,未查询到系统存在此方法,忽略");
         }
     }
 

@@ -12,7 +12,7 @@ public interface ParkingTriggerMapper {
      * @param id parking trigger id
      * @return {@link ParkingTriggerDO}
      */
-    ParkingTriggerDO selectById(String id);
+    ParkingTriggerDO selectById(Long id);
 
 
     /**

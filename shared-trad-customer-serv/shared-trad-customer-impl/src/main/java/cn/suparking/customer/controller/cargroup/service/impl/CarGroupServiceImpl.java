@@ -3,12 +3,12 @@ package cn.suparking.customer.controller.cargroup.service.impl;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
 import cn.suparking.customer.api.beans.cargroup.CarGroupQueryDTO;
-import cn.suparking.customer.controller.cargroup.service.CarGroupService;
 import cn.suparking.customer.dao.entity.CarGroup;
 import cn.suparking.customer.dao.entity.CarGroupPeriod;
+import cn.suparking.customer.dao.vo.cargroup.CarGroupVO;
+import cn.suparking.customer.controller.cargroup.service.CarGroupService;
 import cn.suparking.customer.dao.mapper.CarGroupMapper;
 import cn.suparking.customer.dao.mapper.CarGroupPeriodMapper;
-import cn.suparking.customer.dao.vo.cargroup.CarGroupVO;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -68,7 +68,7 @@ public class CarGroupServiceImpl implements CarGroupService {
             carGroupDTO.setId(carGroup.getId());
             CarGroupPeriod carGroupPeriod = CarGroupPeriod.buildCarGroup(carGroupDTO);
             carGroupPeriodMapper.insert(carGroupPeriod);
-            BeanUtils.copyProperties(carGroup,carGroupVO);
+            BeanUtils.copyProperties(carGroup, carGroupVO);
             carGroupVO.setCarGroupPeriodList(Arrays.asList(carGroupPeriod));
             return SpkCommonResult.success(carGroupVO);
         }
@@ -83,7 +83,7 @@ public class CarGroupServiceImpl implements CarGroupService {
      */
     @Override
     @Transactional
-    public SpkCommonResult remove(CarGroupDTO carGroupDTO) {
+    public SpkCommonResult remove(final CarGroupDTO carGroupDTO) {
         int delete = carGroupMapper.deleteById(carGroupDTO.getId());
         if (delete < 1) {
             return SpkCommonResult.error("合约删除失败");
@@ -99,7 +99,7 @@ public class CarGroupServiceImpl implements CarGroupService {
      * @return {@link List}
      */
     @Override
-    public SpkCommonResult findById(CarGroupDTO carGroupDTO) {
+    public SpkCommonResult findById(final CarGroupDTO carGroupDTO) {
         CarGroupVO carGroupVO = carGroupMapper.findById(carGroupDTO.getId());
         if (ObjectUtils.isEmpty(carGroupVO)) {
             return SpkCommonResult.error("对应合约不存在");

@@ -1,4 +1,4 @@
-package cn.suparking.customer.api.beans.parkfee;
+package cn.suparking.data.api.parkfee;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

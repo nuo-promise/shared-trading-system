@@ -19,5 +19,5 @@ public interface ChargeInfoService {
      * @param chargeInfoDTO 计费详情信息
      * @return Integer
      */
-    Integer createOrUpdate(ChargeInfoDTO chargeInfoDTO);
+    Long createOrUpdate(ChargeInfoDTO chargeInfoDTO);
 }

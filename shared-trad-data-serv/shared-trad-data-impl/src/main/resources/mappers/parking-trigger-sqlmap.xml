@@ -6,6 +6,7 @@
         <result column="project_id" jdbcType="BIGINT" property="projectId" />
         <result column="recog_time" jdbcType="BIGINT" property="recogTime" />
         <result column="open_time" jdbcType="BIGINT" property="openTime" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
         <result column="park_id" jdbcType="VARCHAR" property="parkId" />
         <result column="park_name" jdbcType="VARCHAR" property="parkName" />
         <result column="in_sub_area_id" jdbcType="VARCHAR" property="inSubAreaId" />
@@ -28,6 +29,7 @@
 		project_id,
 		recog_time,
 		open_time,
+        device_no,
 		park_id,
 		park_name,
 		in_sub_area_id,
@@ -73,6 +75,9 @@
             </if>
             <if test="openTime != null">
                 open_time,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
             </if>
             <if test="parkId != null">
                 park_id,
@@ -133,6 +138,9 @@
             <if test="openTime != null">
                 #{openTime,jdbcType=BIGINT},
             </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
             <if test="parkId != null">
                 #{parkId,jdbcType=VARCHAR},
             </if>
@@ -190,6 +198,8 @@
             recog_time = #{recogTime,jdbcType=BIGINT} , </if>
         <if test="openTime != null">
             open_time = #{openTime,jdbcType=BIGINT} , </if>
+        <if test="deviceNo != null">
+            device_no = #{deviceNo,jdbcType=VARCHAR} , </if>
         <if test="parkId != null">
             park_id = #{parkId,jdbcType=VARCHAR} , </if>
         <if test="parkName != null">

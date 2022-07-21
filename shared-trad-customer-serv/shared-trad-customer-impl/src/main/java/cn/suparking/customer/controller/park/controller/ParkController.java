@@ -5,11 +5,13 @@ import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.api.beans.ParkFeeQueryDTO;
 import cn.suparking.customer.api.beans.ParkPayDTO;
+import cn.suparking.customer.api.beans.ProjectInfoQueryDTO;
 import cn.suparking.customer.api.beans.ProjectQueryDTO;
+import cn.suparking.customer.api.beans.discount.DiscountDTO;
+import cn.suparking.customer.api.beans.order.OrderDTO;
 import cn.suparking.customer.beans.park.LocationDTO;
 import cn.suparking.customer.beans.park.RegularLocationDTO;
 import cn.suparking.customer.controller.park.service.ParkService;
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -109,6 +112,62 @@ public class ParkController {
     }
 
     /**
+     * 订单查询接口.
+     * @param sign C 端 使用 tmpOrderNo 进行 签名制作.
+     * @param orderDTO {@link OrderDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("queryOrder")
+    public SpkCommonResult queryOrder(@RequestHeader("sign") final String sign, @RequestBody final OrderDTO orderDTO) {
+        return parkService.queryOrder(sign, orderDTO);
+    }
+
+
+    /**
+     * 订单关闭接口.
+     * @param sign C 端 使用 tmpOrderNo 进行 签名制作.
+     * @param orderDTO {@link OrderDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("closeOrder")
+    public SpkCommonResult closeOrder(@RequestHeader("sign") final String sign, @RequestBody final OrderDTO orderDTO) {
+        return parkService.closeOrder(sign, orderDTO);
+    }
+
+    /**
+     * 清除费用记录缓存.
+     * @param sign C 端 使用 tmpOrderNo 进行 签名制作.
+     * @param parkPayDTO {@link ParkPayDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("clearParkCache")
+    public SpkCommonResult clearParkCache(@RequestHeader("sign") final String sign, @RequestBody final ParkPayDTO parkPayDTO) {
+        return parkService.clearParkCache(sign, parkPayDTO);
+    }
+
+    /**
+     * 清除优惠券缓存.
+     * @param sign C 端 使用 tmpOrderNo 进行 签名制作.
+     * @param discountDTO {@link DiscountDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("clearDiscountCache")
+    public SpkCommonResult clearDiscountCache(@RequestHeader("sign") final String sign, @RequestBody final DiscountDTO discountDTO) {
+        return parkService.clearDiscountCache(sign, discountDTO);
+    }
+
+    /**
+     * 根据优惠券编号查询优惠券信息.
+     * @param sign C 端 使用 tmpOrderNo 进行 签名制作.
+     * @param discountDTO {@link DiscountDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("getDiscountByScan")
+    public SpkCommonResult discountInfoByScanCode(@RequestHeader("sign") final String sign, @RequestBody final DiscountDTO discountDTO) {
+        return parkService.discountInfoByScanCode(sign, discountDTO);
+    }
+
+    /**
      * 根据设备编号查询项目信息.
      * @param sign C 端 使用 deviceNo 进行签名制作.
      * @param projectQueryDTO {@link ProjectQueryDTO}
@@ -117,5 +176,49 @@ public class ParkController {
     @PostMapping("projectInfoByDeviceNo")
     public SpkCommonResult projectInfoByDeviceNo(@RequestHeader("sign") final String sign, @RequestBody final ProjectQueryDTO projectQueryDTO) {
         return parkService.projectInfoByDeviceNo(sign, projectQueryDTO);
+    }
+
+    /**
+     * 根据设备编号查询项目信息.
+     * @param sign C 端 使用 projectNo 进行签名制作.
+     * @param projectInfoQueryDTO {@link ProjectInfoQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("projectInfoByProjectNo")
+    public SpkCommonResult projectInfoByProjectNo(@RequestHeader("sign") final String sign, @RequestBody final ProjectInfoQueryDTO projectInfoQueryDTO) {
+        return parkService.projectInfoByProjectNo(sign, projectInfoQueryDTO);
+    }
+
+    /**
+     * 根据项目编号和设备编号查询设备编号.
+     * @param sign C 端 使用 projectNo 进行签名制作.
+     * @param projectInfoQueryDTO {@link ProjectInfoQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("getDeviceNo")
+    public SpkCommonResult getDeviceNo(@RequestHeader("sign") final String sign, @RequestBody final ProjectInfoQueryDTO projectInfoQueryDTO) {
+        return parkService.getDeviceNo(sign, projectInfoQueryDTO);
+    }
+
+    /**
+     * 根据UnionID或者优惠券信息个数.
+     * @param sign C 端 使用 unionId 进行 签名制作
+     * @param unionId {@link String}
+     * @return {@link SpkCommonResult}
+     */
+    @GetMapping("getDiscountInfoCount")
+    public SpkCommonResult getDiscountInfoCount(@RequestHeader("sign") final String sign, @RequestParam(name = "unionId") final String unionId) {
+        return parkService.getDiscountInfoCount(sign, unionId);
+    }
+
+    /**
+     * 根据UnionID或者优惠券信息.
+     * @param sign C 端 使用 unionId 进行 签名制作
+     * @param unionId {@link String}
+     * @return {@link SpkCommonResult}
+     */
+    @GetMapping("getDiscountInfo")
+    public SpkCommonResult getDiscountInfo(@RequestHeader("sign") final String sign, @RequestParam(name = "unionId") final String unionId) {
+        return parkService.getDiscountInfo(sign, unionId);
     }
 }

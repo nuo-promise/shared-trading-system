@@ -20,4 +20,6 @@ public class ParkPayDTO {
     private String userId;
 
     private String miniOpenId;
+
+    private String discountNo;
 }

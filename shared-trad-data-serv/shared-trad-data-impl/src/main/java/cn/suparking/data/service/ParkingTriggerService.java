@@ -10,7 +10,7 @@ public interface ParkingTriggerService {
      * @param id id
      * @return {@link ParkingTriggerDO}
      */
-    ParkingTriggerDO findById(String id);
+    ParkingTriggerDO findById(Long id);
 
     /**
      * create or update parking.

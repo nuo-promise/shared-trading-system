@@ -31,7 +31,6 @@ public class UserLoginController {
 
     /**
      * 根据code获取openId和sessionKey.
-     *
      * @param code user wx login code
      * @return {@linkplain RegisterVO}
      */

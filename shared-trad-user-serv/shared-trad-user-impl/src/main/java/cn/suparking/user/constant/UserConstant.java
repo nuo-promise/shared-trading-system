@@ -14,12 +14,15 @@ public class UserConstant {
      */
     public static final String ACCESS_TOKEN_GRANT_TYPE = "client_credential";
 
-    public static final String WX_ACCESS_TOKEN_KEY = "WX_ACCESS_TOKEN";
+    public static final String WX_ACCESS_TOKEN_KEY = "accessToken";
+
 
     /**
      * WX Access Token error.
      */
     public static final Integer ACCESS_TOKEN_EXPIRED_CODE = 42001;
+
+    public static final Integer ACCESS_TOKEN_EXPIRED_CODE_40001 = 40001;
 
 
     // =============================================== 路径 ===============================================

@@ -19,8 +19,8 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ParkingDO findById(final String id) {
-        return parkingMapper.selectById(Long.valueOf(id));
+    public ParkingDO findById(final Long id) {
+        return parkingMapper.selectById(id);
     }
 
     @Override

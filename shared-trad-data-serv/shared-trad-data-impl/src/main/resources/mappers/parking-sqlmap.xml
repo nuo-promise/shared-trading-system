@@ -310,8 +310,8 @@
         UPDATE spk_parking <set>
         <if test="userId != null">
             user_id = #{userId,jdbcType=BIGINT} , </if>
-        <if test="projectId != null">
-            project_id = #{projectId,jdbcType=BIGINT} , </if>
+<!--        <if test="projectId != null">-->
+<!--            project_id = #{projectId,jdbcType=BIGINT} , </if>-->
         <if test="parkId != null">
             park_id = #{parkId,jdbcType=VARCHAR} , </if>
         <if test="parkNo != null">
@@ -374,6 +374,6 @@
             date_updated = #{dateUpdated,jdbcType=TIMESTAMP}  </if>
     </set>
         WHERE
-        id = #{id,jdbcType=BIGINT}
+        project_id = #{projectId, jdbcType=BIGINT} AND id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

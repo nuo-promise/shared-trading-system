@@ -1,6 +1,5 @@
 package cn.suparking.customer.dao.entity;
 
-import cn.suparking.common.api.configuration.SnowflakeConfig;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Optional;
 
 @Data

@@ -18,7 +18,7 @@ public class ChargeDetailDO implements Comparable<ChargeDetailDO> {
 
     private Long id;
 
-    private Long changeInfoId;
+    private Long chargeInfoId;
 
     private String chargeTypeName;
 
@@ -48,7 +48,7 @@ public class ChargeDetailDO implements Comparable<ChargeDetailDO> {
     public static ChargeDetailDO buildChargeDetailDO(final ChargeDetailDTO chargeDetailDTO) {
         return Optional.ofNullable(chargeDetailDTO).map(item -> {
             ChargeDetailDO chargeDetailDO = ChargeDetailDO.builder()
-                    .changeInfoId(Long.valueOf(item.getChangeInfoId()))
+                    .chargeInfoId(Long.valueOf(item.getChargeInfoId()))
                     .chargeTypeName(item.getChargeTypeName())
                     .beginTime(item.getBeginTime())
                     .endTime(item.getEndTime())

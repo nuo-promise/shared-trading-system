@@ -183,6 +183,8 @@
             event_type = #{eventType,jdbcType=VARCHAR} , </if>
         <if test="eventTime != null">
             event_time = #{eventTime,jdbcType=BIGINT} , </if>
+        <if test="deviceNo != null">
+            device_no = #{deviceNo,jdbcType=VARCHAR} , </if>
         <if test="parkId != null">
             park_id = #{parkId,jdbcType=VARCHAR} , </if>
         <if test="parkNo != null">

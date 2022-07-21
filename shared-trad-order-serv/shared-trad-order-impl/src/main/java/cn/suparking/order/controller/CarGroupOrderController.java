@@ -52,7 +52,7 @@ public class CarGroupOrderController {
      * @param carGroupOrderDTO 合约订单信息
      * @return Integer
      */
-    @PostMapping("createCarGroupOrder")
+    @PostMapping("")
     public Integer createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
         return carGroupOrderService.createOrUpdate(carGroupOrderDTO);
     }

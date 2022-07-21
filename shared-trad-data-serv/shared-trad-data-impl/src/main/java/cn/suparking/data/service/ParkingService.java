@@ -12,7 +12,7 @@ public interface ParkingService {
      * @param id id
      * @return {@link ParkingDO}
      */
-    ParkingDO findById(String id);
+    ParkingDO findById(Long id);
 
     /**
      * create or update parking.

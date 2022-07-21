@@ -53,4 +53,11 @@ public interface ParkingOrderMapper {
      * @return {@link List}
      */
     ParkingOrderDO findNextAggregateBeginTime(Map<String, Object> params);
+
+    /**
+     * 查找某个用户指定时间内的订单.
+     * @param params {@link Map}
+     * @return {@link List}
+     */
+    List<ParkingOrderDO> findOrderByUserId(Map<String, Object> params);
 }

@@ -18,7 +18,7 @@ public class SharedTradUserProcessorLoader implements ApplicationRunner {
      * 获取wx access token.
      */
     protected void init() {
-        userLoginService.getAccessToken();
+//        userLoginService.getAccessToken();
     }
 
     @Override

@@ -3,6 +3,7 @@ package cn.suparking.customer.feign.data;
 import cn.suparking.customer.feign.data.fallback.DataTemplateFallbackFactory;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ProjectConfig;
+import cn.suparking.data.api.parkfee.Parking;
 import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
@@ -59,4 +60,13 @@ public interface DataTemplateService {
      */
     @GetMapping("/data-api/getProjectConfig")
     ProjectConfig getProjectConfig(@RequestParam("projectNo") String projectNo);
+
+
+    /**
+     * 更新停车记录.
+     * @param parking {@link Parking}
+     * @return {@link Boolean}
+     */
+    @PostMapping("/data-api/parking")
+    Boolean createAndUpdateParking(@RequestBody Parking parking);
 }

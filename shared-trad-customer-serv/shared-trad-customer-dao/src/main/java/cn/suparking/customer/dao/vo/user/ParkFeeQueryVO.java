@@ -1,6 +1,6 @@
 package cn.suparking.customer.dao.vo.user;
 
-import cn.suparking.customer.api.beans.parkfee.DiscountInfo;
+import cn.suparking.data.api.parkfee.DiscountInfo;
 import cn.suparking.data.dao.entity.DiscountInfoDO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,12 +51,12 @@ public class ParkFeeQueryVO {
     private String carTypeName;
 
     // 入场时间
-    private Long beginTime;
+    private String beginTime;
 
-    private Long endTime;
+    private String endTime;
 
     // 停车时长
-    private Integer parkingMinutes;
+    private String parkingMinutes;
 
     // 预付费
     private Integer paidAmount;
@@ -72,5 +72,11 @@ public class ParkFeeQueryVO {
     private String deviceNo;
 
     // 订单有效期
-    private Long expireTime;
+    private String expireTime;
+
+    // 预付费离场时间
+    private String bestBefore;
+
+    // 订单有效期 秒数
+    private Long expireTimeL;
 }

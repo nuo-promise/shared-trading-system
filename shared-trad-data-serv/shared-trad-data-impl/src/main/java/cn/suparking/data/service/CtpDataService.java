@@ -3,6 +3,7 @@ package cn.suparking.data.service;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ProjectConfig;
+import cn.suparking.data.api.parkfee.Parking;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
 import com.alibaba.fastjson.JSONObject;
@@ -43,4 +44,11 @@ public interface CtpDataService {
      * @return {@link ProjectConfig}
      */
     ProjectConfig getProjectConfig(String projectNo);
+
+    /**
+     * 更新parking.
+     * @param parking {@link Parking}
+     * @return {@link Boolean}
+     */
+    Boolean createAndUpdateParking(Parking parking);
 }

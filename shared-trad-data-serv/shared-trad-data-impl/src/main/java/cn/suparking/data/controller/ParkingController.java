@@ -4,6 +4,7 @@ import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.data.api.beans.ParkConfigDTO;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ProjectConfig;
+import cn.suparking.data.api.parkfee.Parking;
 import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
@@ -15,6 +16,8 @@ import cn.suparking.data.service.ParkingEventService;
 import cn.suparking.data.service.ParkingTriggerService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shardingsphere.transaction.annotation.ShardingSphereTransactionType;
+import org.apache.shardingsphere.transaction.core.TransactionType;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +51,7 @@ public class ParkingController {
         this.parkingEventService = parkingEventService;
     }
 
+
     /**
      * 地锁复位时候先查询业务是否允许降板.
      * @param params {@link JSONObject}
@@ -55,6 +59,17 @@ public class ParkingController {
      */
     public SpkCommonResult searchBoardStatus(@RequestBody final JSONObject params) {
         return ctpDataService.searchBoardStatus(params);
+    }
+
+    /**
+     * 更新parking.
+     * @param parking {@link Parking}
+     * @return {@link Boolean}
+     */
+    @PostMapping("/parking")
+    @ShardingSphereTransactionType(TransactionType.BASE)
+    public Boolean createAndUpdateParking(@RequestBody final Parking parking) {
+        return ctpDataService.createAndUpdateParking(parking);
     }
 
     /**
@@ -125,6 +140,6 @@ public class ParkingController {
      */
     @GetMapping("/getProjectConfig")
     public ProjectConfig getProjectConfig(@RequestParam("projectNo") final String projectNo) {
-       return ctpDataService.getProjectConfig(projectNo);
+        return ctpDataService.getProjectConfig(projectNo);
     }
 }

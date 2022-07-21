@@ -1,4 +1,4 @@
-package cn.suparking.customer.api.beans.parkfee;
+package cn.suparking.customer.api.beans.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarGroupTraceInfo {
+public class OrderDTO {
+    private String orderNo;
 
-    private Integer leftDay;
+    private String discountNo;
 
-    private Integer spaceQuantity;
+    private String projectNo;
 }

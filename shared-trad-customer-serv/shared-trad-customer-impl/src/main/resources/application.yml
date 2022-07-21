@@ -76,6 +76,15 @@ spring:
     consumer-prefetch: 5
     concurrent-consumer: 2
     enable: true
+  parkmq:
+    host: ms.suparking.cn
+    port: 5672
+    username: shared
+    password: shared2019
+    exchange: spk.biz
+    consumer-prefetch: 5
+    concurrent-consumer: 2
+    enable: true
     # redis 配置
   redis:
     host: localhost
@@ -141,6 +150,17 @@ pagehelper:
   params: count=countSql
 sparking:
   bs:
-    url: http://192.168.1.133:10088/spms/api/wxapp
+    url: http://192.168.1.9:10088/spms/api/wxapp
   secret: 9fdfff5ec6ac41c1a83269241e09f4ce
-  discountUrl: http://discount.suparking.cn:25863/
+#  discountUrl: http://discount.suparking.cn:25863/
+  discountUrl: http://localhost:10086/
+  corePoolSize: 16
+  queryInterval: 1
+  orderInterval: 90
+  mini:
+    appid: wx30b06cff779215bb
+    secret: 919be359c7f692d66bde05ad6c34a95d
+  adapter:
+    url: http://localhost:25902/sparking
+  discount:
+    url: http://localhost:10086/discount

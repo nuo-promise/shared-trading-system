@@ -91,6 +91,7 @@ public class ParkingDO extends BaseDO {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             ParkingDO parkingDO = ParkingDO.builder()
                     .projectId(Long.valueOf(item.getProjectId()))
+                    .userId(Objects.nonNull(item.getUserId()) ? Long.valueOf(item.getUserId()) : null)
                     .parkId(item.getParkId())
                     .parkNo(item.getParkNo())
                     .parkName(item.getParkName())

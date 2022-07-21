@@ -22,12 +22,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import javax.annotation.Resource;
 
-@Configuration
+@Configuration("RabbitMqConfiguration")
 public class RabbitMqConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(RabbitMqConfiguration.class);
@@ -40,6 +41,7 @@ public class RabbitMqConfiguration {
      * @return {@link CachingConnectionFactory}
      */
     @Bean("MQCloudConnectionFactory")
+    @Primary
     public CachingConnectionFactory cloudConnectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
                 rabbitmqProperties.getHost(), rabbitmqProperties.getPort());

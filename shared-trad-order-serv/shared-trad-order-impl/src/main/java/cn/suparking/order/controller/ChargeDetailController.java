@@ -57,7 +57,7 @@ public class ChargeDetailController {
     public SpkCommonResult createChargeDetail(@Valid @RequestBody final ChargeDetailDTO chargeDetailDTO) {
         return Optional.ofNullable(chargeDetailDTO)
                 .map(item -> {
-                    SpkCommonAssert.notBlank(item.getChangeInfoId(), "计费信息ID能为空");
+                    SpkCommonAssert.notBlank(item.getChargeInfoId(), "计费信息ID能为空");
                     Integer count = chargeDetailService.createOrUpdate(item);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
                 }).orElseGet(() -> SpkCommonResult.error("计费详情信息不能为空"));

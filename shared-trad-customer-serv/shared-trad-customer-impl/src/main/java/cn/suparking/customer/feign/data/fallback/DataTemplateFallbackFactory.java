@@ -4,6 +4,7 @@ import cn.suparking.customer.feign.data.DataTemplateService;
 import cn.suparking.customer.feign.user.UserTemplateService;
 import cn.suparking.data.api.beans.ParkingLockModel;
 import cn.suparking.data.api.beans.ProjectConfig;
+import cn.suparking.data.api.parkfee.Parking;
 import cn.suparking.data.api.query.ParkEventQuery;
 import cn.suparking.data.api.query.ParkQuery;
 import cn.suparking.data.dao.entity.ParkingDO;
@@ -60,6 +61,12 @@ public class DataTemplateFallbackFactory implements FallbackFactory<DataTemplate
             public ProjectConfig getProjectConfig(final String projectNo) {
                 log.error("DataTemplateService: getProjectConfig error: " + cause.getMessage());
                 return null;
+            }
+
+            @Override
+            public Boolean createAndUpdateParking(final Parking parking) {
+                log.error("DataTemplateService: createAndUpdateParking error: " + cause.getMessage());
+                return false;
             }
         };
     }

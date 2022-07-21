@@ -52,7 +52,6 @@ public class SparkingThreadFactory implements ThreadFactory {
         Thread thread = new Thread(THREAD_GROUP, runnable, THREAD_GROUP.getName() + "-" + namePrefix + "-" + THREAD_NUMBER.getAndIncrement());
         thread.setDaemon(daemon);
         thread.setPriority(priority);
-
         return thread;
     }
 }

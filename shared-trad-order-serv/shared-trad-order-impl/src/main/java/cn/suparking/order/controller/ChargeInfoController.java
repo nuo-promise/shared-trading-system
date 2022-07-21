@@ -54,8 +54,8 @@ public class ChargeInfoController {
         return Optional.ofNullable(chargeInfoDTO)
                 .map(item -> {
                     SpkCommonAssert.notBlank(item.getParkingOrderId(), "订单ID不能为空");
-                    Integer count = chargeInfoService.createOrUpdate(item);
-                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
+                    Long id = chargeInfoService.createOrUpdate(item);
+                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, id);
                 }).orElseGet(() -> SpkCommonResult.error("计费信息不存在"));
     }
 }

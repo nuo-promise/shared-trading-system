@@ -25,6 +25,7 @@ import cn.suparking.data.tools.ProjectConfigUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shardingsphere.transaction.annotation.ShardingSphereTransactionType;
 import org.apache.shardingsphere.transaction.core.TransactionType;
 import org.springframework.amqp.core.MessageProperties;
@@ -83,6 +84,12 @@ public class CTPMessageHandler extends MessageHandler {
      * @return {@Link SpkCommonResult}
      */
     public SpkCommonResult invoke(final ParkingLockModel parkingLockModel, final ParkStatusModel parkStatusModel) {
+
+        if (StringUtils.isEmpty(parkStatusModel.getParkStatus()) || parkStatusModel.getParkStatus().equals("FALSE")) {
+            log.info("CTP Park Status is NULL or FALSE." + parkStatusModel);
+            return SpkCommonResult.success("CTP Park Status is NULL or FALSE Not Entered.");
+        }
+
         /**
          * 1. 如果是 车辆入位 状态,那么比对 表中对于相同项目,相同车位 状态是 入位的时间间隔,如果相差间隔在设置范围内,则忽略,如果超过则认为新的入场
          */
@@ -105,12 +112,14 @@ public class CTPMessageHandler extends MessageHandler {
             return SpkCommonResult.success("Shared Trad Data ProjectConfig Not Exists");
         }
 
-        // 查询 当前场库,当前车位 最近一次记录.
+        // 查询 当前场库,当前车位 最近一次记录 如果是入场事件,同时当前车位状态也是入场.
         ParkingDO parkingDO = deviceMessageThread.getLatestParkingDO(parkingLockModel);
-        if (Objects.nonNull(parkingDO) && notimeout(parkingDO.getLatestTriggerTime(), projectConfig.getMinIntervalForDupPark())
-                && parkStatusModel.getParkStatus() && parkingDO.getParkingState().equals(ParkingState.ENTERED.name())) {
+        if (Objects.nonNull(parkingDO) && parkingDO.getParkingState().equals(ParkingState.ENTERED.name())
+                && notimeout(parkingDO.getLatestTriggerTime(), projectConfig.getMinIntervalForDupPark())
+                && parkStatusModel.getParkStatus().equals("TRUE")) {
             return SpkCommonResult.success("Shared Trad minIntervalDupPark no timeout.");
         }
+
         // 入场数据落库.
         parkingLockModel.setParkId(parkingLockModel.getId());
         return saveEnterParking(parkingLockModel, parkStatusModel);

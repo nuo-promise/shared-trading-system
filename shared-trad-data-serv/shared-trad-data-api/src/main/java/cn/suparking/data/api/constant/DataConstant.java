@@ -2,6 +2,8 @@ package cn.suparking.data.api.constant;
 
 public class DataConstant {
 
+
+
     // CTP
     public static final String CTP_TYPE = "CTP";
 
@@ -25,4 +27,9 @@ public class DataConstant {
     public static final String DATA_SAVE = "save";
 
     public static final String DATA_EVENT = "event";
+
+    // topic 分类
+    public static final String TOPIC_DATA = "data";
+
+    public static final String TOPIC_EVENT = "event";
 }

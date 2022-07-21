@@ -23,17 +23,34 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>cn.suparking</groupId>
-            <artifactId>shared-trad-data-dao</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>shared-trad-data-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>cn.suparking</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>shared-trad-data-dao</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>shared-trad-user-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>shared-trad-common-tools</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>shared-trad-order-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>shared-trad-order-dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
