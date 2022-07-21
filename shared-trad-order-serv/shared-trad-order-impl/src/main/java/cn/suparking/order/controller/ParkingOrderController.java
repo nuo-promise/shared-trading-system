@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -38,7 +39,7 @@ public class ParkingOrderController {
     }
 
     /**
-     * 根据退费订单id查询退费订单信息.
+     * 根据订单id查询订单信息.
      *
      * @param id 退费订单id
      * @return {@linkplain SpkCommonResult}
@@ -68,7 +69,23 @@ public class ParkingOrderController {
     }
 
     /**
+     * 根据userId查询常去车场.
+     *
+     * @param userId 用户id
+     * @param count  查询记录数
+     * @return {@linkplain SpkCommonResult}
+     */
+    @GetMapping("/regularLocations")
+    public SpkCommonResult regularLocations(@RequestParam final Long userId, @RequestParam final Integer count) {
+        List<String> projectNoList = parkingOrderService.regularLocations(userId, count);
+        return Optional.ofNullable(projectNoList)
+                .map(item -> SpkCommonResult.success(SpkCommonResultMessage.DETAIL_SUCCESS, item))
+                .orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    }
+
+    /**
      * 生成订单数据.
+     *
      * @param orderDTO {@link OrderDTO}
      * @return {@link Boolean}
      */
@@ -84,6 +101,7 @@ public class ParkingOrderController {
 
     /**
      * 根据用户ID 和 开始与结束时间范围查询订单数据.
+     *
      * @param parkingQuery {@Link ParkingQuery}
      * @return {@link SpkCommonResult}
      */
@@ -100,6 +118,7 @@ public class ParkingOrderController {
 
     /**
      * 根据用户ID 和时间段查询订单信息.
+     *
      * @param parkingQuery {@link ParkingQuery}
      * @return {@link SpkCommonResult}
      */
@@ -117,6 +136,7 @@ public class ParkingOrderController {
 
     /**
      * 根据用户ID 查询下一次开始时间.
+     *
      * @param parkingQuery {@Link ParkingQuery}
      * @return {@link SpkCommonResult}
      */
@@ -124,14 +144,28 @@ public class ParkingOrderController {
     public SpkCommonResult findNextAggregateBeginTime(@RequestBody final ParkingQuery parkingQuery) {
         return Optional.ofNullable(parkingQuery)
                 .map(item -> {
-
                     SpkCommonAssert.notNull(item.getUserIds(), "用户信息不能为空");
                     return parkingOrderService.findNextAggregateBeginTime(parkingQuery);
                 }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
     }
 
     /**
+     * 根据条件查询订单.
+     *
+     * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/list")
+    public SpkCommonResult list(@Valid @RequestBody final ParkingOrderQueryDTO parkingOrderQueryDTO) {
+        return Optional.ofNullable(parkingOrderQueryDTO)
+                .map(item -> {
+                    return parkingOrderService.list(item);
+                }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    }
+
+    /**
      * 根据用户ID 时间范围查询订单信息.
+     *
      * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
      * @return {@link List}
      */

@@ -42,6 +42,7 @@ public class ChargeDetailDO implements Comparable<ChargeDetailDO> {
 
     /**
      * build ChargeDetailDO.
+     *
      * @param chargeDetailDTO {@link ChargeDetailDTO}
      * @return {@link ChargeDetailDO}
      */

@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.ChargeDetailDO">
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="charge_info_id" jdbcType="BIGINT" property="chargeInfoId" />
-        <result column="charge_type_name" jdbcType="VARCHAR" property="charTypeName" />
+        <result column="charge_type_name" jdbcType="VARCHAR" property="chargeTypeName" />
         <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
         <result column="end_time" jdbcType="BIGINT" property="endTime" />
         <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
@@ -154,6 +154,6 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM spk_charge_detail
-        WHERE parking_order_id = #{parkingOrderId, jdbcType=BIGINT}
+        WHERE charge_info_id = #{chargeInfoId, jdbcType=BIGINT}
     </select>
 </mapper>

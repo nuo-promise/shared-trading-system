@@ -51,6 +51,8 @@ public class CarGroupDTO {
 
     private String address;
 
+    private Boolean valid;
+
     private String remark;
 
     private String operator;

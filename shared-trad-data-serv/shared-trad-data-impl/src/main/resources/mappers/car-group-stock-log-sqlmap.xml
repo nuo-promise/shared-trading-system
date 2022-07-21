@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.data.dao.mapper.CarGroupStockOperateRecordMapper">
+	<resultMap id="BaseResultMap" type="cn.suparking.data.dao.entity.cargroupstocklog.CarGroupStockOperateRecordDO">
+			<result column="id" jdbcType="BIGINT" property="id" />
+			<result column="stock_id" jdbcType="BIGINT" property="stockId" />
+			<result column="operate_type" jdbcType="VARCHAR" property="operateType" />
+			<result column="quantity" jdbcType="INTEGER" property="quantity" />
+			<result column="term_no" jdbcType="VARCHAR" property="termNo" />
+			<result column="remark" jdbcType="VARCHAR" property="remark" />
+			<result column="creator" jdbcType="VARCHAR" property="creator" />
+			<result column="modifier" jdbcType="VARCHAR" property="modifier" />
+			<result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+			<result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,
+		stock_id,
+		operate_type,
+		quantity,
+		term_no,
+		remark,
+		creator,
+		modifier,
+		date_created,
+		date_updated
+    </sql>
+
+	<select id="list"  parameterType="map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM
+		spk_car_group_stock_operate_record
+		<where>
+			<if test="stockId != null">
+				AND stock_id = #{stockId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY id DESC
+	</select>
+
+	<insert id="insert" parameterType="cn.suparking.data.dao.mapper.CarGroupStockOperateRecordMapper">
+		INSERT INTO spk_car_group_stock_operate_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="stockId != null">
+				stock_id,
+			</if>
+			<if test="operateType != null">
+				operate_type,
+			</if>
+			<if test="quantity != null">
+				quantity,
+			</if>
+			<if test="termNo != null">
+				term_no,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+			<if test="modifier != null">
+				modifier,
+			</if>
+			<if test="dateCreated != null">
+				date_created,
+			</if>
+			<if test="dateUpdated != null">
+				date_updated,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=BIGINT},
+			<if test="stockId != null">
+				#{stockId,jdbcType=BIGINT},
+			</if>
+			<if test="operateType != null">
+				#{operateType,jdbcType=VARCHAR},
+			</if>
+			<if test="quantity != null">
+				#{quantity,jdbcType=INTEGER},
+			</if>
+			<if test="termNo != null">
+				#{termNo,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="modifier != null">
+				#{modifier,jdbcType=VARCHAR},
+			</if>
+			<if test="dateCreated != null">
+				#{dateCreated,jdbcType=TIMESTAMP},
+			</if>
+			<if test="dateUpdated != null">
+				#{dateUpdated,jdbcType=TIMESTAMP},
+			</if>
+		</trim>		
+	</insert>
+</mapper>

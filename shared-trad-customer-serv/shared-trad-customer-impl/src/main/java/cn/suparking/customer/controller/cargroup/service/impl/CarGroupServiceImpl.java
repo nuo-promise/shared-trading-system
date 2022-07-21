@@ -13,6 +13,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.util.TextUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +75,24 @@ public class CarGroupServiceImpl implements CarGroupService {
             return SpkCommonResult.success(carGroupVO);
         }
         return SpkCommonResult.error("合约创建失败");
+    }
+
+    /**
+     * 合约修改.
+     *
+     * @param carGroupDTO {@link CarGroupDTO}
+     * @return {@link List}
+     */
+    @Override
+    @Transactional
+    public SpkCommonResult update(final CarGroupDTO carGroupDTO) {
+        CarGroup carGroup = CarGroup.buildCarGroup(carGroupDTO);
+        CarGroupVO carGroupVO = CarGroupVO.builder().build();
+        int update = carGroupMapper.update(carGroup);
+        if (update > 0) {
+            return SpkCommonResult.success(carGroupVO);
+        }
+        return SpkCommonResult.error("合约修改失败");
     }
 
     /**

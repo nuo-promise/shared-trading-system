@@ -3,6 +3,7 @@ package cn.suparking.order.dao.mapper;
 import cn.suparking.order.dao.entity.ChargeDetailDO;
 import cn.suparking.order.dao.entity.ChargeInfoDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,8 +37,8 @@ public interface ChargeDetailMapper {
 
     /**
      * 根据订单获取计费详情信息.
-     * @param parkingOrderId {@link Long}
+     * @param chargeInfoId {@link Long}
      * @return {@link ChargeDetailDO}
      */
-    LinkedList<ChargeDetailDO> findByChargeInfoId(Long parkingOrderId);
+    LinkedList<ChargeDetailDO> findByChargeInfoId(Long chargeInfoId);
 }

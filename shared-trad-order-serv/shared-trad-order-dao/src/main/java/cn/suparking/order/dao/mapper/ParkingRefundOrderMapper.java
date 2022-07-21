@@ -1,5 +1,7 @@
 package cn.suparking.order.dao.mapper;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
+import cn.suparking.order.api.beans.ParkingRefundOrderQueryDTO;
 import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,4 +31,12 @@ public interface ParkingRefundOrderMapper {
      * @return int
      */
     int update(ParkingRefundOrderDO parkingRefundOrderDO);
+
+    /**
+     * 根据原支付订单号获取数据.
+     *
+     * @param parkingRefundOrderQueryDTO {@link ParkingRefundOrderQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    ParkingRefundOrderDO getParkingRefundOrderByPayOrderNO(ParkingRefundOrderQueryDTO parkingRefundOrderQueryDTO);
 }

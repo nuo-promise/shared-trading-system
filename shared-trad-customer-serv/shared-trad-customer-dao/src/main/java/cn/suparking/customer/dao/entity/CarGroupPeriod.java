@@ -15,9 +15,14 @@ import java.util.Optional;
 @AllArgsConstructor
 @Builder
 @ToString
-public class CarGroupPeriod extends BaseDO {
+public class CarGroupPeriod implements Comparable<CarGroupPeriod> {
 
     private static final long serialVersionUID = -1477645035226205491L;
+
+    /**
+     * id.
+     */
+    private Long id;
 
     /**
      * 合约ID.
@@ -33,6 +38,16 @@ public class CarGroupPeriod extends BaseDO {
      * 结束时间.
      */
     private Long endDate;
+
+    /**
+     * 创建时间.
+     */
+    private Timestamp dateCreated;
+
+    /**
+     * 修改时间.
+     */
+    private Timestamp dateUpdated;
 
     /**
      * build userDO.
@@ -53,5 +68,10 @@ public class CarGroupPeriod extends BaseDO {
             carGroupPeriod.setDateUpdated(currentTime);
             return carGroupPeriod;
         }).orElse(null);
+    }
+
+    @Override
+    public int compareTo(final CarGroupPeriod o) {
+        return (int) (o.beginDate - this.beginDate);
     }
 }

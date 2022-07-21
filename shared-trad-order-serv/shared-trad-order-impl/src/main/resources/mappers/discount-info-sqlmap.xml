@@ -20,7 +20,7 @@
 		`value`,
 		quantity,
 		used_start_time,
-		used_end_time,
+		used_end_time
     </sql>
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT

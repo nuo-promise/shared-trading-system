@@ -26,6 +26,8 @@ public class ParkingRefundOrderDTO implements Serializable {
     @NotBlank
     private String orderNo;
 
+    private String payOrderNo;
+
     private String payParkingId;
 
     private Integer maxRefundAmount;

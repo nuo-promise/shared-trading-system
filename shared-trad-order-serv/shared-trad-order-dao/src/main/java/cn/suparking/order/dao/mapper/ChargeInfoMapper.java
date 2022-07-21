@@ -2,6 +2,7 @@ package cn.suparking.order.dao.mapper;
 
 import cn.suparking.order.dao.entity.ChargeInfoDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

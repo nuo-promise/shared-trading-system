@@ -8,7 +8,7 @@
             <level>DEBUG</level>
         </filter>
         <encoder>
-            <pattern>%contextName %red(%d{HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level)  %boldMagenta(%logger{36}[%L]) %cyan(- %msg%n)</pattern>
+            <pattern>%contextName %red(%d{HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level)  %boldMagenta(%logger{36} [%L]) %cyan(- %msg%n)</pattern>
         </encoder>
     </appender>
     <!--output to file-->

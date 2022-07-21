@@ -12,7 +12,9 @@
         <result column="protocol_name" jdbcType="VARCHAR" property="protocolName" />
         <result column="import_no" jdbcType="VARCHAR" property="importNo" />
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="valid" jdbcType="BOOLEAN" property="valid" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="operator" jdbcType="VARCHAR" property="operator" />
         <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -31,6 +33,7 @@
         <result column="import_no" jdbcType="VARCHAR" property="importNo" />
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
         <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="valid" jdbcType="BOOLEAN" property="valid" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="operator" jdbcType="VARCHAR" property="operator" />
         <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -54,7 +57,9 @@
         protocol_name,
         import_no,
         user_mobile,
+        user_name,
         address,
+        valid,
         remark,
         operator,
         modifier,
@@ -77,7 +82,9 @@
             a.protocol_name,
             a.import_no,
             a.user_mobile,
+            a.user_name,
             a.address,
+            a.valid,
             a.remark,
             a.operator,
             a.modifier,
@@ -93,6 +100,7 @@
         ON
             a.id = b.car_group_id
         <where>
+            a.valid = true
             <if test="projectNos != null and projectNos.size > 0">
                 AND project_no in
                 <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
@@ -139,6 +147,7 @@
         ON
             a.id = b.car_group_id
         <where>
+            a.valid = true
             <if test="projectNos != null and projectNos.size > 0">
                 AND project_no in
                 <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
@@ -186,7 +195,9 @@
             a.protocol_name,
             a.import_no,
             a.user_mobile,
+            a.user_name,
             a.address,
+            a.valid,
             a.remark,
             a.operator,
             a.modifier,
@@ -203,6 +214,14 @@
             a.id = b.car_group_id
         WHERE
             a.id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            spk_car_group
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <insert id="insert" parameterType="cn.suparking.customer.dao.entity.CarGroup">
@@ -236,8 +255,14 @@
             <if test="userMobile != null">
                 user_mobile,
             </if>
+            <if test="userName != null">
+                user_name,
+            </if>
             <if test="address != null">
                 address,
+            </if>
+            <if test="valid != null">
+                valid,
             </if>
             <if test="remark != null">
                 remark,
@@ -284,8 +309,14 @@
             <if test="userMobile != null">
                 #{userMobile,jdbcType=VARCHAR},
             </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
             <if test="address != null">
                 #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="valid != null">
+                #{valid,jdbcType=BOOLEAN},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
@@ -309,34 +340,40 @@
         update spk_car_group
         <set>
             <if test="userId != null">
-                userId = #{userId,jdbcType=BIGINT} ,
+                user_id = #{userId,jdbcType=BIGINT} ,
             </if>
             <if test="projectNo != null">
-                projectNo = #{projectNo,jdbcType=VARCHAR} ,
+                project_no = #{projectNo,jdbcType=VARCHAR} ,
             </if>
             <if test="carTypeId != null">
-                carTypeId = #{carTypeId,jdbcType=VARCHAR} ,
+                car_type_id = #{carTypeId,jdbcType=VARCHAR} ,
             </if>
             <if test="carTypeName != null">
-                carTypeName = #{carTypeName,jdbcType=VARCHAR} ,
+                car_type_name = #{carTypeName,jdbcType=VARCHAR} ,
             </if>
             <if test="protocolId != null">
-                protocolId = #{protocolId,jdbcType=VARCHAR} ,
+                protocol_id = #{protocolId,jdbcType=VARCHAR} ,
             </if>
             <if test="protocolType != null">
-                protocolType = #{protocolType,jdbcType=VARCHAR} ,
+                protocol_type = #{protocolType,jdbcType=VARCHAR} ,
             </if>
             <if test="protocolName != null">
-                protocolName = #{protocolName,jdbcType=VARCHAR} ,
+                protocol_name = #{protocolName,jdbcType=VARCHAR} ,
             </if>
             <if test="importNo != null">
-                importNo = #{importNo,jdbcType=VARCHAR} ,
+                import_no = #{importNo,jdbcType=VARCHAR} ,
             </if>
             <if test="userMobile != null">
-                userMobile = #{userMobile,jdbcType=VARCHAR} ,
+                user_mobile = #{userMobile,jdbcType=VARCHAR} ,
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR} ,
             </if>
             <if test="address != null">
                 address = #{address,jdbcType=VARCHAR} ,
+            </if>
+            <if test="valid != null">
+                valid = #{valid,jdbcType=BOOLEAN} ,
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR} ,

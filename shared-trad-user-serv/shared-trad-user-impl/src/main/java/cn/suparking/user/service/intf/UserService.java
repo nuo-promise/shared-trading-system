@@ -1,7 +1,11 @@
 package cn.suparking.user.service.intf;
 
 import cn.suparking.user.api.beans.UserDTO;
+import cn.suparking.user.dao.entity.UserDO;
 import cn.suparking.user.vo.UserVO;
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -35,4 +39,6 @@ public interface UserService {
      * @return {@link UserVO}
      */
     UserVO findUserByIphone(String iphone);
+
+    List<UserDO> getUserByUserIds(JSONObject params);
 }

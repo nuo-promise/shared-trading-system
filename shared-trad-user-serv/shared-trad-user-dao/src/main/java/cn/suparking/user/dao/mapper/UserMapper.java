@@ -3,6 +3,8 @@ package cn.suparking.user.dao.mapper;
 import cn.suparking.user.dao.entity.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * User Mapper.
  */
@@ -45,4 +47,6 @@ public interface UserMapper {
      * @return {@link UserDO}
      */
     UserDO selectUserByIphone(String iphone);
+
+    List<UserDO> selectByIds(List<Long> userIdList);
 }

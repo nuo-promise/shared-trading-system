@@ -39,6 +39,26 @@ public class ParkConstant {
     public static final String INTERFACE_PARKBYDEVICE = "/map/projectInfoByDeviceNo";
 
     /**
+     * 根据场库编号、协议id获取场库信息和合约协议信息.
+     */
+    public static final String INTERFACE_MYVIPCARINFO = "/vipGroup/myVipCarInfo";
+
+    /**
+     * 获取所有可线上办理的协议列表.
+     */
+    public static final String INTERFACE_NEWPROTOCOL = "/vipGroup/newProtocol";
+
+    /**
+     * 获取指定场库可线上办理的协议列表.
+     */
+    public static final String INTERFACE_NEWPROTOCOLBYPROJECTNO = "/vipGroup/newProtocolByProjectNo";
+
+    /**
+     * 获取所有可线上办理的场库.
+     */
+    public static final String INTERFACE_PROJECTLIST = "/vipGroup/projectListByNos";
+
+    /**
      * 根据项目编号获取场库信息.
      */
     public static final String INTERFACE_PARKBYPROJECT = "/map/projectInfoByProjectNo";

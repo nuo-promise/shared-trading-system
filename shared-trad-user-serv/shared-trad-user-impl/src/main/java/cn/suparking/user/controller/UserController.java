@@ -6,6 +6,7 @@ import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.service.intf.UserService;
 import cn.suparking.user.vo.UserVO;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.transaction.annotation.ShardingSphereTransactionType;
 import org.apache.shardingsphere.transaction.core.TransactionType;
@@ -90,6 +91,19 @@ public class UserController {
         return Optional.ofNullable(iphone).map(item -> {
             SpkCommonAssert.notBlank(iphone, SpkCommonResultMessage.PARAMETER_ERROR + " iphone 不能为空");
             return SpkCommonResult.success(SpkCommonResultMessage.RESULT_SUCCESS, userService.findUserByIphone(item));
+        }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_QUERY_ERROR));
+    }
+
+    /**
+     * 根据用户id获取用户信息.
+     * @param params userIdList
+     * @return {@link UserVO}
+     */
+    @PostMapping("/getUserByUserIds")
+    public SpkCommonResult getUserByUserIds(@RequestBody final JSONObject params) {
+        return Optional.ofNullable(params).map(item -> {
+            SpkCommonAssert.notBlank(params.toJSONString(), SpkCommonResultMessage.PARAMETER_ERROR + " 参数 不能为空");
+            return SpkCommonResult.success(SpkCommonResultMessage.RESULT_SUCCESS, userService.getUserByUserIds(params));
         }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.USER_QUERY_ERROR));
     }
 }

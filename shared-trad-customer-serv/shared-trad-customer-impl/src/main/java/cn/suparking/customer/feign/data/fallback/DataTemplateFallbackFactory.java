@@ -1,5 +1,8 @@
 package cn.suparking.customer.feign.data.fallback;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
+import cn.suparking.customer.api.beans.cargroupstock.CarGroupStockOperateRecordDTO;
+import cn.suparking.customer.api.beans.cargroupstock.CarGroupStockOperateRecordQueryDTO;
 import cn.suparking.customer.feign.data.DataTemplateService;
 import cn.suparking.customer.feign.user.UserTemplateService;
 import cn.suparking.data.api.beans.ParkingLockModel;
@@ -26,6 +29,7 @@ public class DataTemplateFallbackFactory implements FallbackFactory<DataTemplate
 
     /**
      * 降级将Throwable 作为入参传递.
+     *
      * @param cause {@link Throwable}
      * @return {@link UserTemplateService}
      */
@@ -64,6 +68,17 @@ public class DataTemplateFallbackFactory implements FallbackFactory<DataTemplate
             }
 
             @Override
+            public SpkCommonResult carGroupStockLogList(CarGroupStockOperateRecordQueryDTO carGroupStockOperateRecordQueryDTO) {
+                log.error("DataTemplateService: carGroupStockLogList error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public SpkCommonResult carGroupStockLogInsert(CarGroupStockOperateRecordDTO carGroupStockOperateRecordDTO) {
+                log.error("DataTemplateService: carGroupStockLogInsert error: " + cause.getMessage());
+                return null;
+            }
+
             public Boolean createAndUpdateParking(final Parking parking) {
                 log.error("DataTemplateService: createAndUpdateParking error: " + cause.getMessage());
                 return false;

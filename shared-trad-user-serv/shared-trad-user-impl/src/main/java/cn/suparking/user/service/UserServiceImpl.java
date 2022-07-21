@@ -7,11 +7,16 @@ import cn.suparking.user.service.intf.UserService;
 import cn.suparking.user.tools.ReactiveRedisUtils;
 import cn.suparking.user.vo.UserVO;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * User Service inf.
@@ -28,6 +33,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * seata 与ss 整合事务,除了全局事务注解,然后再特定的Service impl 函数头也要增加 @Transactional 注解.
+     *
      * @param userDTO {@linkplain UserDTO}
      * @return update or create int
      */
@@ -59,5 +65,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO findUserByIphone(final String iphone) {
         return UserVO.buildUserVO(userMapper.selectUserByIphone(iphone));
+    }
+
+    @Override
+    public List<UserDO> getUserByUserIds(JSONObject params) {
+        List<UserDO> userDOList = new ArrayList<>();
+        JSONArray userIdListObj = params.getJSONArray("userIdList");
+        if (Objects.nonNull(userIdListObj) && userIdListObj.size() > 0) {
+            List<Long> userIdList = JSONArray.parseArray(JSONObject.toJSONString(userIdListObj), Long.class);
+            userDOList = userMapper.selectByIds(userIdList);
+        }
+        return userDOList;
     }
 }

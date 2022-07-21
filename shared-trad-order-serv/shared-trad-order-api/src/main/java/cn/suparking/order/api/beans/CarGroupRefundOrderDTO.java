@@ -18,7 +18,7 @@ public class CarGroupRefundOrderDTO implements Serializable {
 
     private String id;
 
-    private String userId;
+    private Long userId;
 
     private String orderNo;
 
@@ -53,6 +53,8 @@ public class CarGroupRefundOrderDTO implements Serializable {
     private String orderState;
 
     private String projectNo;
+
+    private String remark;
 
     private String creator;
 

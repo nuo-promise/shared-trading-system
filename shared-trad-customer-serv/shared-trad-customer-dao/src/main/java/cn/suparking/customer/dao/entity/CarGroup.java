@@ -39,7 +39,11 @@ public final class CarGroup extends BaseDO {
 
     private String userMobile;
 
+    private String userName;
+
     private String address;
+
+    private Boolean valid;
 
     private String remark;
 
@@ -66,7 +70,9 @@ public final class CarGroup extends BaseDO {
                     .protocolName(item.getProtocolName())
                     .importNo(item.getImportNo())
                     .userMobile(item.getUserMobile())
+                    .userName(item.getUserName())
                     .address(item.getAddress())
+                    .valid(item.getValid())
                     .remark(item.getRemark())
                     .operator(item.getOperator())
                     .modifier(item.getModifier())
@@ -75,6 +81,7 @@ public final class CarGroup extends BaseDO {
                 carGroup.setId(SnowflakeConfig.snowflakeId());
                 carGroup.setDateCreated(currentTime);
             } else {
+                carGroup.setId(item.getId());
                 carGroup.setDateUpdated(currentTime);
             }
             return carGroup;

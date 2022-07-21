@@ -51,7 +51,21 @@ public class CarGroupController {
         return Optional.ofNullable(carGroupDTO)
                 .map(item -> {
                     return carGroupService.insert(carGroupDTO);
-                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR + " pageSize, pageNum 不能为 null"));
+                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR));
+    }
+
+    /**
+     * 合约修改.
+     *
+     * @param carGroupDTO {@link CarGroupDTO}
+     * @return {@link List}
+     */
+    @PostMapping("update")
+    public SpkCommonResult update(@Valid @RequestBody final CarGroupDTO carGroupDTO) {
+        return Optional.ofNullable(carGroupDTO)
+                .map(item -> {
+                    return carGroupService.update(carGroupDTO);
+                }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR));
     }
 
     /**

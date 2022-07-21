@@ -16,7 +16,7 @@ import java.util.Optional;
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("car-group-order-api")
+@RequestMapping("/car-group-order-api")
 public class CarGroupOrderController {
 
     private final CarGroupOrderService carGroupOrderService;
@@ -31,7 +31,7 @@ public class CarGroupOrderController {
      * @param carGroupOrderDTO 订单内容
      * @return SpkCommonResult {@linkplain SpkCommonResult}
      */
-    @PostMapping("createOrUpdate")
+    @PostMapping("/createOrUpdate")
     public SpkCommonResult createOrUpdate(@RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
         return Optional.ofNullable(carGroupOrderDTO).map(item -> {
             SpkCommonAssert.notNull(carGroupOrderDTO.getOrderNo(), "订单号不能为空");

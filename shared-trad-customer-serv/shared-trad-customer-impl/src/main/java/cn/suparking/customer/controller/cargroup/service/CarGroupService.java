@@ -26,6 +26,14 @@ public interface CarGroupService {
     SpkCommonResult insert(CarGroupDTO carGroupDTO);
 
     /**
+     * 合约修改.
+     *
+     * @param carGroupDTO {@link CarGroupDTO}
+     * @return {@link SpkCommonResult}
+     */
+    SpkCommonResult update(CarGroupDTO carGroupDTO);
+
+    /**
      * 合约删除.
      *
      * @param carGroupDTO {@link CarGroupDTO}

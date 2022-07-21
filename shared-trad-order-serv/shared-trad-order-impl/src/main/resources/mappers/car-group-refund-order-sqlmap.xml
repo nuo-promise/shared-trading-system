@@ -3,10 +3,9 @@
 <mapper namespace="cn.suparking.order.dao.mapper.CarGroupRefundOrderMapper">
     <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         <result column="id" jdbcType="BIGINT" property="id" />
-        <result column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
         <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
-        <result column="car_group_id" jdbcType="BIGINT" property="carGroupId" />
+        <result column="car_group_id" jdbcType="VARCHAR" property="carGroupId" />
         <result column="car_type_id" jdbcType="VARCHAR" property="carTypeId" />
         <result column="car_type_name" jdbcType="VARCHAR" property="carTypeName" />
         <result column="protocol_id" jdbcType="VARCHAR" property="protocolId" />
@@ -21,6 +20,7 @@
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
         <result column="order_state" jdbcType="VARCHAR" property="orderState" />
         <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="creator" jdbcType="VARCHAR" property="creator" />
         <result column="modifier" jdbcType="VARCHAR" property="modifier" />
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
@@ -29,7 +29,6 @@
 
     <sql id="Base_Column_List">
         id,
-		user_id,
 		order_no,
 		pay_order_no,
 		car_group_id,
@@ -47,20 +46,48 @@
 		user_mobile,
 		order_state,
 		project_no,
+		remark,
 		creator,
 		modifier,
 		date_created,
 		date_updated
     </sql>
 
+    <select id="list" resultType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_car_group_order
+        <where>
+            <if test="projectNos != null and projectNos.size > 0">
+                AND project_no in
+                <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
+                    #{projectNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                AND (order_no = #{keyword,jdbcType=VARCHAR} OR userMobile = #{keyword,jdbcType=VARCHAR})
+            </if>
+            <if test="beginTime != null">
+                AND date_updated &gt;= #{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                AND date_updated &lt;= #{endTime,jdbcType=VARCHAR}
+            </if>
+            <if test="orderState != null">
+                AND order_state = #{orderState,jdbcType=VARCHAR}
+            </if>
+            <if test="payType != null">
+                AND pay_type = #{payType,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
     <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         INSERT INTO spk_car_group_refund_order_0
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
-            </if>
-            <if test="userId != null">
-                user_id,
             </if>
             <if test="orderNo != null">
                 order_no,
@@ -113,6 +140,9 @@
             <if test="projectNo != null">
                 project_no,
             </if>
+            <if test="remark != null">
+                remark,
+            </if>
             <if test="creator != null">
                 creator,
             </if>
@@ -130,9 +160,6 @@
             <if test="id != null">
                 #{id,jdbcType=BIGINT},
             </if>
-            <if test="userId != null">
-                #{userId,jdbcType=BIGINT},
-            </if>
             <if test="orderNo != null">
                 #{orderNo,jdbcType=VARCHAR},
             </if>
@@ -140,7 +167,7 @@
                 #{payOrderNo,jdbcType=VARCHAR},
             </if>
             <if test="carGroupId != null">
-                #{carGroupId,jdbcType=BIGINT},
+                #{carGroupId,jdbcType=VARCHAR},
             </if>
             <if test="carTypeId != null">
                 #{carTypeId,jdbcType=VARCHAR},
@@ -184,6 +211,9 @@
             <if test="projectNo != null">
                 #{projectNo,jdbcType=VARCHAR},
             </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
             <if test="creator != null">
                 #{creator,jdbcType=VARCHAR},
             </if>
@@ -201,14 +231,12 @@
 
     <update id="update" parameterType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         UPDATE spk_car_group_refund_order <set>
-        <if test="userId != null">
-            user_id = #{userId,jdbcType=BIGINT} , </if>
         <if test="orderNo != null">
             order_no = #{orderNo,jdbcType=VARCHAR} , </if>
         <if test="payOrderNo != null">
             pay_order_no = #{payOrderNo,jdbcType=VARCHAR} , </if>
         <if test="carGroupId != null">
-            car_group_id = #{carGroupId,jdbcType=BIGINT} , </if>
+            car_group_id = #{carGroupId,jdbcType=VARCHAR} , </if>
         <if test="carTypeId != null">
             car_type_id = #{carTypeId,jdbcType=VARCHAR} , </if>
         <if test="carTypeName != null">
@@ -237,6 +265,8 @@
             order_state = #{orderState,jdbcType=VARCHAR} , </if>
         <if test="projectNo != null">
             project_no = #{projectNo,jdbcType=VARCHAR} , </if>
+        <if test="remark != null">
+            remark = #{remark,jdbcType=VARCHAR} , </if>
         <if test="creator != null">
             creator = #{creator,jdbcType=VARCHAR} , </if>
         <if test="modifier != null">

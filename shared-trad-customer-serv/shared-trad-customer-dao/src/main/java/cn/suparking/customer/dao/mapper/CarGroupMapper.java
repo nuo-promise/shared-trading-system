@@ -57,4 +57,12 @@ public interface CarGroupMapper {
      * @return int
      */
     CarGroupVO findById(@Param("id") Long id);
+
+    /**
+     * 根据id查询合约信息.
+     *
+     * @param userId 用户id
+     * @return {@link CarGroup}
+     */
+    List<CarGroup> findByUserId(@Param("userId") Long userId);
 }

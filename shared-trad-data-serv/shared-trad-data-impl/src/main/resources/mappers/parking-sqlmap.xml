@@ -99,6 +99,64 @@
               parking_state = "ENTERED"
         ORDER BY latest_trigger_time DESC LIMIT 1
     </select>
+    <select id="list" resultMap="BaseResultMap" parameterType="cn.suparking.data.api.query.ParkingQueryDTO">
+        SELECT
+            a.*
+        FROM
+            spk_parking AS a
+        LEFT JOIN
+            spk_parking_trigger AS b
+        ON
+            a.`enter` = b.`id`
+        LEFT JOIN
+            spk_parking_trigger AS c
+        ON
+            a.`leave` = c.`id`
+        <where>
+            <if test="projectIds != null and projectIds.size()>0">
+                AND a.project_id IN
+                <foreach collection="projectIds" item="projectId" index="index" separator="," open="(" close=")">
+                    #{projectId,jdbcType=BIGINT}
+                </foreach>
+                AND b.project_id IN
+                <foreach collection="projectIds" item="projectId" index="index" separator="," open="(" close=")">
+                    #{projectId,jdbcType=BIGINT}
+                </foreach>
+
+            </if>
+            AND a.`valid` = TRUE
+            <if test="userId != null">
+                AND a.`user_id` = #{userId}
+            </if>
+            <if test="carTypeName != null">
+                AND a.`latest_trigger_type_name` = #{carTypeName}
+            </if>
+            <if test="beginTime != null">
+                AND b.`recog_time` &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                AND b.`recog_time` &lt;= #{endTime}
+            </if>
+            <if test="leaveBeginTime != null">
+                AND c.`recog_time` &gt;= #{leaveBeginTime}
+            </if>
+            <if test="leaveEndTime != null">
+                AND c.`recog_time` &lt;= #{leaveEndTime}
+            </if>
+            <if test="parkingStateList != null">
+                AND a.parking_state IN
+                <foreach collection="parkingStateList" item="parkingState" index="index" separator="," open="(" close=")">
+                    #{parkingState,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectByPayParkingId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_parking
+        WHERE pay_parking_id = #{payParkingId, jdbcType=VARCHAR}
+    </select>
 
     <insert id="insert" parameterType="cn.suparking.data.dao.entity.ParkingDO">
         INSERT INTO spk_parking

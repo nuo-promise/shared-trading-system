@@ -27,7 +27,7 @@ public class CarGroupRefundOrderDO extends BaseDO {
 
     private String payOrderNo;
 
-    private Long carGroupId;
+    private String carGroupId;
 
     private String carTypeId;
 
@@ -57,6 +57,8 @@ public class CarGroupRefundOrderDO extends BaseDO {
 
     private String projectNo;
 
+    private String remark;
+
     private String creator;
 
     private String modifier;
@@ -70,10 +72,9 @@ public class CarGroupRefundOrderDO extends BaseDO {
         return Optional.ofNullable(carGroupRefundOrderDTO).map(item -> {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             CarGroupRefundOrderDO carGroupRefundOrderDO = CarGroupRefundOrderDO.builder()
-                    .userId(Long.valueOf(item.getUserId()))
                     .orderNo(item.getOrderNo())
                     .payOrderNo(item.getPayOrderNo())
-                    .carGroupId(Long.valueOf(item.getCarGroupId()))
+                    .carGroupId(item.getCarGroupId())
                     .carTypeId(item.getCarTypeId())
                     .carTypeName(item.getCarTypeName())
                     .protocolId(item.getProtocolId())
@@ -88,6 +89,7 @@ public class CarGroupRefundOrderDO extends BaseDO {
                     .userMobile(item.getUserMobile())
                     .orderState(item.getOrderState())
                     .projectNo(item.getProjectNo())
+                    .remark(item.getRemark())
                     .creator(item.getCreator())
                     .modifier(item.getModifier())
                     .build();

@@ -25,6 +25,8 @@ public class ParkingRefundOrderDO extends BaseDO {
 
     private String orderNo;
 
+    private String payOrderNo;
+
     private String payParkingId;
 
     private Integer maxRefundAmount;
@@ -55,6 +57,7 @@ public class ParkingRefundOrderDO extends BaseDO {
             ParkingRefundOrderDO parkingRefundOrderDO = ParkingRefundOrderDO.builder()
                     .userId(Long.valueOf(item.getUserId()))
                     .orderNo(item.getOrderNo())
+                    .payOrderNo(item.getPayOrderNo())
                     .payParkingId(item.getPayParkingId())
                     .maxRefundAmount(item.getMaxRefundAmount())
                     .refundAmount(item.getRefundAmount())

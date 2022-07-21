@@ -31,6 +31,45 @@
         <result column="operator" jdbcType="VARCHAR" property="operator" />
         <result column="expire_time" jdbcType="BIGINT" property="expireTime" />
         <result column="invoice_state" jdbcType="VARCHAR" property="invoiceState" />
+        <result column="invoice_time" jdbcType="TIMESTAMP" property="invoiceTime" />
+        <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="cn.suparking.order.dao.vo.ParkingOrderVO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="pay_parking_id" jdbcType="VARCHAR" property="payParkingId" />
+        <result column="temp_type" jdbcType="BIT" property="tempType" />
+        <result column="car_type_class" jdbcType="VARCHAR" property="carTypeClass" />
+        <result column="car_type_name" jdbcType="VARCHAR" property="carTypeName" />
+        <result column="car_type_id" jdbcType="VARCHAR" property="carTypeId" />
+        <result column="begin_time" jdbcType="BIGINT" property="beginTime" />
+        <result column="end_time" jdbcType="BIGINT" property="endTime" />
+        <result column="next_aggregate_begin_time" jdbcType="BIGINT" property="nextAggregateBeginTime" />
+        <result column="aggregated_max_amount" jdbcType="INTEGER" property="aggregatedMaxAmount" />
+        <result column="parking_minutes" jdbcType="INTEGER" property="parkingMinutes" />
+        <result column="total_amount" jdbcType="INTEGER" property="totalAmount" />
+        <result column="discounted_minutes" jdbcType="INTEGER" property="discountedMinutes" />
+        <result column="discounted_amount" jdbcType="INTEGER" property="discountedAmount" />
+        <result column="charge_amount" jdbcType="INTEGER" property="chargeAmount" />
+        <result column="extra_amount" jdbcType="INTEGER" property="extraAmount" />
+        <result column="due_amount" jdbcType="INTEGER" property="dueAmount" />
+        <result column="charge_due_amount" jdbcType="INTEGER" property="chargeDueAmount" />
+        <result column="paid_amount" jdbcType="INTEGER" property="paidAmount" />
+        <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
+        <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+        <result column="received_amount" jdbcType="INTEGER" property="receivedAmount" />
+        <result column="term_no" jdbcType="VARCHAR" property="termNo" />
+        <result column="operator" jdbcType="VARCHAR" property="operator" />
+        <result column="expire_time" jdbcType="BIGINT" property="expireTime" />
+        <result column="invoice_state" jdbcType="VARCHAR" property="invoiceState" />
+        <result column="invoice_time" jdbcType="BIGINT" property="invoiceTime" />
         <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
         <result column="status" jdbcType="VARCHAR" property="status" />
         <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
@@ -70,6 +109,7 @@
 		operator,
 		expire_time,
 		invoice_state,
+		invoice_time,
 		refund_state,
         status,
 		project_no,
@@ -103,7 +143,7 @@
         ORDER BY begin_time ASC;
     </select>
 
-    <select id="findNextAgregateBeginTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="findNextAggregateBeginTime" parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List" />
         FROM spk_parking_order
@@ -203,6 +243,9 @@
             </if>
             <if test="invoiceState != null">
                 invoice_state,
+            </if>
+            <if test="invoiceTime != null">
+                invoice_time,
             </if>
             <if test="refundState != null">
                 refund_state,
@@ -314,6 +357,9 @@
             <if test="invoiceState != null">
                 #{invoiceState,jdbcType=VARCHAR},
             </if>
+            <if test="invoiceTime != null">
+                #{invoiceTime,jdbcType=BIGINT},
+            </if>
             <if test="refundState != null">
                 #{refundState,jdbcType=VARCHAR},
             </if>
@@ -396,6 +442,8 @@
             expire_time = #{expireTime,jdbcType=BIGINT} , </if>
         <if test="invoiceState != null">
             invoice_state = #{invoiceState,jdbcType=VARCHAR} , </if>
+        <if test="invoiceTime != null">
+            invoice_time = #{invoiceTime,jdbcType=BIGINT} , </if>
         <if test="refundState != null">
             refund_state = #{refundState,jdbcType=VARCHAR} , </if>
         <if test="status != null">
@@ -422,6 +470,106 @@
         from spk_parking_order
         where
             id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="detailParkingOrder" resultType="java.lang.String">
+        SELECT
+            project_no
+        FROM
+            spk_parking_order
+        WHERE
+            user_id = #{userId}
+        GROUP BY project_no
+        ORDER BY id DESC
+    </select>
+
+    <select id="list" parameterType="cn.suparking.order.api.beans.ParkingOrderQueryDTO" resultMap="BaseResultMap1">
+        select
+            id,
+            user_id,
+            order_no,
+            pay_parking_id,
+            temp_type,
+            car_type_class,
+            car_type_name,
+            car_type_id,
+            begin_time,
+            end_time,
+            next_aggregate_begin_time,
+            aggregated_max_amount,
+            parking_minutes,
+            total_amount,
+            discounted_minutes,
+            discounted_amount,
+            charge_amount,
+            extra_amount,
+            due_amount,
+            charge_due_amount,
+            paid_amount,
+            pay_channel,
+            pay_type,
+            pay_time,
+            received_amount,
+            term_no,
+            operator,
+            expire_time,
+            invoice_state,
+            invoice_time,
+            refund_state,
+            project_no,
+            creator,
+            modifier,
+            date_created,
+            date_updated
+        from spk_parking_order
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="projectNo != null">
+                AND project_no = #{projectNo,jdbcType=VARCHAR}
+            </if>
+            <if test="payParkingId != null">
+                AND pay_parking_id = #{payParkingId,jdbcType=VARCHAR}
+            </if>
+            <if test="timeType == 'ENTER' and beginTime != null">
+                AND begin_time &gt;= #{beginTime,jdbcType=BIGINT}
+            </if>
+            <if test="timeType == 'ENTER' and endTime != null">
+                AND begin_time &lt;= #{endTime,jdbcType=BIGINT}
+            </if>
+            <if test="timeType == 'LEAVE' and beginTime != null">
+                AND end_time &gt;= #{beginTime,jdbcType=BIGINT}
+            </if>
+            <if test="timeType == 'LEAVE' and endTime != null">
+                AND end_time &lt;= #{endTime,jdbcType=BIGINT}
+            </if>
+            <if test="payType != null">
+                AND pay_type = #{payType,jdbcType=VARCHAR}
+            </if>
+            <if test="dueAmountType == 1">
+                AND due_amount &gt; 0
+            </if>
+            <if test="dueAmountType == 2">
+                AND due_amount = 0
+            </if>
+            <if test="receivedAmountType == 1">
+                AND received_amount &gt; due_amount
+            </if>
+            <if test="receivedAmountType == 2">
+                AND received_amount = due_amount
+            </if>
+            <if test="receivedAmountType == 3">
+                AND received_amount &lt; due_amount
+            </if>
+            <if test="invoiceBeginTime != null">
+                AND invoice_time &gt;= #{invoiceBeginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="invoiceEndTime != null">
+                AND invoice_time &lt;= #{invoiceEndTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY date_created DESC
     </select>
 
     <select id="findOrderByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">

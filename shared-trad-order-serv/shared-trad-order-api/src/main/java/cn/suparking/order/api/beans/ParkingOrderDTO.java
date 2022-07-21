@@ -78,6 +78,8 @@ public class ParkingOrderDTO implements Serializable {
 
     private String invoiceState;
 
+    private Timestamp invoiceTime;
+
     private String refundState;
 
     private String status;

@@ -30,7 +30,17 @@ public interface ParkingOrderService {
     Long createOrUpdate(ParkingOrderDTO parkingOrderDTO);
 
     /**
-     *  findByUserIdsAndBeginTimeOrEndTimeRange.
+     * 根据userId查询常去车场.
+     *
+     * @param userId 用户id
+     * @param count  查询记录数
+     * @return {@linkplain SpkCommonResult}
+     */
+    List<String> regularLocations(Long userId, Integer count);
+
+    /**
+     * findByUserIdsAndBeginTimeOrEndTimeRange.
+     *
      * @param parkingQuery {@link ParkingQuery}
      * @return {@link SpkCommonResult}
      */
@@ -38,6 +48,7 @@ public interface ParkingOrderService {
 
     /**
      * findByUserIdsAndEndTimeRange.
+     *
      * @param parkingQuery {@link ParkingQuery}
      * @return {@link SpkCommonResult}
      */
@@ -45,14 +56,23 @@ public interface ParkingOrderService {
 
     /**
      * findNextAggregateBeginTime.
+     *
      * @param parkingQuery {@link ParkingQuery}
      * @return {@link SpkCommonResult}
      */
     SpkCommonResult findNextAggregateBeginTime(ParkingQuery parkingQuery);
 
+    /**
+     * 根据条件查询订单.
+     *
+     * @param parkingOrderQueryDTO 订单详情信息
+     * @return Integer
+     */
+    SpkCommonResult list(ParkingOrderQueryDTO parkingOrderQueryDTO);
 
     /**
      * update parking order.
+     *
      * @param orderDTO {@link OrderDTO}
      * @return {@link Boolean}
      */
@@ -60,6 +80,7 @@ public interface ParkingOrderService {
 
     /**
      * 获取指定用户订单信息.
+     *
      * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
      * @return {@link LinkedList}
      */

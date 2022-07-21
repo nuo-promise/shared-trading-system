@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.customer.dao.mapper.CarGroupStockMapper">
+	<resultMap id="BaseResultMap" type="cn.suparking.customer.dao.entity.CarGroupStockDO">
+			<result column="id" jdbcType="BIGINT" property="id" />
+			<result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+			<result column="project_name" jdbcType="VARCHAR" property="projectName" />
+			<result column="protocol_id" jdbcType="VARCHAR" property="protocolId" />
+			<result column="protocol_name" jdbcType="VARCHAR" property="protocolName" />
+			<result column="stock_type" jdbcType="VARCHAR" property="stockType" />
+			<result column="stock_quantity" jdbcType="INTEGER" property="stockQuantity" />
+			<result column="cumulative_in" jdbcType="INTEGER" property="cumulativeIn" />
+			<result column="cumulative_out" jdbcType="INTEGER" property="cumulativeOut" />
+			<result column="cumulative_return" jdbcType="INTEGER" property="cumulativeReturn" />
+			<result column="creator" jdbcType="VARCHAR" property="creator" />
+			<result column="modifier" jdbcType="VARCHAR" property="modifier" />
+			<result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+			<result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,
+		project_no,
+		project_name,
+		protocol_id,
+		protocol_name,
+		stock_type,
+		stock_quantity,
+		cumulative_in,
+		cumulative_out,
+		cumulative_return,
+		creator,
+		modifier,
+		date_created,
+		date_updated
+    </sql>
+
+	<select id="list" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List"></include>
+		FROM
+			spk_car_group_stock
+		<where>
+			<if test="projectNos != null and projectNos.size > 0">
+				AND project_no in
+				<foreach collection="projectNos" open="(" close=")" separator="," item="projectNo" index="index">
+					#{projectNo,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="protocolId != null">
+				AND protocol_id = #{protocolId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List"></include>
+		FROM
+			spk_car_group_stock
+		WHERE
+			id = #{id,jdbcType=BIGINT}
+	</select>
+    <select id="findByProtocolId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM
+		spk_car_group_stock
+		WHERE
+		protocol_id = #{protocolId,jdbcType=VARCHAR}
+	</select>
+
+    <insert id="insert" parameterType="cn.suparking.customer.dao.entity.CarGroupStockDO">
+		INSERT INTO spk_car_group_stock
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="projectNo != null">
+				project_no,
+			</if>
+			<if test="projectName != null">
+				project_name,
+			</if>
+			<if test="protocolId != null">
+				protocol_id,
+			</if>
+			<if test="protocolName != null">
+				protocol_name,
+			</if>
+			<if test="stockType != null">
+				stock_type,
+			</if>
+			<if test="stockQuantity != null">
+				stock_quantity,
+			</if>
+			<if test="cumulativeIn != null">
+				cumulative_in,
+			</if>
+			<if test="cumulativeOut != null">
+				cumulative_out,
+			</if>
+			<if test="cumulativeReturn != null">
+				cumulative_return,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+			<if test="modifier != null">
+				modifier,
+			</if>
+			<if test="dateCreated != null">
+				date_created,
+			</if>
+			<if test="dateUpdated != null">
+				date_updated,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=BIGINT},
+			<if test="projectNo != null">
+				#{projectNo,jdbcType=VARCHAR},
+			</if>
+			<if test="projectName != null">
+				#{projectName,jdbcType=VARCHAR},
+			</if>
+			<if test="protocolId != null">
+				#{protocolId,jdbcType=VARCHAR},
+			</if>
+			<if test="protocolName != null">
+				#{protocolName,jdbcType=VARCHAR},
+			</if>
+			<if test="stockType != null">
+				#{stockType,jdbcType=VARCHAR},
+			</if>
+			<if test="stockQuantity != null">
+				#{stockQuantity,jdbcType=INTEGER},
+			</if>
+			<if test="cumulativeIn != null">
+				#{cumulativeIn,jdbcType=INTEGER},
+			</if>
+			<if test="cumulativeOut != null">
+				#{cumulativeOut,jdbcType=INTEGER},
+			</if>
+			<if test="cumulativeReturn != null">
+				#{cumulativeReturn,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="modifier != null">
+				#{modifier,jdbcType=VARCHAR},
+			</if>
+			<if test="dateCreated != null">
+				#{dateCreated,jdbcType=TIMESTAMP},
+			</if>
+			<if test="dateUpdated != null">
+				#{dateUpdated,jdbcType=TIMESTAMP},
+			</if>
+		</trim>		
+	</insert>
+	
+	<update id="update" parameterType="cn.suparking.customer.dao.entity.CarGroupStockDO">
+		UPDATE spk_car_group_stock
+		<set>
+			<if test="projectNo != null">
+				project_no = #{projectNo,jdbcType=VARCHAR} ,
+			</if>
+			<if test="projectName != null">
+				project_name = #{projectName,jdbcType=VARCHAR} ,
+			</if>
+			<if test="protocolId != null">
+				protocol_id = #{protocolId,jdbcType=VARCHAR} ,
+			</if>
+			<if test="protocolName != null">
+				protocol_name = #{protocolName,jdbcType=VARCHAR} ,
+			</if>
+			<if test="stockType != null">
+				stock_type = #{stockType,jdbcType=VARCHAR} ,
+			</if>
+			<if test="stockQuantity != null">
+				stock_quantity = #{stockQuantity,jdbcType=INTEGER} ,
+			</if>
+			<if test="cumulativeIn != null">
+				cumulative_in = #{cumulativeIn,jdbcType=INTEGER} ,
+			</if>
+			<if test="cumulativeOut != null">
+				cumulative_out = #{cumulativeOut,jdbcType=INTEGER} ,
+			</if>
+			<if test="cumulativeReturn != null">
+				cumulative_return = #{cumulativeReturn,jdbcType=INTEGER} ,
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=VARCHAR} ,
+			</if>
+			<if test="modifier != null">
+				modifier = #{modifier,jdbcType=VARCHAR} ,
+			</if>
+			<if test="dateCreated != null">
+				date_created = #{dateCreated,jdbcType=TIMESTAMP} ,
+			</if>
+			<if test="dateUpdated != null">
+				date_updated = #{dateUpdated,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE
+			id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

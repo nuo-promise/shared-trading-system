@@ -1,6 +1,8 @@
 package cn.suparking.data.service;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.data.api.beans.ParkingDTO;
+import cn.suparking.data.api.query.ParkingQueryDTO;
 import cn.suparking.data.dao.entity.ParkingDO;
 
 import java.util.Map;
@@ -28,4 +30,14 @@ public interface ParkingService {
      * @return {@link ParkingDO}
      */
     ParkingDO findByProjectIdAndParkId(Map<String, Object> params);
+
+    /**
+     * 根据条件获取停车记录.
+     *
+     * @param parkingQueryDTO String
+     * @return {@link ParkingQueryDTO}
+     */
+    SpkCommonResult list(ParkingQueryDTO parkingQueryDTO);
+
+    ParkingDO findByPayParkingId(String payParkingId);
 }

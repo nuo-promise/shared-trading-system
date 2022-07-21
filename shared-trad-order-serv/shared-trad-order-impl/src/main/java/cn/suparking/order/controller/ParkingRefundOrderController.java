@@ -1,11 +1,12 @@
 package cn.suparking.order.controller;
 
-import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
-import cn.suparking.order.service.ParkingRefundOrderService;
+import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
+import cn.suparking.order.api.beans.ParkingRefundOrderQueryDTO;
 import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
+import cn.suparking.order.service.ParkingRefundOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,5 +58,16 @@ public class ParkingRefundOrderController {
                     Integer count = parkingRefundOrderService.createOrUpdate(item);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
                 }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    }
+
+    /**
+     * 根据原支付订单号获取数据.
+     *
+     * @param parkingRefundOrderQueryDTO {@link ParkingRefundOrderQueryDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("getParkingRefundOrderByPayOrderNO")
+    public SpkCommonResult getParkingRefundOrderByPayOrderNO(@RequestBody final ParkingRefundOrderQueryDTO parkingRefundOrderQueryDTO) {
+        return parkingRefundOrderService.getParkingRefundOrderByPayOrderNO(parkingRefundOrderQueryDTO);
     }
 }

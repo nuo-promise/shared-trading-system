@@ -1,9 +1,11 @@
 package cn.suparking.order.controller;
 
+import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
+import cn.suparking.order.api.beans.CarGroupRefundOrderQueryDTO;
 import cn.suparking.order.service.CarGroupRefundOrderService;
 import cn.suparking.order.dao.entity.CarGroupRefundOrderDO;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,6 +34,28 @@ public class CarGroupRefundOrderController {
 
     public CarGroupRefundOrderController(final CarGroupRefundOrderService carGroupRefundOrderService) {
         this.carGroupRefundOrderService = carGroupRefundOrderService;
+    }
+
+    /**
+     * 合约退费订单列表.
+     *
+     * @param carGroupRefundOrderQueryDTO {@link CarGroupRefundOrderQueryDTO}
+     * @return {@link List}
+     */
+    @PostMapping("list")
+    public SpkCommonResult list(@Valid @RequestBody final CarGroupRefundOrderQueryDTO carGroupRefundOrderQueryDTO) {
+        return SpkCommonResult.success(carGroupRefundOrderService.list(carGroupRefundOrderQueryDTO));
+    }
+
+    /**
+     * 获取所有合约退费订单.
+     *
+     * @param carGroupRefundOrderQueryDTO {@link CarGroupRefundOrderQueryDTO}
+     * @return {@link List}
+     */
+    @PostMapping("findAll")
+    public SpkCommonResult findAll(@Valid @RequestBody final CarGroupRefundOrderQueryDTO carGroupRefundOrderQueryDTO) {
+        return SpkCommonResult.success(carGroupRefundOrderService.findAll(carGroupRefundOrderQueryDTO));
     }
 
     /**
@@ -53,7 +78,7 @@ public class CarGroupRefundOrderController {
      * @param carGroupRefundOrderDTO 合约退费订单
      * @return Integer
      */
-    @PostMapping("")
+    @PostMapping("createCarGroupRefundOrder")
     public SpkCommonResult createCarGroupRefundOrder(@Valid @RequestBody final CarGroupRefundOrderDTO carGroupRefundOrderDTO) {
         return Optional.ofNullable(carGroupRefundOrderDTO)
                 .map(item -> {

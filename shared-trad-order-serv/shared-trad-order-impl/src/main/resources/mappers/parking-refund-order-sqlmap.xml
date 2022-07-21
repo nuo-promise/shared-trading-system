@@ -178,4 +178,26 @@
         where
             id = #{id,jdbcType=BIGINT}
     </select>
+    <select id="getParkingRefundOrderByPayOrderNO" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            spk_parking_refund_order
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="payOrderNo != null">
+                AND pay_order_no = #{payOrderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStateList != null">
+                AND order_state IN
+                <foreach collection="orderStateList" item="orderState" index="index" separator="," open="(" close=")">
+                    #{orderState,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
 </mapper>

@@ -31,6 +31,7 @@ import org.springframework.retry.support.RetryTemplate;
 import javax.annotation.Resource;
 
 @Configuration
+@ConditionalOnProperty(name = "spring.rabbitmq.enable", matchIfMissing = true)
 public class RabbitMqConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(RabbitMqConfiguration.class);
@@ -124,7 +125,7 @@ public class RabbitMqConfiguration {
      */
     @Bean("MQCloudQueue")
     public Queue cloudQueue(@Qualifier("MQCloudAMQPAdmin") final AmqpAdmin admin) {
-        String queueName = "device.data";
+        String queueName = "cs.device.data";
         Queue queue = new Queue(queueName, false, true, true);
         queue.setAdminsThatShouldDeclare(admin);
         queue.setShouldDeclare(true);

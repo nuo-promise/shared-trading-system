@@ -18,6 +18,8 @@ public class ParkingOrderVO extends ParkingOrderDO {
 
     private static final long serialVersionUID = 3896579797597231169L;
 
+    private String phone;
+
     private DiscountInfoDO discountInfoDO;
 
     private LinkedList<ChargeInfoVO> chargeInfos;

@@ -15,7 +15,7 @@ spring:
     # mysql数据源
     username: SPKRoot
     password: SPKRoot2017!
-    url: jdbc:mysql://center.suparking.cn:3306/tbl_mini_business?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+    url: jdbc:mysql://center.suparking.cn:3306/tbl_mini_business?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 连接池
@@ -87,8 +87,8 @@ spring:
     enable: true
     # redis 配置
   redis:
-    host: localhost
-    port: 6378
+    host: 192.168.1.123
+    port: 6379
     password:
     database: 0
     timeout: 6000

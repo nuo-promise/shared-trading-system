@@ -1,6 +1,8 @@
 package cn.suparking.order.service;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
+import cn.suparking.order.api.beans.ParkingRefundOrderQueryDTO;
 import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
 
 public interface ParkingRefundOrderService {
@@ -20,4 +22,13 @@ public interface ParkingRefundOrderService {
      * @return Integer
      */
     Integer createOrUpdate(ParkingRefundOrderDTO parkingRefundOrderDTO);
+
+    /**
+     * 根据原支付订单号获取数据.
+     * @param parkingRefundOrderQueryDTO
+     * @return cn.suparking.common.api.beans.SpkCommonResult
+     * @author ZDD
+     * @date 2022/7/18 16:27:55
+     */
+    SpkCommonResult getParkingRefundOrderByPayOrderNO(ParkingRefundOrderQueryDTO parkingRefundOrderQueryDTO);
 }

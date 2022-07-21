@@ -46,6 +46,15 @@
         FROM spk_user
         WHERE iphone = #{iphone, jdbcType=VARCHAR}
     </select>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_user
+        WHERE id IN
+        <foreach collection="userIdList" item="id" index="index" open="(" separator="," close=")">
+            #{id, jdbcType=BIGINT}
+        </foreach>
+    </select>
 
     <insert id="insertSelective" parameterType="cn.suparking.user.dao.entity.UserDO">
         INSERT INTO spk_user

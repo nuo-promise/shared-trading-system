@@ -196,8 +196,8 @@ spring:
     enable: true
   # redis 配置
   redis:
-    host: bs.suparking.cn
-    port: 26805
+    host: 192.168.1.123
+    port: 6379
     password:
     database: 0
     timeout: 6000
@@ -241,7 +241,7 @@ spring:
         namespace: dev
         # [注意] 两个服务如果存在上下游调用关系,必须配置相同的group才能发起访问
         group: myGroup
-        # 向注册中心注册服务,默认为true
+        # 向注册中心注册服务,默认为true925  10 20
         # 如果只消费服务,不作为服务提供方,倒是可以设置为false,减少开销
         register-enabled: true
         # 类似长连接监听服务端信息变化的功能

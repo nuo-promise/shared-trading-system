@@ -5,7 +5,7 @@
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
-        <result column="car_group_id" jdbcType="BIGINT" property="carGroupId" />
+        <result column="car_group_id" jdbcType="VARCHAR" property="carGroupId" />
         <result column="car_type_id" jdbcType="VARCHAR" property="carTypeId" />
         <result column="car_type_name" jdbcType="VARCHAR" property="carTypeName" />
         <result column="protocol_id" jdbcType="VARCHAR" property="protocolId" />
@@ -21,14 +21,54 @@
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
         <result column="order_state" jdbcType="VARCHAR" property="orderState" />
         <result column="invoice_state" jdbcType="VARCHAR" property="invoiceState" />
+        <result column="invoice_time" jdbcType="BIGINT" property="invoiceTime" />
         <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
         <result column="term_no" jdbcType="VARCHAR" property="termNo" />
         <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
         <result column="order_type" jdbcType="VARCHAR" property="orderType" />
         <result column="creator" jdbcType="VARCHAR" property="creator" />
-        <result column="modifyer" jdbcType="VARCHAR" property="modifier" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="cn.suparking.order.dao.vo.CarGroupOrderVO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="car_group_id" jdbcType="VARCHAR" property="carGroupId" />
+        <result column="car_type_id" jdbcType="VARCHAR" property="carTypeId" />
+        <result column="car_type_name" jdbcType="VARCHAR" property="carTypeName" />
+        <result column="protocol_id" jdbcType="VARCHAR" property="protocolId" />
+        <result column="protocol_name" jdbcType="VARCHAR" property="protocolName" />
+        <result column="begin_date" jdbcType="BIGINT" property="beginDate" />
+        <result column="end_date" jdbcType="BIGINT" property="endDate" />
+        <result column="total_amount" jdbcType="INTEGER" property="totalAmount" />
+        <result column="discounted_amount" jdbcType="INTEGER" property="discountedAmount" />
+        <result column="due_amount" jdbcType="INTEGER" property="dueAmount" />
+        <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
+        <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+        <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+        <result column="invoice_state" jdbcType="VARCHAR" property="invoiceState" />
+        <result column="invoice_time" jdbcType="BIGINT" property="invoiceTime" />
+        <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
+        <result column="term_no" jdbcType="VARCHAR" property="termNo" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="order_type" jdbcType="VARCHAR" property="orderType" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+        <collection property="carGroupRefundOrderDOList" ofType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
+            <id property="id" jdbcType="BIGINT" column="refundOrderId"/>
+            <result column="refundOrderBeginDate" jdbcType="BIGINT" property="beginDate" />
+            <result column="refundOrderEndDate" jdbcType="BIGINT" property="endDate" />
+            <result column="refundOrderOrderState" jdbcType="BIGINT" property="orderState" />
+            <result column="max_refund_amount" jdbcType="BIGINT" property="maxRefundAmount" />
+            <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
+        </collection>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -36,8 +76,8 @@
 		car_type_name, protocol_id, protocol_name, begin_date, end_date,
 		total_amount, discounted_amount, due_amount, pay_channel,
 		pay_type, user_name, user_mobile, order_state, invoice_state,
-		refund_state, term_no, project_no, order_type, creator,
-		modifyer, date_created, date_updated
+		invoice_time,refund_state, term_no, project_no, order_type, creator,
+		modifier, date_created, date_updated
     </sql>
 
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -45,6 +85,147 @@
         <include refid="Base_Column_List"/>
         FROM spk_car_group_order
         WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="listTotal" resultType="java.lang.Long">
+        SELECT
+            COUNT(DISTINCT a.id)
+        FROM
+            spk_car_group_order AS a
+        LEFT JOIN
+            spk_car_group_refund_order as b
+        ON a.car_group_id = b.car_group_id
+        <where>
+            <if test="userId != null">
+                AND a.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="projectNos != null and projectNos.size > 0">
+                AND project_no in
+                <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
+                    #{projectNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                AND (a.order_no = #{keyword,jdbcType=VARCHAR} OR a.userMobile = #{keyword,jdbcType=VARCHAR})
+            </if>
+            <if test="carTypeIds != null and carTypeIds.size > 0">
+                AND a.car_type_id in
+                <foreach collection="carTypeIds" item="carTypeId" index="index" open="(" close=")" separator=",">
+                    #{carTypeId,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="orderState != null">
+                AND a.order_state = #{orderState,jdbcType=VARCHAR}
+            </if>
+            <if test="payType != null">
+                AND a.pay_type = #{payType,jdbcType=VARCHAR}
+            </if>
+            <if test="beginTime != null">
+                AND a.date_created &gt;= #{beginTime,jdbcType=BIGINT}
+            </if>
+            <if test="endTime != null">
+                AND a.date_created &lt;= #{endTime,jdbcType=BIGINT}
+            </if>
+            <if test="carGroupId != null">
+                AND a.car_group_id = #{carGroupId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderType != null">
+                AND a.order_type = #{orderType,jdbcType=VARCHAR}
+            </if>
+            <if test="invoiceBeginTime != null">
+                AND a.invoice_time &gt;= #{invoiceBeginTime,jdbcType=BIGINT}
+            </if>
+            <if test="invoiceEndTime != null">
+                AND a.invoice_time &lt;= #{invoiceEndTime,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <select id="list" parameterType="cn.suparking.order.api.beans.CarGroupOrderQueryDTO" resultMap="BaseResultMap1">
+        SELECT
+            a.id,
+            a.user_id,
+            a.order_no,
+            a.car_group_id,
+            a.car_type_id,
+            a.car_type_name,
+            a.protocol_id,
+            a.protocol_name,
+            a.begin_date,
+            a.end_date,
+            a.total_amount,
+            a.discounted_amount,
+            a.due_amount,
+            a.pay_channel,
+            a.pay_type,
+            a.user_name,
+            a.user_mobile,
+            a.order_state,
+            a.invoice_state,
+            a.invoice_time,
+            a.refund_state,
+            a.term_no,
+            a.project_no,
+            a.order_type,
+            a.creator,
+            a.`modifier`,
+            a.date_created,
+            a.date_updated,
+            b.id as refundOrderId,
+            b.order_state,
+            b.max_refund_amount,
+            b.refund_amount,
+            b.begin_date as refundOrderBeginDate,
+            b.end_date as refundOrderEndDate
+        FROM
+            spk_car_group_order AS a
+        LEFT JOIN
+            spk_car_group_refund_order as b
+        <where>
+            <if test="userId != null">
+                AND a.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="projectNos != null and projectNos.size > 0">
+                AND project_no in
+                <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
+                    #{projectNo,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                AND (a.order_no CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')  OR a.userMobile = #{keyword,jdbcType=VARCHAR})
+            </if>
+            <if test="carTypeIds != null and carTypeIds.size > 0">
+                AND a.car_type_id in
+                <foreach collection="carTypeIds" item="carTypeId" index="index" open="(" close=")" separator=",">
+                    #{carTypeId,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="orderState != null">
+                AND a.order_state = #{orderState,jdbcType=VARCHAR}
+            </if>
+            <if test="payType != null">
+                AND a.pay_type = #{payType,jdbcType=VARCHAR}
+            </if>
+            <if test="beginTime != null">
+                AND a.date_created &gt;= #{beginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                AND a.date_created &lt;= #{endTime,jdbcType=VARCHAR}
+            </if>
+            <if test="carGroupId != null">
+                AND a.car_group_id = #{carGroupId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderType != null">
+                AND a.order_type = #{orderType,jdbcType=VARCHAR}
+            </if>
+            <if test="invoiceBeginTime != null">
+                AND a.invoice_time &gt;= #{invoiceBeginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="invoiceEndTime != null">
+                AND a.invoice_time &lt;= #{invoiceEndTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY a.id DESC
     </select>
 
     <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
@@ -107,6 +288,9 @@
             <if test="invoiceState != null">
                 invoice_state,
             </if>
+            <if test="invoiceTime != null">
+                invoice_time,
+            </if>
             <if test="refundState != null">
                 refund_state,
             </if>
@@ -122,8 +306,8 @@
             <if test="creator != null">
                 creator,
             </if>
-            <if test="modifyer != null">
-                modifyer,
+            <if test="modifier != null">
+                modifier,
             </if>
             <if test="dateCreated != null">
                 date_created,
@@ -143,7 +327,7 @@
                 #{orderNo,jdbcType=VARCHAR},
             </if>
             <if test="carGroupId != null">
-                #{carGroupId,jdbcType=BIGINT},
+                #{carGroupId,jdbcType=VARCHAR},
             </if>
             <if test="carTypeId != null">
                 #{carTypeId,jdbcType=VARCHAR},
@@ -190,6 +374,9 @@
             <if test="invoiceState != null">
                 #{invoiceState,jdbcType=VARCHAR},
             </if>
+            <if test="invoiceTime != null">
+                #{invoiceTime,jdbcType=VARCHAR},
+            </if>
             <if test="refundState != null">
                 #{refundState,jdbcType=VARCHAR},
             </if>
@@ -205,8 +392,8 @@
             <if test="creator != null">
                 #{creator,jdbcType=VARCHAR},
             </if>
-            <if test="modifyer != null">
-                #{modifyer,jdbcType=VARCHAR},
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
             </if>
             <if test="dateCreated != null">
                 #{dateCreated,jdbcType=TIMESTAMP},
@@ -219,10 +406,8 @@
 
     <update id="update" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
         UPDATE spk_car_group_order <set>
-        <if test="userId != null">
-            user_id = #{userId,jdbcType=BIGINT} , </if>
         <if test="carGroupId != null">
-            car_group_id = #{carGroupId,jdbcType=BIGINT} , </if>
+            car_group_id = #{carGroupId,jdbcType=VARCHAR} , </if>
         <if test="carTypeId != null">
             car_type_id = #{carTypeId,jdbcType=VARCHAR} , </if>
         <if test="carTypeName != null">
@@ -253,6 +438,8 @@
             order_state = #{orderState,jdbcType=VARCHAR} , </if>
         <if test="invoiceState != null">
             invoice_state = #{invoiceState,jdbcType=VARCHAR} , </if>
+        <if test="invoiceTime != null">
+            invoice_time = #{invoiceTime,jdbcType=VARCHAR} , </if>
         <if test="refundState != null">
             refund_state = #{refundState,jdbcType=VARCHAR} , </if>
         <if test="termNo != null">
@@ -263,15 +450,15 @@
             order_type = #{orderType,jdbcType=VARCHAR} , </if>
         <if test="creator != null">
             creator = #{creator,jdbcType=VARCHAR} , </if>
-        <if test="modifyer != null">
-            modifyer = #{modifyer,jdbcType=VARCHAR} , </if>
+        <if test="modifier != null">
+            modifier = #{modifier,jdbcType=VARCHAR} , </if>
         <if test="dateCreated != null">
             date_created = #{dateCreated,jdbcType=TIMESTAMP} , </if>
         <if test="dateUpdated != null">
             date_updated = #{dateUpdated,jdbcType=TIMESTAMP}  </if>
     </set>
         WHERE
-        id = #{id,jdbcType=BIGINT}
+        id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
     </update>
 
 </mapper>

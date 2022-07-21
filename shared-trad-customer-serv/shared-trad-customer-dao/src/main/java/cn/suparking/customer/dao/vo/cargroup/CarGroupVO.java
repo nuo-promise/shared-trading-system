@@ -37,6 +37,8 @@ public final class CarGroupVO {
 
     private String address;
 
+    private String valid;
+
     private String remark;
 
     private String operator;

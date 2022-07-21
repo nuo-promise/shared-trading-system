@@ -1,10 +1,11 @@
 package cn.suparking.order.controller;
 
-import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
-import cn.suparking.order.service.CarGroupOrderService;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
+import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.service.CarGroupOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,13 +25,24 @@ import java.util.Optional;
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("car-group-order")
+@RequestMapping("/car-group-order")
 public class CarGroupOrderController {
 
     private final CarGroupOrderService carGroupOrderService;
 
     public CarGroupOrderController(final CarGroupOrderService carGroupOrderService) {
         this.carGroupOrderService = carGroupOrderService;
+    }
+
+    /**
+     * 合约订单列表.
+     *
+     * @param carGroupOrderQueryDTO {@link CarGroupOrderQueryDTO}
+     * @return {@link List}
+     */
+    @PostMapping("list")
+    public SpkCommonResult list(@Valid @RequestBody final CarGroupOrderQueryDTO carGroupOrderQueryDTO) {
+        return SpkCommonResult.success(carGroupOrderService.list(carGroupOrderQueryDTO));
     }
 
     /**
@@ -56,5 +69,4 @@ public class CarGroupOrderController {
     public Integer createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
         return carGroupOrderService.createOrUpdate(carGroupOrderDTO);
     }
-
 }
