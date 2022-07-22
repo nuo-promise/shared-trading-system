@@ -29,6 +29,11 @@ public class ProjectVipCarVo {
     private String projectName;
 
     /**
+     * 车场地址.
+     */
+    private String address;
+
+    /**
      * 经度.
      */
     private BigDecimal longitude;
@@ -44,7 +49,7 @@ public class ProjectVipCarVo {
     private List<String> openTime;
 
     /**
-     * 车场状态:true启用 false禁用.
+     * 车场状态:OPENING启用 CLOSED禁用.
      */
-    private Boolean status;
+    private String status;
 }

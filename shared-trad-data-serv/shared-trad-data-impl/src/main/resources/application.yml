@@ -235,7 +235,7 @@ feign:
 # thread pool,wx 配置
 sparking:
   bs:
-    url: http://192.168.1.9:10088/spms/api
+    url: http://192.168.1.133:10088/spms/api
   message:
     queueLength: 5
     threadTimeout: 60000

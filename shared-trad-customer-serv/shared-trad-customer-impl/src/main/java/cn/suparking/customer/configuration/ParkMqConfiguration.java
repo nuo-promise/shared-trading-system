@@ -122,7 +122,7 @@ public class ParkMqConfiguration {
      */
     @Bean("ParkMQCloudQueue")
     public Queue cloudQueue(@Qualifier("ParkMQCloudAMQPAdmin") final AmqpAdmin admin) {
-        String queueName = "shared.customer.payLib";
+        String queueName = "shared.customer1.payLib";
         Queue queue = new Queue(queueName, false, true, true);
         queue.setAdminsThatShouldDeclare(admin);
         queue.setShouldDeclare(true);

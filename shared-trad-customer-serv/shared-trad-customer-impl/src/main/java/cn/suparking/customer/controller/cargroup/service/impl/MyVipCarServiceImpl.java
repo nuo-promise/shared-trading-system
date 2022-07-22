@@ -3,9 +3,11 @@ package cn.suparking.customer.controller.cargroup.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.exception.SpkCommonException;
+import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.common.api.utils.HttpRequestUtils;
-import cn.suparking.customer.api.beans.cargroup.VipCarQueryDTO;
+import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.api.constant.ParkConstant;
+import cn.suparking.customer.configuration.properties.SharedProperties;
 import cn.suparking.customer.configuration.properties.SparkProperties;
 import cn.suparking.customer.controller.cargroup.service.MyVipCarService;
 import cn.suparking.customer.dao.entity.CarGroup;
@@ -20,6 +22,7 @@ import cn.suparking.customer.dao.vo.cargroup.ProtocolVipCarVo;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -46,6 +49,9 @@ public class MyVipCarServiceImpl implements MyVipCarService {
     private final CarGroupStockMapper carGroupStockMapper;
 
     @Resource
+    private SharedProperties sharedProperties;
+
+    @Resource
     private SparkProperties sparkProperties;
 
     public MyVipCarServiceImpl(final CarGroupMapper carGroupMapper, final CarGroupPeriodMapper carGroupPeriodMapper, final CarGroupStockMapper carGroupStockMapper) {
@@ -57,21 +63,26 @@ public class MyVipCarServiceImpl implements MyVipCarService {
     /**
      * 获取当前用户所有场库所办的合约信息.
      *
-     * @param vipCarQueryDTO {@linkplain VipCarQueryDTO}
+     * @param sign   秘钥
+     * @param userId 用户id
      * @return {@link SpkCommonResult}
      * @author ZDD
      * @date 2022/7/20 14:53:11
      */
     @Override
-    public List<MyVipCarVo> myVipCarList(final VipCarQueryDTO vipCarQueryDTO) {
+    public SpkCommonResult myVipCarList(final String sign, final String userId) {
+        if (!invoke(sign, userId)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        }
+
         List<MyVipCarVo> list = new ArrayList<>();
 
         //根据用户id查询用户合约
-        List<CarGroup> carGroupList = carGroupMapper.findByUserId(Long.valueOf(vipCarQueryDTO.getUserId()));
+        List<CarGroup> carGroupList = carGroupMapper.findByUserId(Long.valueOf(userId));
 
         //用户不存在合约
         if (Objects.isNull(carGroupList)) {
-            return list;
+            return SpkCommonResult.success(list);
         }
 
         for (CarGroup carGroup : carGroupList) {
@@ -90,12 +101,8 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             //判断是否可以线上续费
             JSONArray userServicesArr = protocol.getJSONArray("userServices");
             List<String> userServices = JSONArray.parseArray(JSONObject.toJSONString(userServicesArr), String.class);
-
-            Boolean canRenew = false;
-            if (userServices.contains("RENEW")) {
-                canRenew = true;
-            }
-
+            //是否可以线上续费
+            boolean canRenew = userServices.contains("RENEW");
             //生效中的租期时间 如果没有则返回null 表示已过期
             List<CarGroupPeriod> carGroupPeriods = carGroupPeriodMapper.findByCarGroupId(carGroup.getId());
             CarGroupPeriod period = getEffectPeriod(carGroupPeriods);
@@ -104,7 +111,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             List<CarGroupPeriod> futureList = getFutureList(carGroupPeriods);
 
             JSONObject project = result.getJSONObject("project");
-            MyVipCarVo myVipCarVo = MyVipCarVo.builder().id(String.valueOf(carGroup.getId())).userId(vipCarQueryDTO.getUserId())
+            MyVipCarVo myVipCarVo = MyVipCarVo.builder().id(String.valueOf(carGroup.getId())).userId(userId)
                     .projectNo(carGroup.getProjectNo()).projectName(project.getString("projectName"))
                     .carTypeName(carGroup.getCarTypeName()).protocolId(protocolId)
                     .protocolName(carGroup.getProtocolName()).protocolDesc(protocol.getString("protocolDesc"))
@@ -115,7 +122,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             }
             list.add(myVipCarVo);
         }
-        return list;
+        return SpkCommonResult.success(list);
     }
 
     /**
@@ -126,7 +133,10 @@ public class MyVipCarServiceImpl implements MyVipCarService {
      * @date 2022/7/20 14:53:11
      */
     @Override
-    public List<ProjectVipCarVo> projectVipCarList() {
+    public SpkCommonResult projectVipCarList(final String sign, final String projectNoParams) {
+        if (!invoke(sign, projectNoParams)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        }
         List<ProjectVipCarVo> projectVipCarVoList = new ArrayList<>();
 
         //获取所有可线上办理的合约协议
@@ -138,7 +148,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
 
         JSONArray protocolList = protocolListResult.getJSONArray("protocolList");
         if (Objects.isNull(protocolList)) {
-            return projectVipCarVoList;
+            return SpkCommonResult.success(projectVipCarVoList);
         }
 
         //取涵盖的场库去重
@@ -160,7 +170,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
 
         JSONArray projectList = resultJSON.getJSONArray("projectList");
         if (Objects.isNull(projectList)) {
-            return projectVipCarVoList;
+            return SpkCommonResult.success(projectVipCarVoList);
         }
 
         for (int i = 0; i < projectList.size(); i++) {
@@ -168,7 +178,8 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             ProjectVipCarVo projectVipCarVo = ProjectVipCarVo.builder().id(project.getString("id"))
                     .projectNo(project.getString("projectNo"))
                     .projectName(project.getString("projectName"))
-                    .status(true)
+                    .address(project.getString("addressSelect"))
+                    .status("OPENING")
                     .build();
 
             JSONObject location = project.getJSONObject("location");
@@ -179,11 +190,11 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             if (Objects.nonNull(project.getJSONArray("openTime"))) {
                 List<String> openTime = JSONArray.parseArray(JSONObject.toJSONString(project.getJSONArray("openTime")), String.class);
                 projectVipCarVo.setOpenTime(openTime);
-                projectVipCarVo.setStatus(openState(openTime));
+                projectVipCarVo.setStatus(openState(openTime) ? "OPENING" : "CLOSED");
             }
             projectVipCarVoList.add(projectVipCarVo);
         }
-        return projectVipCarVoList;
+        return SpkCommonResult.success(projectVipCarVoList);
     }
 
     /**
@@ -195,7 +206,11 @@ public class MyVipCarServiceImpl implements MyVipCarService {
      * @date 2022/7/20 14:53:11
      */
     @Override
-    public List<ProtocolVipCarVo> protocolVipCarList(final String projectNo) {
+    public SpkCommonResult protocolVipCarList(final String sign, final String projectNo) {
+        if (!invoke(sign, projectNo)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        }
+
         List<ProtocolVipCarVo> protocolVipCarVoList = new ArrayList<>();
 
         //获取指定场库可线上办理的合约协议
@@ -209,7 +224,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
 
         JSONArray protocolList = protocolListResult.getJSONArray("protocolList");
         if (Objects.isNull(protocolList)) {
-            return protocolVipCarVoList;
+            return SpkCommonResult.success(protocolVipCarVoList);
         }
 
         for (int i = 0; i < protocolList.size(); i++) {
@@ -238,7 +253,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
 
             protocolVipCarVoList.add(protocolVipCarVo);
         }
-        return protocolVipCarVoList;
+        return SpkCommonResult.success(protocolVipCarVoList);
     }
 
     /**
@@ -250,11 +265,10 @@ public class MyVipCarServiceImpl implements MyVipCarService {
      * @date 2022/7/20 16:58:25
      */
     private CarGroupPeriod getEffectPeriod(final List<CarGroupPeriod> carGroupPeriodList) {
-        Long nowTime = DateUtil.currentSeconds();
+        long nowTime = DateUtil.currentSeconds();
         //排序 ======> 从小到大
         Collections.sort(carGroupPeriodList);
-        for (int i = 0; i < carGroupPeriodList.size(); i++) {
-            CarGroupPeriod period = carGroupPeriodList.get(i);
+        for (CarGroupPeriod period : carGroupPeriodList) {
             Long beginDate = period.getBeginDate();
             Long endDate = period.getEndDate();
             //生效中
@@ -279,8 +293,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         Long nowTime = DateUtil.currentSeconds();
         //排序 ======> 从小到大
         Collections.sort(carGroupPeriodList);
-        for (int i = 0; i < carGroupPeriodList.size(); i++) {
-            CarGroupPeriod period = carGroupPeriodList.get(i);
+        for (CarGroupPeriod period : carGroupPeriodList) {
             Long beginDate = period.getBeginDate();
             if (beginDate > nowTime) {
                 list.add(period);
@@ -303,7 +316,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         }
 
         //当前距离凌晨的秒值
-        Long currentMillis = 0L;
+        long currentMillis = 0L;
         long now = System.currentTimeMillis();
         SimpleDateFormat sdfOne = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -317,12 +330,12 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         String endTime = openTime.get(1);
 
         //开始时间距离凌晨秒值
-        Long startSecond = 0L;
+        long startSecond = 0L;
         startSecond = startSecond + Integer.valueOf(startTime.split(":")[0]) * 60 * 60;
         startSecond = startSecond + Integer.valueOf(startTime.split(":")[1]) * 60;
 
         //结束时间距离凌晨秒值
-        Long endSecond = 0L;
+        long endSecond = 0L;
         endSecond = endSecond + Integer.valueOf(endTime.split(":")[0]) * 60 * 60;
         endSecond = endSecond + Integer.valueOf(endTime.split(":")[1]) * 60;
 
@@ -332,5 +345,34 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         } else {
             return currentMillis >= startSecond && currentMillis <= endSecond;
         }
+    }
+
+    /**
+     * check sign.
+     *
+     * @param sign     sign.
+     * @param deviceNo deviceNo
+     * @return Boolean
+     */
+    private Boolean invoke(final String sign, final String deviceNo) {
+        return md5(sharedProperties.getSecret() + deviceNo + DateUtils.currentDate() + sharedProperties.getSecret(), sign);
+    }
+
+    /**
+     * MD5.
+     *
+     * @param data  the data
+     * @param token the token
+     * @return boolean
+     */
+    private boolean md5(final String data, final String token) {
+        String keyStr = DigestUtils.md5Hex(data.toUpperCase()).toUpperCase();
+        log.info("Mini MD5 Value: " + keyStr);
+        if (keyStr.equals(token)) {
+            return true;
+        } else {
+            log.warn("Mini Current MD5 :" + keyStr + ", Data Token : " + token);
+        }
+        return false;
     }
 }

@@ -150,10 +150,10 @@ pagehelper:
   params: count=countSql
 sparking:
   bs:
-    url: http://192.168.1.9:10088/spms/api/wxapp
+    url: http://192.168.1.133:10088/spms/api/wxapp
   secret: 9fdfff5ec6ac41c1a83269241e09f4ce
 #  discountUrl: http://discount.suparking.cn:25863/
-  discountUrl: http://localhost:10086/
+  discountUrl: http://192.168.1.9:10086/
   corePoolSize: 16
   queryInterval: 1
   orderInterval: 90

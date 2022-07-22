@@ -196,7 +196,7 @@ spring:
     enable: true
   # redis 配置
   redis:
-    host: 192.168.1.123
+    host: ms.suparking.cn
     port: 6379
     password:
     database: 0
