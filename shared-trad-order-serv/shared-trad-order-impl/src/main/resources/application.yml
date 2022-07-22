@@ -210,8 +210,8 @@ spring:
     enable: false
     # redis 配置
   redis:
-    host: 192.168.1.123
-    port: 6379
+    host: localhost
+    port: 6378
     password:
     database: 0
     timeout: 6000
@@ -288,8 +288,8 @@ mybatis:
 
 logging:
   level:
-    cn.suparking.order: debug
-    org.apache.shardingsphere: debug
+    cn.suparking.order: info
+    org.apache.shardingsphere: info
 feign:
   client:
     config:

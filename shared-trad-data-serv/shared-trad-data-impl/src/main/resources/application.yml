@@ -215,8 +215,8 @@ mybatis:
 
 logging:
   level:
-    cn.suparking.data: debug
-    org.apache.shardingsphere: debug
+    cn.suparking.data: info
+    org.apache.shardingsphere: info
 feign:
   client:
     config:

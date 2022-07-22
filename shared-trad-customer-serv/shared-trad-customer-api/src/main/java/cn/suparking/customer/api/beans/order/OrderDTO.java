@@ -14,5 +14,7 @@ public class OrderDTO {
 
     private String discountNo;
 
+    private String stockKey;
+
     private String projectNo;
 }

@@ -46,6 +46,11 @@ public class ProtocolVipCarVo {
     private Integer price;
 
     /**
+     * 库存ID.
+     */
+    private String stockId;
+
+    /**
      * 库存数量.
      */
     private Integer stockQuantity;

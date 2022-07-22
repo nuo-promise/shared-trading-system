@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -56,22 +57,30 @@ public class UserLoginServiceImpl implements UserLoginService {
             paramsMap.put("grant_type", UserConstant.GRANT_TYPE);
 
             //请求微信小程序 code换session_key 接口
-            JSONObject result = HttpRequestUtils.sendGet(UserConstant.JSCODE_TO_SESSION_URL, paramsMap);
+            try {
+                JSONObject result = HttpRequestUtils.sendGet(UserConstant.JSCODE_TO_SESSION_URL, paramsMap);
 
-            return Optional.ofNullable(result).map(item -> {
-                if (StringUtils.isNotBlank(item.getString("errcode"))) {
-                    throw new SpkCommonException("code换取session_key ======> 请求失败 [" + item.toJSONString() + "]");
-                }
-                SessionVO session = SessionVO.builder()
-                        .code(code)
-                        .openid(item.getString("openid"))
-                        .sessionKey(item.getString("session_key"))
-                        .unionId(item.getString("unionid"))
-                        .build();
+                return Optional.ofNullable(result).map(item -> {
+                    if (StringUtils.isNotBlank(item.getString("errcode"))) {
+                        log.error("code换取session_key ======> 请求失败 [" + item.toJSONString() + "]");
+                        return null;
+                    }
+                    SessionVO session = SessionVO.builder()
+                            .code(code)
+                            .openid(item.getString("openid"))
+                            .sessionKey(item.getString("session_key"))
+                            .unionId(item.getString("unionid"))
+                            .build();
 
-                opsValue(session);
-                return session;
-            }).orElse(null);
+                    opsValue(session);
+                    return session;
+                }).orElse(null);
+            } catch (Exception e) {
+                Arrays.stream(e.getStackTrace()).forEach(item -> log.error(item.toString()));
+                log.error("code换取session_key ======> 请求失败 [" + e.getMessage() + "]");
+                return null;
+            }
+
         }
     }
 
@@ -99,10 +108,11 @@ public class UserLoginServiceImpl implements UserLoginService {
         if (StringUtils.isNotBlank(accessToken)) {
             Map<String, Object> params = new LinkedHashMap<>();
             params.put("code", phoneCode);
-            JSONObject result = HttpRequestUtils.sendPost(UserConstant.PHONE_NUMBER_URL + accessToken, params);
+            try {
+                JSONObject result = HttpRequestUtils.sendPost(UserConstant.PHONE_NUMBER_URL + accessToken, params);
 
-            return Optional.ofNullable(result).map(item -> {
-                if (item.getInteger("errcode") != 0) {
+                return Optional.ofNullable(result).map(item -> {
+                    if (item.getInteger("errcode") != 0) {
                     /*
                     if (item.getInteger("errcode").equals(ACCESS_TOKEN_EXPIRED_CODE)
                             || item.getInteger("errcode").equals(ACCESS_TOKEN_EXPIRED_CODE_40001)) {
@@ -111,21 +121,27 @@ public class UserLoginServiceImpl implements UserLoginService {
                     } else {
                         throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
                     }*/
-                    throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
-                }
-                JSONObject phoneInfo = item.getJSONObject("phone_info");
-                JSONObject waterMark = phoneInfo.getJSONObject("watermark");
-                PhoneInfoVO.WaterMarkVO waterMarkVO = PhoneInfoVO.WaterMarkVO.builder()
-                        .appid(waterMark.getString("appid"))
-                        .timestamp(waterMark.getLong("timestamp"))
-                        .build();
-                return PhoneInfoVO.builder()
-                        .phoneNumber(phoneInfo.getString("phoneNumber"))
-                        .purePhoneNumber(phoneInfo.getString("purePhoneNumber"))
-                        .countryCode(phoneInfo.getString("countryCode"))
-                        .waterMark(waterMarkVO)
-                        .build();
-            }).orElse(null);
+                        throw new SpkCommonException("getPhoneInfo 错误 ======> 请求失败 [" + item.toJSONString() + "]");
+                    }
+                    JSONObject phoneInfo = item.getJSONObject("phone_info");
+                    JSONObject waterMark = phoneInfo.getJSONObject("watermark");
+                    PhoneInfoVO.WaterMarkVO waterMarkVO = PhoneInfoVO.WaterMarkVO.builder()
+                            .appid(waterMark.getString("appid"))
+                            .timestamp(waterMark.getLong("timestamp"))
+                            .build();
+                    return PhoneInfoVO.builder()
+                            .phoneNumber(phoneInfo.getString("phoneNumber"))
+                            .purePhoneNumber(phoneInfo.getString("purePhoneNumber"))
+                            .countryCode(phoneInfo.getString("countryCode"))
+                            .waterMark(waterMarkVO)
+                            .build();
+                }).orElse(null);
+            } catch (Exception e) {
+                Arrays.stream(e.getStackTrace()).forEach(item -> log.error(item.toString()));
+                log.error("获取手机号报错 ======> 请求失败 [" + e.getMessage() + "]");
+                return null;
+            }
+
         }
         return null;
     }

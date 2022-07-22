@@ -38,6 +38,8 @@ public final class SpkCommonResultMessage {
 
     public static final String TOKEN_HAS_NO_PERMISSION = "token无权限";
 
+    public static final String CAR_GROUP_DATA_VALID = "合约办理失败";
+
     public static final String UNIQUE_INDEX_CONFLICT_ERROR = "unique index conflict, please enter again";
 
     public static final String NOT_FOUND_EXCEPTION = "未发现异常";
