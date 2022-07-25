@@ -5,6 +5,7 @@ import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.api.vo.PhoneInfoVO;
 import cn.suparking.user.api.vo.SessionVO;
 import cn.suparking.user.api.vo.UserVO;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -48,6 +49,12 @@ public class UserTemplateFallbackFactory implements FallbackFactory<UserTemplate
             @Override
             public PhoneInfoVO getPhoneInfo(final String phoneCode) {
                 log.error("UserTemplateService: getPhoneInfo error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public UserVO getUserVoByIphone(final String iphone) {
+                log.error("UserTemplateService: getUserVoByIphone error: " + cause.getMessage());
                 return null;
             }
         };

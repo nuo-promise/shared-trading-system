@@ -6,6 +6,7 @@ import cn.suparking.user.api.vo.PhoneInfoVO;
 import cn.suparking.user.api.vo.RegisterVO;
 import cn.suparking.user.api.vo.SessionVO;
 import cn.suparking.user.api.vo.UserVO;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,4 +49,14 @@ public interface UserTemplateService {
      */
     @GetMapping("/userLogin/getPhoneInfo")
     PhoneInfoVO getPhoneInfo(@RequestParam("phoneCode") String phoneCode);
+
+
+    /**
+     * 根据用户手机号获取用户信息.
+     *
+     * @param iphone 手机号
+     * @return JSONObject
+     */
+    @GetMapping("/user/getUserVoByIphone")
+    UserVO getUserVoByIphone(@RequestParam String iphone);
 }

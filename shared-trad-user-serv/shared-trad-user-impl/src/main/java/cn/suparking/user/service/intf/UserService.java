@@ -40,5 +40,10 @@ public interface UserService {
      */
     UserVO findUserByIphone(String iphone);
 
+    /**
+     * 根据userIds 批量获取用户.
+     * @param params userIds
+     * @return {@link List}
+     */
     List<UserDO> getUserByUserIds(JSONObject params);
 }

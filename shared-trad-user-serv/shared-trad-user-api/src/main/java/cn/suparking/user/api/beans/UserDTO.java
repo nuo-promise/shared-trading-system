@@ -41,4 +41,6 @@ public class UserDTO implements Serializable {
     private Integer registerType;
 
     private String merchantId;
+
+    private String phoneCode;
 }

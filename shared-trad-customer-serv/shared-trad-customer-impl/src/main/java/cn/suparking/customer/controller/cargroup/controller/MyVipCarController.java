@@ -38,7 +38,7 @@ public class MyVipCarController {
      * @date 2022/7/20 14:53:11
      */
     @GetMapping("list")
-    public SpkCommonResult myVipCarList(@RequestHeader("sign") final String sign, @RequestBody final String userId) {
+    public SpkCommonResult myVipCarList(@RequestHeader("sign") final String sign, @RequestParam final String userId) {
         return myVipCarService.myVipCarList(sign, userId);
     }
 

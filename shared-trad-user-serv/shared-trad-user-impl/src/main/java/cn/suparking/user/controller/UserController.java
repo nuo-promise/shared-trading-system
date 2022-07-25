@@ -95,6 +95,17 @@ public class UserController {
     }
 
     /**
+     * 根据用户手机号获取用户信息.
+     * @param iphone user iphone
+     * @return {@link UserVO}
+     */
+    @GetMapping("/getUserVoByIphone")
+    public UserVO getUserVOByIphone(@RequestParam("iphone") final String iphone) {
+        SpkCommonAssert.notBlank(iphone, SpkCommonResultMessage.PARAMETER_ERROR + " iphone 不能为空");
+        return userService.findUserByIphone(iphone);
+    }
+
+    /**
      * 根据用户id获取用户信息.
      * @param params userIdList
      * @return {@link UserVO}

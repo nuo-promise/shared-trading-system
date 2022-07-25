@@ -6,12 +6,16 @@ import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.controller.user.service.UserService;
 import cn.suparking.user.api.beans.MiniLoginDTO;
 import cn.suparking.user.api.beans.MiniRegisterDTO;
+import cn.suparking.user.api.beans.UserDTO;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -60,4 +64,26 @@ public class UserController {
 
     }
 
+    /**
+     * 获取短信验证码.
+     * @param sign {@link String}
+     * @param phone {@link String}
+     * @return {@link SpkCommonResult}
+     */
+    @GetMapping("getSmsCode")
+    public SpkCommonResult getPhoneCode(@RequestHeader("sign") final String sign, @RequestParam("phone") final String phone) {
+        SpkCommonAssert.notBlank(phone, SpkCommonResultMessage.PARAMETER_ERROR + "phone不能为空");
+        return userService.getPhoneCode(sign, phone);
+    }
+
+    /**
+     * 根据用户 openId 更新手机号.
+     * @param sign sign
+     * @param userDTO {@link UserDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("updatePhone")
+    public SpkCommonResult changeUserPhone(@RequestHeader("sign") final String sign, @RequestBody final UserDTO userDTO) {
+        return userService.changeUserPhone(sign, userDTO);
+    }
 }

@@ -1,12 +1,13 @@
 package cn.suparking.order.feign.order;
 
+import cn.suparking.order.feign.order.fallback.UserTemplateFallbackFactory;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "shared-trad-user-serv", path = "/user-center/user")
+@FeignClient(value = "shared-trad-user-serv", path = "/user-center/user", fallbackFactory = UserTemplateFallbackFactory.class)
 public interface UserTemplateService {
 
     /**

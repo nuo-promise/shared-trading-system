@@ -89,7 +89,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ParkingDO findByPayParkingId(String payParkingId) {
+    public ParkingDO findByPayParkingId(final String payParkingId) {
         return parkingMapper.selectByPayParkingId(payParkingId);
     }
 }

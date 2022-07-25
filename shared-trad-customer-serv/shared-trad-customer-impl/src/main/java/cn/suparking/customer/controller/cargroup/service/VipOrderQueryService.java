@@ -39,8 +39,6 @@ public class VipOrderQueryService {
 
     private final SharedProperties sharedProperties = BeansManager.getBean("SharedProperties", SharedProperties.class);
 
-    private final OrderServiceImpl orderService = BeansManager.getBean("OrderService", OrderServiceImpl.class);
-
     // 临停订单查询变量.
     private VipOrderQueryDTO vipOrderQueryDTO;
 

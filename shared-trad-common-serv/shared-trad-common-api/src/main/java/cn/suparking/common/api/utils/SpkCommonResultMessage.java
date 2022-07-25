@@ -50,6 +50,8 @@ public final class SpkCommonResultMessage {
 
     public static final String USER_CREATE_USER_ERROR = "用户信息空,请确认";
 
+    public static final String USER_PHONE_SMS_ERROR = "更新手机号失败";
+
     public static final String CAR_PARK_CREATE_USER_ERROR = "empty car park info, please confirm";
 
     public static final String USER_WALLET_CREATE_USER_ERROR = "empty user wallet info, please confirm";
