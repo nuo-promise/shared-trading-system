@@ -65,4 +65,6 @@ public class CarGroupStockQueryDTO {
      * 操作备注.
      */
     private String remark;
+
+    private String termNo;
 }

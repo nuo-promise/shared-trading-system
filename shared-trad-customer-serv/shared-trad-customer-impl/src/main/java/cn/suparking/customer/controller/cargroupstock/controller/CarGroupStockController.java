@@ -76,6 +76,7 @@ public class CarGroupStockController {
         return Optional.ofNullable(carGroupStockQueryDTO)
                 .map(item -> {
                     SpkCommonAssert.notNull(item.getId(), "请选择操作合约");
+                    item.setTermNo("901");
                     return carGroupStockService.operate(carGroupStockQueryDTO);
                 }).orElseGet(() -> SpkCommonResult.error(SpkCommonResultMessage.PARAMETER_ERROR));
     }

@@ -10,6 +10,20 @@ public class ParkConstant {
 
     public static final String ORDER_TYPE = "mini";
 
+    public static final String TIME_BASED = "TIME_BASED";
+
+    public static final String RENEW = "RENEW";
+
+    public static final String NEW = "NEW";
+
+    public static final String DECREASE = "DECREASE";
+
+    public static final String WXPAY = "WXPAY";
+
+    public static final String ALIPAY = "ALIPAY";
+
+    public static final String PENDING = "PENDING";
+
     // 优惠券使用超时时间
     public static final Integer DISCOUNT_DELAY_TIME = 180;
 
@@ -17,6 +31,8 @@ public class ParkConstant {
     public static final String PAYINFO_RESPONSE_QUEUE = "shared.trad.query.pay.response";
 
     public static final String SUCCESS = "00000";
+
+    public static final String SYSTEM = "system";
 
     /**
      * 获取距离范围内的数据.
@@ -42,6 +58,36 @@ public class ParkConstant {
      * 根据场库编号、协议id获取场库信息和合约协议信息.
      */
     public static final String INTERFACE_MYVIPCARINFO = "/vipGroup/myVipCarInfo";
+
+    /**
+     * 根据用户id获取合约信息.
+     */
+    public static final String INTERFACE_MYCARGROUPBYUSERID = "/vipGroup/myCarGroupByUserId";
+
+    /**
+     * 根据用户id、场库编号获取合约信息.
+     */
+    public static final String INTERFACE_FIND_BY_USERID_PROJECTNO = "/vipGroup/findByProjectNoAndUserId";
+
+    /**
+     * 更新有效状态.
+     */
+    public static final String INTERFACE_MODIFYVALID = "/vipGroup/modifyValid";
+
+    /**
+     * 插入合约.
+     */
+    public static final String INTERFACE_INSERT = "/vipGroup/insert";
+
+    /**
+     * 续费合约.
+     */
+    public static final String INTERFACE_RENEW = "/vipGroup/renew";
+
+    /**
+     * 续费合约.
+     */
+    public static final String INTERFACE_FINDBYID = "/vipGroup/findById";
 
     /**
      * 获取所有可线上办理的协议列表.

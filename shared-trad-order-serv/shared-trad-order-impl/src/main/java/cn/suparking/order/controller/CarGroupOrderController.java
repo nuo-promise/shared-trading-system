@@ -63,10 +63,20 @@ public class CarGroupOrderController {
      * 创建或修改合约订单.
      *
      * @param carGroupOrderDTO 合约订单信息
+     */
+    @PostMapping("/createCarGroupOrder")
+    public void createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
+        carGroupOrderService.createOrUpdate(carGroupOrderDTO);
+    }
+
+    /**
+     * 创建或修改合约订单.
+     *
+     * @param carGroupOrderDTO 合约订单信息
      * @return Integer
      */
-    @PostMapping("")
-    public Integer createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
-        return carGroupOrderService.createOrUpdate(carGroupOrderDTO);
+    @PostMapping("/findByOrderNo")
+    public CarGroupOrderDO findByOrderNo(@RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
+        return carGroupOrderService.findByOrderNo(carGroupOrderDTO);
     }
 }

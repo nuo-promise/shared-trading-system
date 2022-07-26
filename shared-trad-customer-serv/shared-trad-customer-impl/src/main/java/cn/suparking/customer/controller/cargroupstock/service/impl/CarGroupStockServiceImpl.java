@@ -112,6 +112,7 @@ public class CarGroupStockServiceImpl implements CarGroupStockService {
         String operateType = carGroupStockQueryDTO.getOperateType() == null ? "INCREASE" : carGroupStockQueryDTO.getOperateType();
         Integer quantity = carGroupStockQueryDTO.getQuantity() == null ? 0 : carGroupStockQueryDTO.getQuantity();
         Long id = carGroupStockQueryDTO.getId();
+        String termNo = carGroupStockQueryDTO.getTermNo();
         String operator = carGroupStockQueryDTO.getModifier();
         String remark = carGroupStockQueryDTO.getRemark();
 
@@ -141,7 +142,7 @@ public class CarGroupStockServiceImpl implements CarGroupStockService {
 
             //记录入库操作
             CarGroupStockOperateRecordDTO record = new CarGroupStockOperateRecordDTO();
-            record.logIn(carGroupStock.getId(), quantity, operator, "901", remark);
+            record.logIn(carGroupStock.getId(), quantity, operator, termNo, remark);
             dataTemplateService.carGroupStockLogInsert(record);
             return SpkCommonResult.success(carGroupStock);
         }
@@ -151,7 +152,7 @@ public class CarGroupStockServiceImpl implements CarGroupStockService {
 
         //记录人为减库操作
         CarGroupStockOperateRecordDTO record = new CarGroupStockOperateRecordDTO();
-        record.logOut(carGroupStock.getId(), quantity, operator, "901", remark);
+        record.logOut(carGroupStock.getId(), quantity, operator, termNo, remark);
         dataTemplateService.carGroupStockLogInsert(record);
         return SpkCommonResult.success(carGroupStock);
     }
@@ -181,12 +182,23 @@ public class CarGroupStockServiceImpl implements CarGroupStockService {
         }
         Object data = spkCommonResult.getData();
         if (!ObjectUtils.isEmpty(data)) {
-            PageInfo pageInfo = JSONObject.parseObject(JSONObject.toJSONString(data),PageInfo.class);
+            PageInfo pageInfo = JSONObject.parseObject(JSONObject.toJSONString(data), PageInfo.class);
             result.put("total", String.valueOf(pageInfo.getTotal()));
             result.put("list", JSONObject.toJSONString(pageInfo.getList()));
         }
 
         log.info("[合约库存]-获取合约库存操作记录 <====== 请求成功 SUCCESS = [{}]", result);
         return SpkCommonResult.success(result);
+    }
+
+    /**
+     * 根据协议id获取合约库存.
+     *
+     * @param protocolId 协议id
+     * @return {@linkplain CarGroupStockDO}
+     */
+    @Override
+    public CarGroupStockDO findByProtocolId(final String protocolId) {
+        return carGroupStockMapper.findByProtocolId(protocolId);
     }
 }

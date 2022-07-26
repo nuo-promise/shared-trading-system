@@ -41,7 +41,8 @@ public interface MyVipCarService {
 
     /**
      * 小程序办理合约下单接口.
-     * @param sign C 端 使用 库存ID 签名制作.
+     *
+     * @param sign      C 端 使用 库存ID 签名制作.
      * @param vipPayDTO {@link VipPayDTO}
      * @return {@link SpkCommonResult}
      */
@@ -49,7 +50,8 @@ public interface MyVipCarService {
 
     /**
      * 小程序合约订单查询.
-     * @param sign C 端 使用 库存ID 签名制作.
+     *
+     * @param sign     C 端 使用 库存ID 签名制作.
      * @param orderDTO {@link OrderDTO}
      * @return {@link SpkCommonResult}
      */
@@ -57,7 +59,8 @@ public interface MyVipCarService {
 
     /**
      * 小程序合约订单关单.
-     * @param sign C 端 使用 库存ID 签名制作.
+     *
+     * @param sign     C 端 使用 库存ID 签名制作.
      * @param orderDTO {@link OrderDTO}
      * @return {@link SpkCommonResult}
      */
@@ -65,9 +68,25 @@ public interface MyVipCarService {
 
     /**
      * 清除库存信息.
-     * @param sign C 端 使用 库存ID 签名制作.
+     *
+     * @param sign     C 端 使用 库存ID 签名制作.
      * @param orderDTO {@link OrderDTO}
      * @return {@link SpkCommonResult}
      */
     SpkCommonResult clearStockInfoCache(String sign, OrderDTO orderDTO);
+
+    /**
+     * 订单交易成功，合约、合约订单、库存处理.
+     *
+     * @param orderNo 订单号
+     * @param vipPayDTO {@link VipPayDTO}
+     */
+    void vipOrderPaySuccess(String orderNo, VipPayDTO vipPayDTO);
+
+    /**
+     * 订单交易失败，合约、合约订单处理.
+     *
+     * @param orderNo 订单号
+     */
+    void vipOrderPayFailed(String orderNo);
 }

@@ -1,10 +1,9 @@
-package cn.suparking.customer.dao.entity;
+package cn.suparking.customer.api.beans.cargroup;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.sql.Timestamp;
 
@@ -12,10 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-public class CarGroupPeriod implements Comparable<CarGroupPeriod> {
-
-    private static final long serialVersionUID = -1477645035226205491L;
+public class CarGroupPeriodDTO {
 
     /**
      * id.
@@ -46,9 +42,4 @@ public class CarGroupPeriod implements Comparable<CarGroupPeriod> {
      * 修改时间.
      */
     private Timestamp dateUpdated;
-
-    @Override
-    public int compareTo(final CarGroupPeriod o) {
-        return (int) (this.beginDate - o.beginDate);
-    }
 }

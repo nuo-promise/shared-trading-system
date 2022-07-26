@@ -1,6 +1,5 @@
 package cn.suparking.customer.dao.entity;
 
-import cn.suparking.common.api.configuration.SnowflakeConfig;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Optional;
 
 @Data
@@ -59,7 +56,6 @@ public final class CarGroup extends BaseDO {
      */
     public static CarGroup buildCarGroup(final CarGroupDTO carGroupDTO) {
         return Optional.ofNullable(carGroupDTO).map(item -> {
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             CarGroup carGroup = CarGroup.builder()
                     .userId(item.getUserId())
                     .projectNo(item.getProjectNo())
@@ -77,13 +73,6 @@ public final class CarGroup extends BaseDO {
                     .operator(item.getOperator())
                     .modifier(item.getModifier())
                     .build();
-            if (Objects.isNull(item.getId())) {
-                carGroup.setId(SnowflakeConfig.snowflakeId());
-                carGroup.setDateCreated(currentTime);
-            } else {
-                carGroup.setId(item.getId());
-                carGroup.setDateUpdated(currentTime);
-            }
             return carGroup;
         }).orElse(null);
     }

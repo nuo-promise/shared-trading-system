@@ -8,6 +8,9 @@ import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.common.api.utils.HttpRequestUtils;
 import cn.suparking.common.api.utils.RandomCharUtils;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
+import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
+import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
+import cn.suparking.customer.api.beans.cargroupstock.CarGroupStockQueryDTO;
 import cn.suparking.customer.api.beans.order.OrderDTO;
 import cn.suparking.customer.api.beans.vip.VipOrderQueryDTO;
 import cn.suparking.customer.api.beans.vip.VipPayDTO;
@@ -15,14 +18,12 @@ import cn.suparking.customer.api.constant.ParkConstant;
 import cn.suparking.customer.configuration.properties.MiniProperties;
 import cn.suparking.customer.configuration.properties.SharedProperties;
 import cn.suparking.customer.configuration.properties.SparkProperties;
+import cn.suparking.customer.controller.cargroup.service.CarGroupService;
 import cn.suparking.customer.controller.cargroup.service.MyVipCarService;
 import cn.suparking.customer.controller.cargroup.service.VipOrderQueryService;
-import cn.suparking.customer.dao.entity.CarGroup;
-import cn.suparking.customer.dao.entity.CarGroupPeriod;
+import cn.suparking.customer.controller.cargrouporder.service.CarGroupOrderService;
+import cn.suparking.customer.controller.cargroupstock.service.CarGroupStockService;
 import cn.suparking.customer.dao.entity.CarGroupStockDO;
-import cn.suparking.customer.dao.mapper.CarGroupMapper;
-import cn.suparking.customer.dao.mapper.CarGroupPeriodMapper;
-import cn.suparking.customer.dao.mapper.CarGroupStockMapper;
 import cn.suparking.customer.dao.vo.cargroup.MyVipCarVo;
 import cn.suparking.customer.dao.vo.cargroup.ProjectVipCarVo;
 import cn.suparking.customer.dao.vo.cargroup.ProtocolVipCarVo;
@@ -30,6 +31,7 @@ import cn.suparking.customer.spring.SharedTradCustomerInit;
 import cn.suparking.customer.tools.OrderUtils;
 import cn.suparking.customer.tools.ReactiveRedisUtils;
 import cn.suparking.customer.vo.park.MiniPayVO;
+import cn.suparking.order.dao.entity.CarGroupOrderDO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -48,7 +50,6 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,14 +65,14 @@ import static cn.suparking.customer.api.constant.ParkConstant.PAY_TYPE;
 import static cn.suparking.customer.api.constant.ParkConstant.WETCHATMINI;
 
 @Slf4j
-@Service
+@Service("MyVipCarService")
 public class MyVipCarServiceImpl implements MyVipCarService {
 
-    private final CarGroupMapper carGroupMapper;
+    private final CarGroupStockService carGroupStockService;
 
-    private final CarGroupPeriodMapper carGroupPeriodMapper;
+    private final CarGroupService carGroupService;
 
-    private final CarGroupStockMapper carGroupStockMapper;
+    private final CarGroupOrderService carGroupOrderService;
 
     @Resource
     private SharedProperties sharedProperties;
@@ -82,10 +83,11 @@ public class MyVipCarServiceImpl implements MyVipCarService {
     @Resource
     private MiniProperties miniProperties;
 
-    public MyVipCarServiceImpl(final CarGroupMapper carGroupMapper, final CarGroupPeriodMapper carGroupPeriodMapper, final CarGroupStockMapper carGroupStockMapper) {
-        this.carGroupMapper = carGroupMapper;
-        this.carGroupPeriodMapper = carGroupPeriodMapper;
-        this.carGroupStockMapper = carGroupStockMapper;
+    public MyVipCarServiceImpl(final CarGroupService carGroupService, final CarGroupOrderService carGroupOrderService,
+                               final CarGroupStockService carGroupStockService) {
+        this.carGroupService = carGroupService;
+        this.carGroupOrderService = carGroupOrderService;
+        this.carGroupStockService = carGroupStockService;
     }
 
     /**
@@ -103,54 +105,36 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
         }
 
-        List<MyVipCarVo> list = new ArrayList<>();
-
-        //根据用户id查询用户合约
-        List<CarGroup> carGroupList = carGroupMapper.findByUserId(Long.valueOf(userId));
-
-        //用户不存在合约
-        if (Objects.isNull(carGroupList)) {
-            return SpkCommonResult.success(list);
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", Long.valueOf(userId));
+        JSONObject result = HttpRequestUtils.sendGet(sparkProperties.getUrl() + ParkConstant.INTERFACE_MYCARGROUPBYUSERID, params);
+        if (Objects.isNull(result) || !ParkConstant.SUCCESS.equals(result.getString("code"))) {
+            log.warn("获取用户合约列表失败 <====== 请求失败");
+            return SpkCommonResult.error(SpkCommonResultMessage.DETAIL_SUCCESS);
         }
 
-        for (CarGroup carGroup : carGroupList) {
-            //根据合约协议id获取协议信息
-            String protocolId = carGroup.getProtocolId();
-            Map<String, Object> params = new HashMap<>();
-            params.put("protocolId", protocolId);
-
-            JSONObject result = HttpRequestUtils.sendGet(sparkProperties.getUrl() + ParkConstant.INTERFACE_MYVIPCARINFO, params);
-            if (Objects.isNull(result) || !ParkConstant.SUCCESS.equals(result.getString("code"))) {
-                log.warn("获取用户所办合约列表失败 <====== 协议id [{}] 无对应协议, 属于数据异常", protocolId);
-                continue;
+        String myVipCarVoListStr = result.getString("myVipCarVoList");
+        List<MyVipCarVo> myVipCarVoList = JSONArray.parseArray(myVipCarVoListStr, MyVipCarVo.class);
+        for (MyVipCarVo myVipCarVo : myVipCarVoList) {
+            //可以线上续费
+            if (myVipCarVo.getCanRenew()) {
+                //查询合约库存
+                CarGroupStockDO carGroupStock = carGroupStockService.findByProtocolId(myVipCarVo.getProtocolId());
+                if (Objects.nonNull(carGroupStock)) {
+                    myVipCarVo.setStockId(carGroupStock.getId().toString());
+                    // 库存校验 存在 则减去
+                    AtomicReference<Integer> tmpQuantity = new AtomicReference<>(0);
+                    List<String> keys = getStockGroupKeys(carGroupStock.getId() + "*");
+                    if (!keys.isEmpty()) {
+                        keys.forEach(key -> {
+                            tmpQuantity.updateAndGet(v -> v + getStockGroupQuantity(key));
+                        });
+                    }
+                    myVipCarVo.setStockQuantity(carGroupStock.getStockQuantity() - tmpQuantity.get());
+                }
             }
-            JSONObject protocol = result.getJSONObject("protocol");
-
-            //判断是否可以线上续费
-            JSONArray userServicesArr = protocol.getJSONArray("userServices");
-            List<String> userServices = JSONArray.parseArray(JSONObject.toJSONString(userServicesArr), String.class);
-            //是否可以线上续费
-            boolean canRenew = userServices.contains("RENEW");
-            //生效中的租期时间 如果没有则返回null 表示已过期
-            List<CarGroupPeriod> carGroupPeriods = carGroupPeriodMapper.findByCarGroupId(carGroup.getId());
-            CarGroupPeriod period = getEffectPeriod(carGroupPeriods);
-
-            //获取待生效时间段
-            List<CarGroupPeriod> futureList = getFutureList(carGroupPeriods);
-
-            JSONObject project = result.getJSONObject("project");
-            MyVipCarVo myVipCarVo = MyVipCarVo.builder().id(String.valueOf(carGroup.getId())).userId(userId)
-                    .projectNo(carGroup.getProjectNo()).projectName(project.getString("projectName"))
-                    .carTypeName(carGroup.getCarTypeName()).protocolId(protocolId)
-                    .protocolName(carGroup.getProtocolName()).protocolDesc(protocol.getString("protocolDesc"))
-                    .canRenew(canRenew).futureList(futureList).build();
-
-            if (period != null) {
-                myVipCarVo.setEndDate(period.getEndDate());
-            }
-            list.add(myVipCarVo);
         }
-        return SpkCommonResult.success(list);
+        return SpkCommonResult.success(myVipCarVoList);
     }
 
     /**
@@ -268,7 +252,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
                     .build();
 
             //查询合约库存
-            CarGroupStockDO carGroupStock = carGroupStockMapper.findByProtocolId(protocol.getString("id"));
+            CarGroupStockDO carGroupStock = carGroupStockService.findByProtocolId(protocol.getString("id"));
             if (Objects.nonNull(carGroupStock)) {
                 protocolVipCarVo.setStockId(carGroupStock.getId().toString());
                 // 库存校验 存在 则减去
@@ -300,7 +284,15 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
         }
 
-        // TODO 根据用户 合约 校验是否可以办理
+        String operateType = vipPayDTO.getOperateType();
+        //根据用户 合约 校验是否可以办理,组织合约数据
+        if (!ParkConstant.RENEW.equals(operateType)) {
+            operateType = ParkConstant.NEW;
+        }
+        CarGroupDTO carGroup = carGroupService.check(vipPayDTO, operateType);
+        if (Objects.isNull(carGroup)) {
+            return SpkCommonResult.error(SpkCommonResultMessage.CAR_GROUP_DATA_VALID + "下单失败");
+        }
 
         // 下单
         MiniPayVO miniPayVO = MiniPayVO.builder().build();
@@ -314,7 +306,13 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             miniPayVO.setOutTradeNo(orderNo);
 
             // TODO 组织数据创建合约 和 创建 合约订单
-            return SpkCommonResult.success(miniPayVO);
+            vipPayDTO.setOrderNo(orderNo);
+            CarGroupOrderDTO carGroupOrder = carGroupOrderService.makeCarGroupOrder(vipPayDTO, carGroup, ParkConstant.SUCCESS, operateType);
+            //保存订单
+            SpkCommonResult carGroupOrderResult = carGroupOrderService.createOrUpdate(carGroupOrder);
+            if (Objects.isNull(carGroupOrderResult) || carGroupOrderResult.getCode() != 200) {
+                return SpkCommonResult.error(SpkCommonResultMessage.CAR_GROUP_DATA_VALID + "保存合约订单失败！");
+            }
         }
 
         // 下面进行下单.
@@ -392,6 +390,13 @@ public class MyVipCarServiceImpl implements MyVipCarService {
                 miniPayVO.setPayInfo(result.getString("payInfo"));
 
                 // TODO 保存合约订单,创建合约
+                vipPayDTO.setOrderNo(result.getString("out_trade_no"));
+                CarGroupOrderDTO carGroupOrder = carGroupOrderService.makeCarGroupOrder(vipPayDTO, carGroup, ParkConstant.PENDING, operateType);
+                SpkCommonResult carGroupOrderResult = carGroupOrderService.createOrUpdate(carGroupOrder);
+                if (Objects.isNull(carGroupOrderResult) || carGroupOrderResult.getCode() != 200) {
+                    return SpkCommonResult.error(SpkCommonResultMessage.CAR_GROUP_DATA_VALID + "保存合约订单失败！");
+                }
+
                 if (OrderUtils.saveOrder(miniPayVO.getOutTradeNo())) {
                     VipOrderQueryDTO vipOrderQueryDTO = VipOrderQueryDTO.builder()
                             .orderNo(miniPayVO.getOutTradeNo())
@@ -490,6 +495,8 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         if (StringUtils.isNotBlank(orderDTO.getStockKey())) {
             deleteStockInfo(orderDTO.getStockKey());
         }
+        // //修改订单状态为失败
+        vipOrderPayFailed(orderDTO.getOrderNo());
         return SpkCommonResult.success(retObj);
     }
 
@@ -509,15 +516,74 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         }
     }
 
+
+    /**
+     * 支付成功修改合约、合约订单状态，库存操作.
+     *
+     * @param orderNo 订单号
+     * @author ZDD
+     * @date 2022/7/22 16:29:23
+     */
+    @Override
+    public void vipOrderPaySuccess(final String orderNo, final VipPayDTO vipPayDTO) {
+        CarGroupOrderDO carGroupOrderDO = carGroupOrderService.findByOrderNo(orderNo);
+        //修改合约订单状态
+        CarGroupOrderDTO carGroupOrderDTO = CarGroupOrderDTO.builder().id(String.valueOf(carGroupOrderDO.getId()))
+                .userId(carGroupOrderDO.getUserId()).carGroupId(String.valueOf(carGroupOrderDO.getCarGroupId()))
+                .orderState("SUCCESS").build();
+        carGroupOrderService.createOrUpdate(carGroupOrderDTO);
+        //修改合约状态
+        if (ParkConstant.RENEW.equals(vipPayDTO.getOperateType())) {
+            //续费合约
+            CarGroupDTO carGroup = carGroupService.check(vipPayDTO, vipPayDTO.getOperateType());
+
+            Map<String, Object> params = new HashMap<>();
+            JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(carGroup));
+            for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+                params.put(entry.getKey(), entry.getValue());
+            }
+
+            HttpRequestUtils.sendPost(sparkProperties.getUrl() + ParkConstant.INTERFACE_RENEW, params);
+        } else {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", carGroupOrderDO.getCarGroupId());
+            HttpRequestUtils.sendGet(sparkProperties.getUrl() + ParkConstant.INTERFACE_MODIFYVALID, params);
+        }
+        //修改库存
+        CarGroupStockQueryDTO carGroupStockQueryDTO = CarGroupStockQueryDTO.builder().operateType(ParkConstant.DECREASE).quantity(vipPayDTO.getQuantity())
+                .modifier(ParkConstant.SYSTEM).id(Long.valueOf(vipPayDTO.getStockId())).termNo("501").build();
+        carGroupStockService.operate(carGroupStockQueryDTO);
+    }
+
+    /**
+     * 支付失败修改合约、合约订单状态，库存操作.
+     *
+     * @param orderNo 订单号
+     * @author ZDD
+     * @date 2022/7/22 16:29:23
+     */
+    @Override
+    public void vipOrderPayFailed(final String orderNo) {
+        CarGroupOrderDO carGroupOrderDO = carGroupOrderService.findByOrderNo(orderNo);
+        //修改合约订单状态
+        CarGroupOrderDTO carGroupOrderDTO = CarGroupOrderDTO.builder().id(String.valueOf(carGroupOrderDO.getId()))
+                .orderState("FAILED").carGroupId(String.valueOf(carGroupOrderDO.getCarGroupId()))
+                .userId(carGroupOrderDO.getUserId()).build();
+        carGroupOrderService.createOrUpdate(carGroupOrderDTO);
+    }
+
     /**
      * delete stockInfo.
+     *
      * @param stockKey the stock
      */
     private Boolean deleteStockInfo(final String stockKey) {
         return ReactiveRedisUtils.deleteValue(stockKey).block(Duration.ofMillis(3000));
     }
+
     /**
      * 模糊查找某个Key.
+     *
      * @param keyPattern String
      * @return {@link List}
      */
@@ -527,57 +593,12 @@ public class MyVipCarServiceImpl implements MyVipCarService {
 
     /**
      * 根据Key 获取 库存数量.
+     *
      * @param key String
      * @return {@link Integer}
      */
     private Integer getStockGroupQuantity(final String key) {
         return (Integer) ReactiveRedisUtils.getData(key).block(Duration.ofMillis(3000));
-    }
-
-    /**
-     * 根据当前时间 获取合约的开始日期和结束日期.
-     *
-     * @param carGroupPeriodList {@linkplain CarGroupPeriod}
-     * @return {@link CarGroupPeriod}
-     * @author ZDD
-     * @date 2022/7/20 16:58:25
-     */
-    private CarGroupPeriod getEffectPeriod(final List<CarGroupPeriod> carGroupPeriodList) {
-        long nowTime = DateUtil.currentSeconds();
-        //排序 ======> 从小到大
-        Collections.sort(carGroupPeriodList);
-        for (CarGroupPeriod period : carGroupPeriodList) {
-            Long beginDate = period.getBeginDate();
-            Long endDate = period.getEndDate();
-            //生效中
-            if (nowTime >= beginDate && nowTime <= endDate) {
-                //表示 ======> 合约处于生效中
-                return period;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 私有方法 ======> 根据当前时间 获取合约租期中的待生效的时间段.
-     *
-     * @param carGroupPeriodList {@linkplain CarGroupPeriod}
-     * @return {@link CarGroupPeriod}
-     * @author ZDD
-     * @date 2022/7/20 16:58:25
-     */
-    private List<CarGroupPeriod> getFutureList(final List<CarGroupPeriod> carGroupPeriodList) {
-        List<CarGroupPeriod> list = new ArrayList<>();
-        Long nowTime = DateUtil.currentSeconds();
-        //排序 ======> 从小到大
-        Collections.sort(carGroupPeriodList);
-        for (CarGroupPeriod period : carGroupPeriodList) {
-            Long beginDate = period.getBeginDate();
-            if (beginDate > nowTime) {
-                list.add(period);
-            }
-        }
-        return list;
     }
 
     /**

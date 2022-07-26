@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -15,11 +16,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CarGroupOrderDTO implements Serializable {
 
-    private static final long serialVersionUID = -1031380009838779778L;
+    private static final long serialVersionUID = -2260244342185589930L;
 
     private String id;
 
-    private String userId;
+    private Long userId;
 
     @NotNull
     @NotBlank
@@ -42,6 +43,8 @@ public class CarGroupOrderDTO implements Serializable {
     private String payChannel;
 
     private String payType;
+
+    private String userName;
 
     private String userMobile;
 
@@ -99,15 +102,15 @@ public class CarGroupOrderDTO implements Serializable {
 
     private String creator;
 
+    private String modifier;
+
     /**
      * 创建时间.
      */
-    private Long createTime;
-
-    private String modifier;
+    private Timestamp dateCreated;
 
     /**
      * 修改时间.
      */
-    private Long modifyTime;
+    private Timestamp dateUpdated;
 }

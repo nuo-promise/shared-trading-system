@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -65,13 +64,13 @@ public class CarGroupQueryDTO {
      * 页码.
      */
     @NotNull(message = "请选择页码")
-    @Min(value = 1,message = "页码最小值为1")
+    @Min(value = 1, message = "页码最小值为1")
     private Integer pageNum;
 
     /**
      * 每页显示数量.
      */
     @NotNull(message = "请选择每页显示数量")
-    @Min(value = 1,message = "每页最少显示1条")
+    @Min(value = 1, message = "每页最少显示1条")
     private Integer pageSize;
 }

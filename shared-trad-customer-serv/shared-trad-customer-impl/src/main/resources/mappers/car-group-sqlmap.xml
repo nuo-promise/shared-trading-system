@@ -32,6 +32,7 @@
         <result column="protocol_name" jdbcType="VARCHAR" property="protocolName" />
         <result column="import_no" jdbcType="VARCHAR" property="importNo" />
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="valid" jdbcType="BOOLEAN" property="valid" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -222,6 +223,20 @@
             spk_car_group
         WHERE
             user_id = #{userId,jdbcType=BIGINT}
+        AND
+            valid = true
+    </select>
+    <select id="findByProjectNoAndUserId" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            spk_car_group
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT}
+        AND
+            project_no = #{projectNo,jdbcType=VARCHAR}
+        AND
+            valid = true
     </select>
 
     <insert id="insert" parameterType="cn.suparking.customer.dao.entity.CarGroup">

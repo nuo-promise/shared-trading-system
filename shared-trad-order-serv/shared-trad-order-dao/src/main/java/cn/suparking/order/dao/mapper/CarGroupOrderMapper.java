@@ -3,6 +3,7 @@ package cn.suparking.order.dao.mapper;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -48,4 +49,12 @@ public interface CarGroupOrderMapper {
      * @return int
      */
     int update(CarGroupOrderDO carGroupOrderDO);
+
+    /**
+     * 根据orderNo查找合约订单.
+     *
+     * @param orderNo primary id
+     * @return {@linkplain CarGroupOrderDO}
+     */
+    CarGroupOrderDO findByOrderNo(@Param("orderNo") String orderNo);
 }

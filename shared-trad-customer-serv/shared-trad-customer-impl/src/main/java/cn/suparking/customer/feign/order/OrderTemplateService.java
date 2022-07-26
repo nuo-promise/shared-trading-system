@@ -1,10 +1,12 @@
 package cn.suparking.customer.feign.order;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.feign.order.fallback.OrderTemplateFallbackFactory;
 import cn.suparking.order.api.beans.OrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
+import cn.suparking.order.dao.entity.CarGroupOrderDO;
 import cn.suparking.order.dao.vo.LockOrderVO;
 import cn.suparking.user.api.vo.RegisterVO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,8 +24,16 @@ public interface OrderTemplateService {
      * @param carGroupOrderDTO 订单内容
      * @return {@linkplain RegisterVO}
      */
-    @PostMapping("/car-group-order/")
-    Integer createCarGroupOrder(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
+    @PostMapping("/car-group-order/createCarGroupOrder")
+    void createCarGroupOrder(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
+
+    /**
+     * 根据orderNo 获取合约订单.
+     * @param carGroupOrderDTO {@link CarGroupOrderDTO}
+     * @return {@link LinkedList}
+     */
+    @PostMapping("/car-group-order/findByOrderNo")
+    CarGroupOrderDO findByOrderNo(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
 
     /**
      * 新增或者更新停车订单.

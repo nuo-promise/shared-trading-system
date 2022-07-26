@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VipPayDTO {
+    //合约id 续费用
+    private String carGroupId;
 
     // 项目编号
     @NotNull
@@ -73,4 +75,10 @@ public class VipPayDTO {
     @NotNull
     @NotBlank
     private Integer dueAmount;
+
+    //订单号
+    private String orderNo;
+
+    //操作类型
+    private String operateType;
 }

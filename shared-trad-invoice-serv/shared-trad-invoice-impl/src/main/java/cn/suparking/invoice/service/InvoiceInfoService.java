@@ -1,7 +1,11 @@
 package cn.suparking.invoice.service;
 
 import api.beans.InvoiceInfoDTO;
+import api.beans.InvoiceInfoQueryDTO;
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.invoice.dao.entity.InvoiceInfoDO;
+
+import java.util.List;
 
 public interface InvoiceInfoService {
     /**
@@ -13,10 +17,18 @@ public interface InvoiceInfoService {
     Integer createOrUpdate(InvoiceInfoDTO invoiceInfoDTO);
 
     /**
-     * 根据id查询发票抬头信息.
+     * 删除抬头信息.
      *
-     * @param id 发票抬头id
-     * @return InvoiceInfoDo 发票抬头信息
+     * @param invoiceInfoDTO {@linkplain InvoiceInfoDTO}
+     * @return {@linkplain SpkCommonResult}
      */
-    InvoiceInfoDO findById(String id);
+    Integer remove(InvoiceInfoDTO invoiceInfoDTO);
+
+    /**
+     * 用户发票抬头列表.
+     *
+     * @param invoiceInfoQueryDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    List<InvoiceInfoDO> sharedInvoiceList(InvoiceInfoQueryDTO invoiceInfoQueryDTO);
 }

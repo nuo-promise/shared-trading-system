@@ -227,6 +227,12 @@
         </where>
         ORDER BY a.id DESC
     </select>
+    <select id="findByOrderNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_car_group_order
+        WHERE order_no = #{orderNo, jdbcType=VARCHAR}
+    </select>
 
     <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
         INSERT INTO spk_car_group_order

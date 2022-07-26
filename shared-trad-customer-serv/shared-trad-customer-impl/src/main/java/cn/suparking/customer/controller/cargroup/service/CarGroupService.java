@@ -1,51 +1,17 @@
 package cn.suparking.customer.controller.cargroup.service;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
-import cn.suparking.customer.api.beans.cargroup.CarGroupQueryDTO;
-import cn.suparking.customer.dao.vo.cargroup.CarGroupVO;
-import com.github.pagehelper.PageInfo;
-
-import java.util.List;
+import cn.suparking.customer.api.beans.vip.VipPayDTO;
 
 public interface CarGroupService {
     /**
-     * 合约列表.
+     * 合约数据校验(新增 NEW/ 续费 RENEW).
      *
-     * @param carGroupQueryDTO {@link CarGroupQueryDTO}
-     * @return {@link List}
+     * @param vipPayDTO {@linkplain VipPayDTO}
+     * @param type      办理类型:新增 NEW/ 续费 RENEW
+     * @return Boolean
+     * @author ZDD
+     * @date 2022/7/22 15:59:28
      */
-    PageInfo<CarGroupVO> list(CarGroupQueryDTO carGroupQueryDTO);
-
-    /**
-     * 合约添加.
-     *
-     * @param carGroupDTO {@link CarGroupDTO}
-     * @return {@link SpkCommonResult}
-     */
-    SpkCommonResult insert(CarGroupDTO carGroupDTO);
-
-    /**
-     * 合约修改.
-     *
-     * @param carGroupDTO {@link CarGroupDTO}
-     * @return {@link SpkCommonResult}
-     */
-    SpkCommonResult update(CarGroupDTO carGroupDTO);
-
-    /**
-     * 合约删除.
-     *
-     * @param carGroupDTO {@link CarGroupDTO}
-     * @return {@link SpkCommonResult}
-     */
-    SpkCommonResult remove(CarGroupDTO carGroupDTO);
-
-    /**
-     * 根据id查询合约信息.
-     *
-     * @param carGroupDTO {@link CarGroupDTO}
-     * @return {@link SpkCommonResult}
-     */
-    SpkCommonResult findById(CarGroupDTO carGroupDTO);
+    CarGroupDTO check(VipPayDTO vipPayDTO, String type);
 }

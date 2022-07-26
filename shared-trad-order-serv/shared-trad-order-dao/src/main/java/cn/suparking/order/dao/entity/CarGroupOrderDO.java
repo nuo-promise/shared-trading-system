@@ -81,6 +81,7 @@ public class CarGroupOrderDO extends BaseDO {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             CarGroupOrderDO carGroupOrderDO = CarGroupOrderDO.builder()
                     .orderNo(item.getOrderNo())
+                    .userId(carGroupOrderDTO.getUserId())
                     .carGroupId(item.getCarGroupId())
                     .carTypeId(item.getCarTypeId())
                     .carTypeName(item.getCarTypeName())

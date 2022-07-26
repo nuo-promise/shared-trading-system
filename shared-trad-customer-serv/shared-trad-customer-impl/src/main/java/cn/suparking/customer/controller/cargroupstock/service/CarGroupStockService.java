@@ -38,4 +38,12 @@ public interface CarGroupStockService {
      * @return {@linkplain SpkCommonResult}
      */
     SpkCommonResult logList(CarGroupStockOperateRecordQueryDTO carGroupStockOperateRecordQueryDTO);
+
+    /**
+     * 根据协议id获取合约库存.
+     *
+     * @param protocolId 协议id
+     * @return {@linkplain CarGroupStockDO}
+     */
+    CarGroupStockDO findByProtocolId(String protocolId);
 }

@@ -1,14 +1,13 @@
 package cn.suparking.customer.controller.cargroup.service;
 
-import cn.suparking.customer.api.beans.discount.DiscountUsedDTO;
-import cn.suparking.customer.api.beans.order.OrderQueryDTO;
 import cn.suparking.customer.api.beans.vip.VipOrderQueryDTO;
+import cn.suparking.customer.api.beans.vip.VipPayDTO;
 import cn.suparking.customer.concurrent.SparkingThreadFactory;
 import cn.suparking.customer.configuration.properties.SharedProperties;
+import cn.suparking.customer.controller.cargroup.service.impl.MyVipCarServiceImpl;
 import cn.suparking.customer.controller.park.service.impl.OrderServiceImpl;
 import cn.suparking.customer.tools.BeansManager;
 import cn.suparking.customer.tools.ReactiveRedisUtils;
-import cn.suparking.data.api.parkfee.DiscountInfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.suparking.payutils.controller.ShuBoPaymentUtils;
@@ -39,6 +38,10 @@ public class VipOrderQueryService {
 
     private final SharedProperties sharedProperties = BeansManager.getBean("SharedProperties", SharedProperties.class);
 
+    private final OrderServiceImpl orderService = BeansManager.getBean("OrderService", OrderServiceImpl.class);
+
+    private final MyVipCarServiceImpl myVipCarService = BeansManager.getBean("MyVipCarService", MyVipCarServiceImpl.class);
+
     // 临停订单查询变量.
     private VipOrderQueryDTO vipOrderQueryDTO;
 
@@ -52,6 +55,7 @@ public class VipOrderQueryService {
 
     /**
      * 临停单查询.
+     *
      * @param vipOrderQueryDTO {@link VipOrderQueryDTO}
      */
     public void queryOrder(final VipOrderQueryDTO vipOrderQueryDTO) {
@@ -116,7 +120,7 @@ public class VipOrderQueryService {
         if ("0".equals(code)) {
             LOG.info("订单号: " + vipOrderQueryDTO.getOrderNo() + " 查询支付成功，合约订单查询结束...");
             // 取消定时任务.
-            if (vipOrderPaySuccess(vipOrderQueryDTO.getOrderNo())) {
+            if (vipOrderPaySuccess(vipOrderQueryDTO.getOrderNo(), vipOrderQueryDTO.getVipPayDTO())) {
                 LOG.info("订单: " + vipOrderQueryDTO.getOrderNo() + " 后续工作处理完成,停止线程...");
             }
 
@@ -139,22 +143,24 @@ public class VipOrderQueryService {
 
     /**
      * 支付成功存入Redis.
+     *
      * @param orderNo String
      */
-    private Boolean vipOrderPaySuccess(final String orderNo) {
+    private Boolean vipOrderPaySuccess(final String orderNo, final VipPayDTO vipPayDTO) {
         JSONObject result = new JSONObject();
         result.put("code", "0");
         result.put("msg", "支付完成");
         if (!saveOrder(orderNo, result.toJSONString())) {
             LOG.info("订单号: " + orderNo + " 订单完成, 存入Redis失败...");
         }
-        // 创建合约订单和合约办理,更新库存.
-
+        // TODO 更新合约、合约订单状态,更新库存.
+        myVipCarService.vipOrderPaySuccess(orderNo, vipPayDTO);
         return true;
     }
 
     /**
      * 检查订单是否存在.
+     *
      * @param orderNo String
      * @return {@link Boolean}
      */
@@ -164,6 +170,7 @@ public class VipOrderQueryService {
 
     /**
      * 将订单信息存入redis.
+     *
      * @param orderNo 订单号.
      * @return 执行结果.
      */
@@ -173,6 +180,7 @@ public class VipOrderQueryService {
 
     /**
      * 删除订单redis缓存.
+     *
      * @param orderNo String
      * @return Boolean
      */

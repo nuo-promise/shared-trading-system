@@ -1,10 +1,12 @@
 package cn.suparking.customer.feign.order.fallback;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.feign.order.OrderTemplateService;
 import cn.suparking.order.api.beans.OrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
+import cn.suparking.order.dao.entity.CarGroupOrderDO;
 import cn.suparking.order.dao.vo.LockOrderVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -29,9 +31,9 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
         return new OrderTemplateService() {
 
             @Override
-            public Integer createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
+            public void createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
                 log.error("OrderTemplateService: createCarGroupOrder error: " + cause.getMessage());
-                return null;
+                return;
             }
 
             @Override
@@ -49,6 +51,12 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
             @Override
             public LinkedList<LockOrderVO> findOrderByUserId(final ParkingOrderQueryDTO parkingOrderQueryDTO) {
                 log.error("OrderTemplateService: findOrderByUserId error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public CarGroupOrderDO findByOrderNo(final CarGroupOrderDTO carGroupOrderDTO) {
+                log.error("OrderTemplateService: findByUserIOrderNo error: " + cause.getMessage());
                 return null;
             }
         };

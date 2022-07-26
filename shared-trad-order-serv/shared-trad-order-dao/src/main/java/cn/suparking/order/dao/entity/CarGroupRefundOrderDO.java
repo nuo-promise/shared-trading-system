@@ -27,7 +27,7 @@ public class CarGroupRefundOrderDO extends BaseDO {
 
     private String payOrderNo;
 
-    private String carGroupId;
+    private Long carGroupId;
 
     private String carTypeId;
 
@@ -74,7 +74,7 @@ public class CarGroupRefundOrderDO extends BaseDO {
             CarGroupRefundOrderDO carGroupRefundOrderDO = CarGroupRefundOrderDO.builder()
                     .orderNo(item.getOrderNo())
                     .payOrderNo(item.getPayOrderNo())
-                    .carGroupId(item.getCarGroupId())
+                    .carGroupId(Long.valueOf(item.getCarGroupId()))
                     .carTypeId(item.getCarTypeId())
                     .carTypeName(item.getCarTypeName())
                     .protocolId(item.getProtocolId())

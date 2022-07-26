@@ -123,7 +123,7 @@ public class RabbitMqConfiguration {
      */
     @Bean("MQCloudQueue")
     public Queue cloudQueue(@Qualifier("MQCloudAMQPAdmin") final AmqpAdmin admin) {
-        String queueName = "cs.suaprking.shared.customer1.ack";
+        String queueName = "cs.suaprking.shared.customer.ack";
         Queue queue = new Queue(queueName, false, true, true);
         queue.setAdminsThatShouldDeclare(admin);
         queue.setShouldDeclare(true);

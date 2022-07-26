@@ -1,6 +1,7 @@
 package cn.suparking.common.api.utils;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -17,14 +18,17 @@ public class DateUtils {
 
     private static final String DATE_FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
+    private static final String DATE_FORMAT_DATETIME1 = "yyyy-MM-dd";
+
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT_DATETIME);
 
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_DATETIME);
 
     /**
      * 获取几天前时间.
+     *
      * @param currentMillis {@link Long}
-     * @param day {@link Integer}
+     * @param day           {@link Integer}
      * @return {@link Long}
      */
     public static Long getBeforeDay(final long currentMillis, final Integer day) {
@@ -37,8 +41,9 @@ public class DateUtils {
 
     /**
      * 获取几天前时间.
+     *
      * @param currentMillis {@link Long}
-     * @param day {@link Integer}
+     * @param day           {@link Integer}
      * @return {@link Long}
      */
     public static Timestamp getBeforeTimestampDay(final long currentMillis, final Integer day) {
@@ -51,6 +56,7 @@ public class DateUtils {
 
     /**
      * 将秒转x天x时x分x秒.
+     *
      * @param seconds 秒
      * @return String
      */
@@ -76,6 +82,7 @@ public class DateUtils {
 
     /**
      * 秒转时间字符串.
+     *
      * @param second Long
      * @return String
      */
@@ -85,6 +92,7 @@ public class DateUtils {
 
     /**
      * 获取当前时间.
+     *
      * @return String
      */
     public static String timestamp() {
@@ -94,6 +102,7 @@ public class DateUtils {
 
     /**
      * sign date.
+     *
      * @return String
      */
     public static String currentDate() {
@@ -103,6 +112,7 @@ public class DateUtils {
 
     /**
      * get current second.
+     *
      * @return {@link Long}
      */
     public static Long getCurrentSecond() {
@@ -111,6 +121,7 @@ public class DateUtils {
 
     /**
      * get current Mills.
+     *
      * @return {@link Long}
      */
     public static Long getCurrentMillis() {
@@ -146,7 +157,7 @@ public class DateUtils {
      * @param start this is start date.
      * @param end   this is start date.
      * @return The number of days between start and end, if end is after start,
-     *         returns a positive number, otherwise returns a negative number.
+     * returns a positive number, otherwise returns a negative number.
      */
     public static long acquireMinutesBetween(final LocalDateTime start, final LocalDateTime end) {
         return start.until(end, ChronoUnit.MINUTES);
@@ -204,6 +215,40 @@ public class DateUtils {
     public static String localDateTimeToString(final LocalDateTime localDateTime, final String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return localDateTime.format(formatter);
+    }
+
+    /**
+     * 开始时间字符串转 毫秒数.
+     *
+     * @param dateStr 字符串日期
+     * @return Long
+     */
+    public static Long getMillByDateStartStr(final String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_DATETIME1);
+        Date date = null;
+        try {
+            date = format.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime() / 1000;
+    }
+
+    /**
+     * 结束时间字符串转 毫秒数.
+     *
+     * @param dateStr 字符串日期
+     * @return Long
+     */
+    public static Long getMillByDateEndStr(final String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_DATETIME1);
+        Date date = null;
+        try {
+            date = format.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime() / 1000 + 86399;
     }
 
     private static Date currentTime() {

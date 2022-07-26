@@ -1,10 +1,12 @@
-package cn.suparking.invoice.dao.entity;
+package api.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -15,7 +17,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvoiceInfoDO implements Serializable {
+public class InvoiceInfoQueryDTO implements Serializable {
     /**
      * 发票抬头唯一ID.
      */

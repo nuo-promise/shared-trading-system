@@ -28,5 +28,13 @@ public interface CarGroupOrderService {
      * @param carGroupOrderDTO 订单信息
      * @return Integer
      */
-    Integer createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
+    void createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
+
+    /**
+     * 根据订单号获取合约信息.
+     *
+     * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
+     * @return Integer
+     */
+    CarGroupOrderDO findByOrderNo(CarGroupOrderDTO carGroupOrderDTO);
 }

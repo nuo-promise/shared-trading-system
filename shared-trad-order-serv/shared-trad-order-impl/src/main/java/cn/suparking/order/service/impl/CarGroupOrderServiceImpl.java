@@ -48,11 +48,17 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
     }
 
     @Override
-    public Integer createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
+    public void createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
         CarGroupOrderDO carGroupOrderDO = CarGroupOrderDO.buildCarGroupOrderDO(carGroupOrderDTO);
         if (StringUtils.isEmpty(carGroupOrderDTO.getId())) {
-            return carGroupOrderMapper.insert(carGroupOrderDO);
+            carGroupOrderMapper.insert(carGroupOrderDO);
         }
-        return carGroupOrderMapper.update(carGroupOrderDO);
+        carGroupOrderMapper.update(carGroupOrderDO);
+    }
+
+    @Override
+    public CarGroupOrderDO findByOrderNo(final CarGroupOrderDTO carGroupOrderDTO) {
+        CarGroupOrderDO carGroupOrderDO = carGroupOrderMapper.findByOrderNo(carGroupOrderDTO.getOrderNo());
+        return carGroupOrderDO;
     }
 }

@@ -1,13 +1,17 @@
 package cn.suparking.invoice.service.impl;
 
 import api.beans.InvoiceInfoDTO;
-import cn.suparking.common.api.exception.SpkCommonException;
+import api.beans.InvoiceInfoQueryDTO;
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.invoice.dao.entity.InvoiceInfoDO;
 import cn.suparking.invoice.dao.mapper.InvoiceInfoMapper;
 import cn.suparking.invoice.service.InvoiceInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -35,13 +39,24 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     }
 
     /**
-     * 根据id查询发票抬头信息.
+     * 根据发票抬头id删除抬头信息.
      *
-     * @param id 发票抬头id
-     * @return InvoiceInfoDo 发票抬头信息
+     * @param invoiceInfoDTO {@linkplain InvoiceInfoDTO}
+     * @return {@linkplain SpkCommonResult}
      */
     @Override
-    public InvoiceInfoDO findById(String id) {
-        return invoiceInfoMapper.selectById(id);
+    public Integer remove(InvoiceInfoDTO invoiceInfoDTO) {
+        return invoiceInfoMapper.delete(invoiceInfoDTO);
+    }
+
+    /**
+     * 用户发票抬头列表.
+     *
+     * @param invoiceInfoQueryDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    @Override
+    public List<InvoiceInfoDO> sharedInvoiceList(InvoiceInfoQueryDTO invoiceInfoQueryDTO) {
+        return invoiceInfoMapper.findByUserId(invoiceInfoQueryDTO.getUserId());
     }
 }

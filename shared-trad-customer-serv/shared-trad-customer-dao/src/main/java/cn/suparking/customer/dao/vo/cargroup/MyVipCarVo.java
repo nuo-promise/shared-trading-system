@@ -34,6 +34,11 @@ public class MyVipCarVo {
     private String projectName;
 
     /**
+     * 车场名称.
+     */
+    private String address;
+
+    /**
      * 车辆类型名称.
      */
     private String carTypeName;
@@ -59,9 +64,39 @@ public class MyVipCarVo {
     private Long endDate;
 
     /**
+     * 合约开始日期(如果有则表示生效中, 如果没有则表示已过期).
+     */
+    private Long beginDate;
+
+    /**
+     * 价格.
+     */
+    private Integer price;
+
+    /**
      * 是否可线上续费.
      */
     private Boolean canRenew = false;
+
+    /**
+     * 库存ID.
+     */
+    private String stockId;
+
+    /**
+     * 库存数量.
+     */
+    private Integer stockQuantity;
+
+    /**
+     * 时间类型.
+     */
+    private String durationType;
+
+    /**
+     * 数量.
+     */
+    private Integer quantity;
 
     /**
      * 合约未生效时间段.

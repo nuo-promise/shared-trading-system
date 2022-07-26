@@ -26,7 +26,7 @@ public class InvoiceInfoDTO implements Serializable {
     /**
      * 用户ID.
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 抬头名称.
@@ -66,9 +66,14 @@ public class InvoiceInfoDTO implements Serializable {
     private String userPhone;
 
     /**
-     * 车牌号码.
+     * 推送方式，-1:不推送;0:邮箱;1:手机(默认);2:邮箱&手机.
      */
-    private String plateNo;
+    private String tsfs;
+
+    /**
+     * 推送邮箱（tsfs为0或2时，此项为必填）.
+     */
+    private String email;
 
     /**
      * 是否是默认 0:否 1:是.

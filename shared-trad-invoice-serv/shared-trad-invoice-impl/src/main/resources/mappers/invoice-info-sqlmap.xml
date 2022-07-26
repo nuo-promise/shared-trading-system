@@ -11,7 +11,8 @@
         <result column="bank_code" jdbcType="VARCHAR" property="bankCode"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
         <result column="user_phone" jdbcType="VARCHAR" property="userPhone"/>
-        <result column="plate_no" jdbcType="VARCHAR" property="plateNo"/>
+        <result column="tsfs" jdbcType="VARCHAR" property="tsfs"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="default_info" jdbcType="INTEGER" property="defaultInfo"/>
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
@@ -23,15 +24,26 @@
         head_name,
         tax_code,
         address, iphone, bank_code,
-        user_name,user_phone,plate_no,
+        user_name,user_phone,tsfs,email,
         default_info,date_created,date_updated
     </sql>
+    <delete id="delete">
+        DELETE FROM spk_invoice_info
+        WHERE id = #{id, jdbcType=BIGINT} AND user_id = #{userId, jdbcType=BIGINT}
+    </delete>
 
     <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM spk_invoice_info
-        WHERE id = #{id, jdbcType=VARCHAR}
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_info
+        WHERE user_id = #{userId, jdbcType=BIGINT}
+        ORDER BY date_created DESC
     </select>
 
     <insert id="insert" parameterType="api.beans.InvoiceInfoDTO">
@@ -62,8 +74,11 @@
             <if test="userPhone != null">
                 user_phone,
             </if>
-            <if test="plateNo != null">
-                plate_no,
+            <if test="tsfs != null">
+                tsfs,
+            </if>
+            <if test="email != null">
+                email,
             </if>
             <if test="defaultInfo != null">
                 default_info,
@@ -101,8 +116,11 @@
             <if test="userPhone != null">
                 #{userPhone, jdbcType=VARCHAR},
             </if>
-            <if test="plateNo != null">
-                #{plateNo, jdbcType=VARCHAR},
+            <if test="tsfs != null">
+                #{tsfs, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email, jdbcType=VARCHAR},
             </if>
             <if test="defaultInfo != null">
                 #{defaultInfo, jdbcType=INTEGER},
@@ -143,8 +161,11 @@
             <if test="userPhone != null">
                 user_phone = #{userPhone, jdbcType=VARCHAR},
             </if>
-            <if test="plateNo != null">
-                plate_no = #{plateNo, jdbcType=VARCHAR},
+            <if test="tsfs != null">
+                tsfs = #{tsfs, jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email, jdbcType=VARCHAR},
             </if>
             <if test="defaultInfo != null">
                 default_info = #{defaultInfo, jdbcType=INTEGER},
@@ -156,6 +177,6 @@
                 date_updated = #{dateUpdated, jdbcType=TIMESTAMP},
             </if>
         </set>
-        WHERE id = #{id, jdbcType=BIGINT}
+        WHERE id = #{id, jdbcType=BIGINT} AND user_id = #{userId, jdbcType=BIGINT}
     </update>
 </mapper>

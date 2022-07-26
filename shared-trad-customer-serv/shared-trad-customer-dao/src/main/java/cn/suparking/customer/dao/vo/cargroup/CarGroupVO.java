@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @ToString
 public final class CarGroupVO {
-    private Long id;
+    private String id;
 
     private Long userId;
 
@@ -34,6 +34,8 @@ public final class CarGroupVO {
     private String importNo;
 
     private String userMobile;
+
+    private String userName;
 
     private String address;
 
