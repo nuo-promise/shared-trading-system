@@ -129,7 +129,7 @@ spring:
           # 服务发现默认开关打开
           enabled: true
           # 服务地址,集群用逗号分开
-          server-addr: 47.98.44.236:8848
+          server-addr: 47.98.44.236:8084
           # 注册中心服务名称 application name,一般不用配置
           service: shared-trad-invoice-serv
           # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
@@ -159,14 +159,25 @@ spring:
           watch:
             enabled: true
           watch-delay: 30000
+    rabbitmq:
+      host: ms.suparking.cn
+      port: 5666
+      username: invoice-shared
+      password: invoice2019
+      exchange: spk.shared
+      consumer-prefetch: 5
+      concurrent-consumer: 2
+      enable: true
+      queue-length: 5
+      thread-timeout: 60000
 
 mybatis:
   mapper-locations: classpath:/mappers/*.xml
 
 logging:
   level:
-    cn.suparking.invoice: debug
-    org.apache.shardingsphere: debug
+    cn.suparking.invoice: info
+    org.apache.shardingsphere: info
 feign:
   client:
     config:
@@ -177,8 +188,12 @@ feign:
         # 服务器请求超时阶段5秒超时
         readTimeout: 5000
       # 针对某个特定服务的超时配置
-      coupon-template-serv:
-        connectTimeout: 1000
-        readTimeout: 2000
+#      coupon-template-serv:
+#        connectTimeout: 1000
+#        readTimeout: 2000
   circuitbreaker:
     enabled: true
+sparking:
+  corePoolSize: 16
+  queryInterval: 100
+  orderInterval: 90

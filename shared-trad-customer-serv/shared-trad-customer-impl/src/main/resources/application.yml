@@ -70,8 +70,8 @@ spring:
   rabbitmq:
     host: ms.suparking.cn
     port: 5666
-    username: shared
-    password: shared2019
+    username: customer-shared
+    password: customer2019
     exchange: spk.shared
     consumer-prefetch: 5
     concurrent-consumer: 2
