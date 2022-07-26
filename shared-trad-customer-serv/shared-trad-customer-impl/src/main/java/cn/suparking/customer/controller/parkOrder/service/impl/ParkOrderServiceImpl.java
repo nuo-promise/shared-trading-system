@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class ParkOrderServiceImpl implements ParkOrderService {
         parkingOrderQueryDTO.setStartDate(DateUtils.getBeforeTimestampDay(currentSecond * 1000, sharedProperties.getOrderInterval()));
         Map<String, ParkInfoVO> parkInfoMap = parkServiceImpl.allLocationMap();
         LinkedList<LockOrderVO> lockOrderVOList = orderTemplateService.findOrderByUserId(parkingOrderQueryDTO);
+        Map<String, LinkedList<LockOrderVO>> lockOrderMap = new HashMap<String, LinkedList<LockOrderVO>>();
         if (Objects.nonNull(lockOrderVOList) && Objects.nonNull(parkInfoMap) && !lockOrderVOList.isEmpty()) {
             lockOrderVOList.forEach(item -> {
                 ParkInfoVO parkInfoVO = parkInfoMap.get(item.getProjectNo());
@@ -47,9 +49,17 @@ public class ParkOrderServiceImpl implements ParkOrderService {
                     item.setAddress(parkInfoVO.getAddressSelect());
                     item.setLongitude(parkInfoVO.getLocation().getLongitude());
                     item.setLatitude(parkInfoVO.getLocation().getLatitude());
+                    LinkedList<LockOrderVO> tmpLockOrderList = lockOrderMap.get(item.getProjectNo());
+                    if (Objects.nonNull(tmpLockOrderList)) {
+                        lockOrderMap.get(item.getProjectNo()).add(item);
+                    } else {
+                        tmpLockOrderList = new LinkedList<LockOrderVO>();
+                        tmpLockOrderList.add(item);
+                        lockOrderMap.put(item.getProjectNo(), tmpLockOrderList);
+                    }
                 }
             });
         }
-        return SpkCommonResult.success(lockOrderVOList);
+        return SpkCommonResult.success(lockOrderMap);
     }
 }
