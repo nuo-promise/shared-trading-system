@@ -19,7 +19,7 @@ import java.util.Optional;
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("shared-invoice/invoiceInfo")
+@RequestMapping("invoice-info-api")
 public class InvoiceInfoController {
 
     private final InvoiceInfoService invoiceInfoService;

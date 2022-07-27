@@ -6,7 +6,6 @@ import cn.suparking.user.api.vo.PhoneInfoVO;
 import cn.suparking.user.api.vo.RegisterVO;
 import cn.suparking.user.api.vo.SessionVO;
 import cn.suparking.user.api.vo.UserVO;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

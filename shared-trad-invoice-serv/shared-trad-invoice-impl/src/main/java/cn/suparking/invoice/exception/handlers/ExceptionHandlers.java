@@ -1,4 +1,4 @@
-package cn.suparking.invoice.exception;
+package cn.suparking.invoice.exception.handlers;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.exception.SpkCommonCode;

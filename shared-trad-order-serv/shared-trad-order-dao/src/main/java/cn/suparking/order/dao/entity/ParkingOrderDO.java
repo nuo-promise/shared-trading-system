@@ -81,6 +81,8 @@ public class ParkingOrderDO extends BaseDO {
 
     private String refundState;
 
+    private String invoiceOrderNo;
+
     private String projectNo;
 
     private String status;
@@ -130,6 +132,7 @@ public class ParkingOrderDO extends BaseDO {
                     .refundState(item.getRefundState())
                     .status(item.getStatus())
                     .projectNo(item.getProjectNo())
+                    .invoiceOrderNo(item.getInvoiceOrderNo())
                     .creator(item.getCreator())
                     .modifier(item.getModifier())
                     .build();

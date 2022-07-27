@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PublishData {
+public class ProjectConfig {
+
+    private String id;
 
     private String projectNo;
 
-    private String from;
+    private Boolean invoice;
 
-    private Object data;
+    private InvoiceConfig invoiceConfig;
 }

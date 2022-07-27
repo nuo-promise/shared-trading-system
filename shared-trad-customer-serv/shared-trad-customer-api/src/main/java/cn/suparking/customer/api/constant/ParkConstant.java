@@ -2,6 +2,10 @@ package cn.suparking.customer.api.constant;
 
 public class ParkConstant {
 
+    public static final Integer MQ_SUCCESS = 0;
+
+    public static final Integer MQ_REQUEST_TIMEOUT = 10006;
+
     public static final String WETCHATMINI = "JSAPI_MINI";
 
     public static final String PAY_TYPE = "WXPAY";

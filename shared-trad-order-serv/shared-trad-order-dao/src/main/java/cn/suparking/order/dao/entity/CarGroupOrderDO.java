@@ -65,6 +65,8 @@ public class CarGroupOrderDO extends BaseDO {
 
     private String projectNo;
 
+    private String invoiceOrderNo;
+
     private String orderType;
 
     private String creator;
@@ -102,6 +104,7 @@ public class CarGroupOrderDO extends BaseDO {
                     .refundState(item.getRefundState())
                     .termNo(item.getTermNo())
                     .projectNo(item.getProjectNo())
+                    .invoiceOrderNo(item.getInvoiceOrderNo())
                     .orderType(item.getOrderType())
                     .creator(item.getCreator())
                     .modifier(item.getModifier())

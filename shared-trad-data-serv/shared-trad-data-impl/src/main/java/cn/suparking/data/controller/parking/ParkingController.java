@@ -163,7 +163,7 @@ public class ParkingController {
      * @return {@link SpkCommonResult}
      */
     @PostMapping("/list")
-    public SpkCommonResult list(@RequestBody ParkingQueryDTO parkingQueryDTO) {
+    public SpkCommonResult list(@RequestBody final ParkingQueryDTO parkingQueryDTO) {
         return parkingService.list(parkingQueryDTO);
     }
 
