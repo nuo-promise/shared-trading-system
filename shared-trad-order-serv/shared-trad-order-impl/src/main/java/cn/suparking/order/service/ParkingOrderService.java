@@ -76,7 +76,7 @@ public interface ParkingOrderService {
      * @param orderDTO {@link OrderDTO}
      * @return {@link Boolean}
      */
-    Boolean createAndUpdateParkingOrder(OrderDTO orderDTO);
+    Long createAndUpdateParkingOrder(OrderDTO orderDTO);
 
     /**
      * 获取指定用户订单信息.

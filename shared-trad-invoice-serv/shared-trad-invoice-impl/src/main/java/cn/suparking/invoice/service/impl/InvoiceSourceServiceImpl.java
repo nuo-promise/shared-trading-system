@@ -8,6 +8,7 @@ import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
 import cn.suparking.invoice.dao.mapper.InvoiceSourceMapper;
 import cn.suparking.invoice.service.InvoiceSourceService;
+import cn.suparking.invoice.service.ProjectConfigService;
 import cn.suparking.invoice.tools.InvoiceConstant;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
@@ -29,8 +30,11 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
 
     private final InvoiceSourceMapper invoiceSourceMapper;
 
-    public InvoiceSourceServiceImpl(final InvoiceSourceMapper invoiceSourceMapper) {
+    private final ProjectConfigService projectConfigService;
+
+    public InvoiceSourceServiceImpl(final InvoiceSourceMapper invoiceSourceMapper, final ProjectConfigService projectConfigService) {
         this.invoiceSourceMapper = invoiceSourceMapper;
+        this.projectConfigService = projectConfigService;
     }
 
     /**
@@ -115,10 +119,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                 .payAmount(100000)
                                 .payType(Objects.isNull(parkingOrderDTO.getPayType()) ? "OTHER" : parkingOrderDTO.getPayType())
                                 .projectNo(parkingOrderDTO.getProjectNo())
+                                .payChannel(parkingOrderDTO.getPayChannel())
                                 .sourceDoc(InvoiceConstant.SOURCE_PARKING)
                                 .sourceId(parkingOrderDTO.getId())
+                                .operator(parkingOrderDTO.getOperator())
+                                .termNo(parkingOrderDTO.getTermNo())
                                 .startTime(DateUtils.secondToDateTime(parkingOrderDTO.getBeginTime()))
                                 .endTime(DateUtils.secondToDateTime(parkingOrderDTO.getEndTime()))
+                                .payTime(parkingOrderDTO.getPayTime())
                                 .build();
                         boolean state = false;
                         if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
@@ -142,10 +150,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                 .payAmount(parkingOrderDTO.getReceivedAmount() % 100000)
                                 .payType(Objects.isNull(parkingOrderDTO.getPayType()) ? "OTHER" : parkingOrderDTO.getPayType())
                                 .projectNo(parkingOrderDTO.getProjectNo())
+                                .payChannel(parkingOrderDTO.getPayChannel())
                                 .sourceDoc(InvoiceConstant.SOURCE_PARKING)
                                 .sourceId(parkingOrderDTO.getId())
+                                .operator(parkingOrderDTO.getOperator())
+                                .termNo(parkingOrderDTO.getTermNo())
                                 .startTime(DateUtils.secondToDateTime(parkingOrderDTO.getBeginTime()))
                                 .endTime(DateUtils.secondToDateTime(parkingOrderDTO.getEndTime()))
+                                .payTime(parkingOrderDTO.getPayTime())
                                 .build();
                         boolean state = false;
                         if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
@@ -169,10 +181,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .payAmount(parkingOrderDTO.getReceivedAmount())
                             .payType(Objects.isNull(parkingOrderDTO.getPayType()) ? "OTHER" : parkingOrderDTO.getPayType())
                             .projectNo(parkingOrderDTO.getProjectNo())
+                            .payChannel(parkingOrderDTO.getPayChannel())
                             .sourceDoc(InvoiceConstant.SOURCE_PARKING)
                             .sourceId(parkingOrderDTO.getId())
+                            .operator(parkingOrderDTO.getOperator())
+                            .termNo(parkingOrderDTO.getTermNo())
                             .startTime(DateUtils.secondToDateTime(parkingOrderDTO.getBeginTime()))
                             .endTime(DateUtils.secondToDateTime(parkingOrderDTO.getEndTime()))
+                            .payTime(parkingOrderDTO.getPayTime())
                             .build();
                     boolean state = false;
                     if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
@@ -237,7 +253,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                     deleteById(item.getId());
                 });
                 if (between > 0) {
-                    ProjectConfig projectConfig = projectConfigService.getProjectConfig(parkingRefundOrderDTO.getProjectNo());
+                    ProjectConfig projectConfig = projectConfigService.findOneByProjectNo(parkingRefundOrderDTO.getProjectNo());
                     Integer invoiceLimit = projectConfig.getInvoiceConfig().getInvoiceLimit();
 
                     if (Objects.isNull(invoiceLimit)) {
@@ -250,7 +266,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo() + "@" + i)
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -262,6 +277,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
                                         .operator(invoiceSourceDO.getOperator())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
                                 log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
@@ -273,7 +289,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo())
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -284,6 +299,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .protocolId(invoiceSourceDO.getProtocolId())
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .operator(invoiceSourceDO.getOperator())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
@@ -300,7 +316,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo() + "@" + i)
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -311,6 +326,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .protocolId(invoiceSourceDO.getProtocolId())
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .operator(invoiceSourceDO.getOperator())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
@@ -323,7 +339,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo())
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -334,6 +349,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .protocolId(invoiceSourceDO.getProtocolId())
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .operator(invoiceSourceDO.getOperator())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
@@ -395,11 +411,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .payAmount(100000)
                             .payType(Objects.isNull(carGroupOrderDTO.getPayType()) ? "OTHER" : carGroupOrderDTO.getPayType())
                             .projectNo(carGroupOrderDTO.getProjectNo())
+                            .payChannel(carGroupOrderDTO.getPayChannel())
                             .sourceDoc(InvoiceConstant.SOURCE_ORDER)
                             .sourceId(carGroupOrderDTO.getId())
+                            .operator("")
                             .startTime(DateUtils.secondToDateTime(carGroupOrderDTO.getBeginTime()))
                             .endTime(DateUtils.secondToDateTime(carGroupOrderDTO.getEndTime()))
                             .protocolId(carGroupOrderDTO.getProtocolId())
+                            .payTime(carGroupOrderDTO.getPayTime())
                             .build();
                     boolean state = false;
                     if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
@@ -423,11 +442,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .payAmount(carGroupOrderDTO.getDueAmount() % 100000)
                             .payType(Objects.isNull(carGroupOrderDTO.getPayType()) ? "OTHER" : carGroupOrderDTO.getPayType())
                             .projectNo(carGroupOrderDTO.getProjectNo())
+                            .payChannel(carGroupOrderDTO.getPayChannel())
                             .sourceDoc(InvoiceConstant.SOURCE_ORDER)
                             .sourceId(carGroupOrderDTO.getId())
+                            .operator("")
                             .startTime(DateUtils.secondToDateTime(carGroupOrderDTO.getBeginTime()))
                             .endTime(DateUtils.secondToDateTime(carGroupOrderDTO.getEndTime()))
                             .protocolId(carGroupOrderDTO.getProtocolId())
+                            .payTime(carGroupOrderDTO.getPayTime())
                             .build();
                     boolean state = false;
                     if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
@@ -451,11 +473,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         .payAmount(carGroupOrderDTO.getDueAmount())
                         .payType(Objects.isNull(carGroupOrderDTO.getPayType()) ? "OTHER" : carGroupOrderDTO.getPayType())
                         .projectNo(carGroupOrderDTO.getProjectNo())
+                        .payChannel(carGroupOrderDTO.getPayChannel())
                         .sourceDoc(InvoiceConstant.SOURCE_ORDER)
                         .sourceId(carGroupOrderDTO.getId())
+                        .operator("")
                         .startTime(DateUtils.secondToDateTime(carGroupOrderDTO.getBeginTime()))
                         .endTime(DateUtils.secondToDateTime(carGroupOrderDTO.getEndTime()))
                         .protocolId(carGroupOrderDTO.getProtocolId())
+                        .payTime(carGroupOrderDTO.getPayTime())
                         .build();
                 boolean state = false;
                 if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
@@ -519,7 +544,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                     deleteById(item.getId());
                 });
                 if (between > 0) {
-                    ProjectConfig projectConfig = projectConfigService.getProjectConfig(carGroupRefundOrderDTO.getProjectNo());
+                    ProjectConfig projectConfig = projectConfigService.findOneByProjectNo(carGroupRefundOrderDTO.getProjectNo());
                     Integer invoiceLimit = projectConfig.getInvoiceConfig().getInvoiceLimit();
 
                     if (Objects.isNull(invoiceLimit)) {
@@ -532,7 +557,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo() + "@" + i)
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -544,6 +568,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
                                         .operator(invoiceSourceDO.getOperator())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
                                 log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
@@ -555,7 +580,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo())
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -567,6 +591,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
                                         .operator(invoiceSourceDO.getOperator())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
                                 log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
@@ -582,7 +607,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo() + "@" + i)
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -594,6 +618,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
                                         .operator(invoiceSourceDO.getOperator())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
                                 log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
@@ -605,7 +630,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo())
                                         .state(invoiceSourceDO.getState())
                                         .projectNo(invoiceSourceDO.getProjectNo())
-                                        .projectName(invoiceSourceDO.getProjectName())
                                         .startTime(invoiceSourceDO.getStartTime())
                                         .endTime(invoiceSourceDO.getEndTime())
                                         .payType(invoiceSourceDO.getPayType())
@@ -617,6 +641,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .invoiceCode(invoiceSourceDO.getInvoiceCode())
                                         .termNo(invoiceSourceDO.getTermNo())
                                         .operator(invoiceSourceDO.getOperator())
+                                        .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
                                 log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());

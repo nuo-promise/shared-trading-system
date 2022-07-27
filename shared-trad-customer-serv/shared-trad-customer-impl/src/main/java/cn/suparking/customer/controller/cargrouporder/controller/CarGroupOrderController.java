@@ -2,8 +2,8 @@ package cn.suparking.customer.controller.cargrouporder.controller;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
-import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.controller.cargrouporder.service.CarGroupOrderService;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;

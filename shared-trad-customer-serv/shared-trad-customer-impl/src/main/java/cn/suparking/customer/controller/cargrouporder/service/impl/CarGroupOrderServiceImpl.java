@@ -3,11 +3,12 @@ package cn.suparking.customer.controller.cargrouporder.service.impl;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
-import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.api.beans.vip.VipPayDTO;
 import cn.suparking.customer.api.constant.ParkConstant;
 import cn.suparking.customer.controller.cargrouporder.service.CarGroupOrderService;
+import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.customer.feign.order.OrderTemplateService;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,12 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
 
     private final OrderTemplateService orderTemplateService;
 
-    public CarGroupOrderServiceImpl(final OrderTemplateService orderTemplateService) {
+    private final InvoiceTemplateService invoiceTemplateService;
+
+    public CarGroupOrderServiceImpl(final OrderTemplateService orderTemplateService,
+                                    final InvoiceTemplateService invoiceTemplateService) {
         this.orderTemplateService = orderTemplateService;
+        this.invoiceTemplateService = invoiceTemplateService;
     }
 
     /**
@@ -33,6 +38,13 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
     @Override
     public SpkCommonResult createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
         orderTemplateService.createCarGroupOrder(carGroupOrderDTO);
+        // 同步开票元数据
+        if (carGroupOrderDTO.getDueAmount() > 0) {
+            carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
+            if (invoiceTemplateService.createOrUpdateCarGroupOrderInvoice(carGroupOrderDTO) < 0) {
+                log.warn("用户ID: " + carGroupOrderDTO.getUserId() + ", 合约ID: " + carGroupOrderDTO.getProtocolId() + ",订单号: " + carGroupOrderDTO.getOrderNo() + ", 同步开票元数据失败");
+            }
+        }
         return SpkCommonResult.success();
     }
 
@@ -47,7 +59,7 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
      * @date 2022/7/22 18:25:13
      */
     @Override
-    public CarGroupOrderDTO makeCarGroupOrder(final VipPayDTO vipPayDTO, final CarGroupDTO carGroup, final String orderState, String operateType) {
+    public CarGroupOrderDTO makeCarGroupOrder(final VipPayDTO vipPayDTO, final CarGroupDTO carGroup, final String orderState, final String operateType) {
         CarGroupOrderDTO carGroupOrder = new CarGroupOrderDTO();
 
         Long beginDate = DateUtils.getMillByDateStartStr(vipPayDTO.getBeginDate());

@@ -5,9 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -55,7 +54,11 @@ public class CarGroupOrderDTO implements Serializable {
 
     private String projectNo;
 
+    private String projectName;
+
     private String orderType;
+
+    private Long payTime;
 
     /**
      * 开始时间.
@@ -110,4 +113,8 @@ public class CarGroupOrderDTO implements Serializable {
      * 修改时间.
      */
     private Long modifyTime;
+
+    private Timestamp dateCreated;
+
+    private Timestamp dateUpdated;
 }

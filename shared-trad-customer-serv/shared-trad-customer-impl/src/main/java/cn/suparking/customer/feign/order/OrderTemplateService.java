@@ -1,7 +1,7 @@
 package cn.suparking.customer.feign.order;
 
-import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.feign.order.fallback.OrderTemplateFallbackFactory;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.OrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
@@ -47,7 +47,7 @@ public interface OrderTemplateService {
      * @return {@link Boolean}
      */
     @PostMapping("/parking-order/parkingOrder")
-    Boolean createAndUpdateParkingOrder(@RequestBody OrderDTO orderDTO);
+    Long createAndUpdateParkingOrder(@RequestBody OrderDTO orderDTO);
 
     /**
      * 根据用户ID 获取订单.

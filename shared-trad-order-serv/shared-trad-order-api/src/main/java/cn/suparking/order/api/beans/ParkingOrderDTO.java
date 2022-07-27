@@ -86,6 +86,8 @@ public class ParkingOrderDTO implements Serializable {
 
     private String projectNo;
 
+    private String projectName;
+
     private String creator;
 
     private String modifier;
