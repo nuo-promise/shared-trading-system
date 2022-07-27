@@ -5,7 +5,6 @@ import cn.suparking.user.api.beans.UserDTO;
 import cn.suparking.user.api.vo.PhoneInfoVO;
 import cn.suparking.user.api.vo.SessionVO;
 import cn.suparking.user.api.vo.UserVO;
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;

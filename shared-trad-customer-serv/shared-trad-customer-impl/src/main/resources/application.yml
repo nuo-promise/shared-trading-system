@@ -166,3 +166,5 @@ sparking:
     url: http://localhost:10086/discount
   sms:
     url: http://sms.suparking.cn:25861/sms/sendSms
+  invoice:
+    url: http://localhost:8081

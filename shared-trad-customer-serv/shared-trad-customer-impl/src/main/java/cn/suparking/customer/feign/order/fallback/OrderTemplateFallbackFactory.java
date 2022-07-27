@@ -1,6 +1,5 @@
 package cn.suparking.customer.feign.order.fallback;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.feign.order.OrderTemplateService;
 import cn.suparking.order.api.beans.OrderDTO;

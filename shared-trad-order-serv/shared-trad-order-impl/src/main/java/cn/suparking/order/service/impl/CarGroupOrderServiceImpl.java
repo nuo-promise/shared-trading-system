@@ -31,7 +31,7 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
      * @return java.lang.String
      */
     @Override
-    public PageInfo<CarGroupOrderDO> list(CarGroupOrderQueryDTO carGroupOrderQueryDTO) {
+    public PageInfo<CarGroupOrderDO> list(final CarGroupOrderQueryDTO carGroupOrderQueryDTO) {
         log.info("用户 [{}] 请求获取合约订单列表,请求参数 -> {}", carGroupOrderQueryDTO.getLoginUserName(), JSONObject.toJSONString(carGroupOrderQueryDTO));
         PageHelper.startPage(carGroupOrderQueryDTO.getPageNum(), carGroupOrderQueryDTO.getPageSize());
         //求总数

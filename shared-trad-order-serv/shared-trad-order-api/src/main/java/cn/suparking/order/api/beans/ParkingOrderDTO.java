@@ -90,6 +90,8 @@ public class ParkingOrderDTO implements Serializable {
 
     private String modifier;
 
+    private String invoiceOrderNo;
+
     private Timestamp dateCreated;
 
     private Timestamp dateUpdated;

@@ -323,7 +323,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
                 .userId(parkingOrder.getUserId().toString())
                 .orderNo(orderDTO.getOrderNo())
                 .payParkingId(parkingOrder.getPayParkingId())
-                .tempType(Objects.nonNull(parkingOrder.getTempType()) ? parkingOrder.getTempType() ? 0 : 1 : 1)
+                .tempType(Objects.nonNull(parkingOrder.getTempType()) ? parkingOrder.getTempType() ? 1 : 0 : 1)
                 .carTypeClass(parkingOrder.getCarTypeClass())
                 .carTypeName(parkingOrder.getCarTypeName())
                 .carTypeId(parkingOrder.getCarTypeId())

@@ -68,13 +68,13 @@ public class DataTemplateFallbackFactory implements FallbackFactory<DataTemplate
             }
 
             @Override
-            public SpkCommonResult carGroupStockLogList(CarGroupStockOperateRecordQueryDTO carGroupStockOperateRecordQueryDTO) {
+            public SpkCommonResult carGroupStockLogList(final CarGroupStockOperateRecordQueryDTO carGroupStockOperateRecordQueryDTO) {
                 log.error("DataTemplateService: carGroupStockLogList error: " + cause.getMessage());
                 return null;
             }
 
             @Override
-            public SpkCommonResult carGroupStockLogInsert(CarGroupStockOperateRecordDTO carGroupStockOperateRecordDTO) {
+            public SpkCommonResult carGroupStockLogInsert(final CarGroupStockOperateRecordDTO carGroupStockOperateRecordDTO) {
                 log.error("DataTemplateService: carGroupStockLogInsert error: " + cause.getMessage());
                 return null;
             }

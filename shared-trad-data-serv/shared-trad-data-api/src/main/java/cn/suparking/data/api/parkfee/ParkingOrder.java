@@ -90,6 +90,8 @@ public class ParkingOrder {
 
     private String projectNo;
 
+    private String invoiceOrderNo;
+
     private String creator;
 
     private Long createTime;

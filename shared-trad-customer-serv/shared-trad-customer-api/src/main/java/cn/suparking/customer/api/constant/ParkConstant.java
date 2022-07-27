@@ -2,6 +2,10 @@ package cn.suparking.customer.api.constant;
 
 public class ParkConstant {
 
+    public static final Integer MQ_SUCCESS = 0;
+
+    public static final Integer MQ_REQUEST_TIMEOUT = 10006;
+
     public static final String WETCHATMINI = "JSAPI_MINI";
 
     public static final String PAY_TYPE = "WXPAY";
@@ -113,6 +117,11 @@ public class ParkConstant {
      * 根据项目编号,场库编号获取设备信息.
      */
     public static final String INTERFACE_GETDEVICENO = "/map/getDeviceNo";
+
+    /**
+     * 开票.
+     */
+    public static final String INTERFACE_INVOICE_MAKE = "/commonInvoice/make";
 
     // 核销优惠券方法名
     public static final String INTERFACE_DISCOUNT_USED = "/used";

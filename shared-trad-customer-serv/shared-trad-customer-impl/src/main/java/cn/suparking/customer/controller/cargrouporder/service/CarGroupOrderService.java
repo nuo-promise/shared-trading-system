@@ -26,5 +26,10 @@ public interface CarGroupOrderService {
      */
     CarGroupOrderDTO makeCarGroupOrder(VipPayDTO vipPayDTO, CarGroupDTO carGroup, String orderState, String operateType);
 
+    /**
+     * 根据订单号查询订单信息.
+     * @param orderNo 订单号
+     * @return {@link CarGroupOrderDO}
+     */
     CarGroupOrderDO findByOrderNo(String orderNo);
 }

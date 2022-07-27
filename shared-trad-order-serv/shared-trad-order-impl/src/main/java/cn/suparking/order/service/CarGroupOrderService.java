@@ -26,7 +26,6 @@ public interface CarGroupOrderService {
      * 创建或修改合约订单.
      *
      * @param carGroupOrderDTO 订单信息
-     * @return Integer
      */
     void createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
 
