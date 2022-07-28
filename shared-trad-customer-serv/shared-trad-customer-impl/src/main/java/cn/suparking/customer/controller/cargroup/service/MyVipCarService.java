@@ -80,8 +80,9 @@ public interface MyVipCarService {
      *
      * @param orderNo 订单号
      * @param vipPayDTO {@link VipPayDTO}
+     * @return {@link Boolean}
      */
-    void vipOrderPaySuccess(String orderNo, VipPayDTO vipPayDTO);
+    Boolean vipOrderPaySuccess(String orderNo, VipPayDTO vipPayDTO);
 
     /**
      * 订单交易失败，合约、合约订单处理.

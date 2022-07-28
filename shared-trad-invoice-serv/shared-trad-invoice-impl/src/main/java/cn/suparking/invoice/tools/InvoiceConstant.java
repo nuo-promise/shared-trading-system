@@ -37,5 +37,4 @@ public class InvoiceConstant {
     public static final String CAR_GROUP_ORDER_ERROR = "ERROR";
 
     public static final String SUCCESS = "0000";
-
 }

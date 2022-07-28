@@ -1,6 +1,5 @@
 package cn.suparking.customer.feign.order.fallback;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.order.OrderTemplateService;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.OrderDTO;
@@ -31,8 +30,8 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
         return new OrderTemplateService() {
 
             @Override
-            public Integer createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
-                log.error("OrderTemplateService: createCarGroupOrder error: " + cause.getMessage());
+            public Long createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
+                log.error("OrderTemplateService: createOrUpdate error: " + cause.getMessage());
                 return null;
             }
 

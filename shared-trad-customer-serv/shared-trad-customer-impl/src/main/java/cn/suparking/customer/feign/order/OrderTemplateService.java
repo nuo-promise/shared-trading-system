@@ -1,6 +1,5 @@
 package cn.suparking.customer.feign.order;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.order.fallback.OrderTemplateFallbackFactory;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.OrderDTO;
@@ -21,12 +20,14 @@ public interface OrderTemplateService {
      * 新增/更新合约订单.
      *
      * @param carGroupOrderDTO 订单内容
+     * @return {@linkplain Long}
      */
-    @PostMapping("/car-group-order/createCarGroupOrder")
-    Integer createCarGroupOrder(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
+    @PostMapping("/car-group-order/createOrUpdate")
+    Long createOrUpdate(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
 
     /**
      * 根据orderNo 获取合约订单.
+     *
      * @param carGroupOrderDTO {@link CarGroupOrderDTO}
      * @return {@link LinkedList}
      */
@@ -35,6 +36,7 @@ public interface OrderTemplateService {
 
     /**
      * 新增或者更新停车订单.
+     *
      * @param parkingOrderDTO {@link ParkingOrderDTO}
      * @return {@link Integer}
      */
@@ -44,6 +46,7 @@ public interface OrderTemplateService {
 
     /**
      * 生成订单.
+     *
      * @param orderDTO {@link OrderDTO}
      * @return {@link Boolean}
      */
@@ -52,6 +55,7 @@ public interface OrderTemplateService {
 
     /**
      * 根据用户ID 获取订单.
+     *
      * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
      * @return {@link LinkedList}
      */

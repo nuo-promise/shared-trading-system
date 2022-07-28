@@ -38,7 +38,7 @@ public interface InvoiceTemplateService {
     Integer createOrUpdateCarGroupOrderInvoice(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
 
     /**
-     * carGroupOrder退款,对应到发票数据库.r
+     * carGroupOrder退款,对应到发票数据库.
      * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
      * @return {@linkplain Integer}
      */

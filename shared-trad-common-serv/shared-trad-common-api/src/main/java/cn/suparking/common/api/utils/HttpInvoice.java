@@ -8,12 +8,6 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import java.nio.charset.StandardCharsets;
 
-/**
- * TODO
- *
- * @author ZDD
- * @date 2022/7/27 22:13:39
- */
 public class HttpInvoice {
 
     public static JSONObject requestMethod(final String url, final String order) {

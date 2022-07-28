@@ -154,8 +154,7 @@ public class VipOrderQueryService {
             LOG.info("订单号: " + orderNo + " 订单完成, 存入Redis失败...");
         }
         // TODO 更新合约、合约订单状态,更新库存.
-        myVipCarService.vipOrderPaySuccess(orderNo, vipPayDTO);
-        return true;
+        return myVipCarService.vipOrderPaySuccess(orderNo, vipPayDTO);
     }
 
     /**

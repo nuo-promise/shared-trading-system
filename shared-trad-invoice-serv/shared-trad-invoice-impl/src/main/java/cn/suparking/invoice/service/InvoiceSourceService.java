@@ -3,7 +3,6 @@ package cn.suparking.invoice.service;
 import api.beans.InvoiceInfoQueryDTO;
 import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
-import cn.suparking.invoice.dao.entity.InvoiceModelDO;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;

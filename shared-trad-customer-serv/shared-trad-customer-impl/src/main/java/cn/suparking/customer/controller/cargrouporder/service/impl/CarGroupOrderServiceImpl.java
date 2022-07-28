@@ -38,18 +38,11 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
      */
     @Override
     public SpkCommonResult createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
-        Integer result = orderTemplateService.createCarGroupOrder(carGroupOrderDTO);
+        Long result = orderTemplateService.createOrUpdate(carGroupOrderDTO);
         if (Objects.isNull(result) || result < 0) {
             return SpkCommonResult.error("合约订单操作失败");
         }
-        // 同步开票元数据
-        if (carGroupOrderDTO.getDueAmount() > 0) {
-            carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
-            if (invoiceTemplateService.createOrUpdateCarGroupOrderInvoice(carGroupOrderDTO) < 0) {
-                log.warn("用户ID: " + carGroupOrderDTO.getUserId() + ", 合约ID: " + carGroupOrderDTO.getProtocolId() + ",订单号: " + carGroupOrderDTO.getOrderNo() + ", 同步开票元数据失败");
-            }
-        }
-        return SpkCommonResult.success();
+        return SpkCommonResult.success(result);
     }
 
     /**
@@ -111,9 +104,9 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
         //设置订单状态
         carGroupOrder.setOrderState(orderState);
         //设置创建人
-        carGroupOrder.setCreator(ParkConstant.SYSTEM);
+        carGroupOrder.setCreator(ParkConstant.OPERATOR);
         //设置修改人
-        carGroupOrder.setModifier(ParkConstant.SYSTEM);
+        carGroupOrder.setModifier(ParkConstant.OPERATOR);
         //设置创建时间
         carGroupOrder.setDateCreated(new Timestamp(System.currentTimeMillis()));
         //设置更新时间

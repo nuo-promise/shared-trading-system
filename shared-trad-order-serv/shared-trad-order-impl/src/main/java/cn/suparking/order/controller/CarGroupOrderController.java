@@ -63,9 +63,10 @@ public class CarGroupOrderController {
      * 创建或修改合约订单.
      *
      * @param carGroupOrderDTO 合约订单信息
+     * @return {@linkplain Long}
      */
-    @PostMapping("/createCarGroupOrder")
-    public Integer createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
+    @PostMapping("/createOrUpdate")
+    public Long createOrUpdate(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
         return carGroupOrderService.createOrUpdate(carGroupOrderDTO);
     }
 

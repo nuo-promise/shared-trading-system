@@ -36,7 +36,7 @@ public class ParkConstant {
 
     public static final String SUCCESS = "00000";
 
-    public static final String SYSTEM = "system";
+    public static final String OPERATOR = "mini-user";
 
     /**
      * 获取距离范围内的数据.
