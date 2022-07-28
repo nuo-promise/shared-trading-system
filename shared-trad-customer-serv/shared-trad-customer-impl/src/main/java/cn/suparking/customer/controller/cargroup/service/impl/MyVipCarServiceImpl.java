@@ -319,8 +319,6 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             if (Objects.isNull(carGroupOrderResult) || carGroupOrderResult.getCode() != 200) {
                 return SpkCommonResult.error(SpkCommonResultMessage.CAR_GROUP_DATA_VALID + "保存合约订单失败！");
             }
-            //todo 拿到订单id了
-
         }
 
         // 下面进行下单.
@@ -538,7 +536,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         //修改合约订单状态
         CarGroupOrderDTO carGroupOrderDTO = CarGroupOrderDTO.builder().id(String.valueOf(carGroupOrderDO.getId()))
                 .userId(carGroupOrderDO.getUserId()).carGroupId(String.valueOf(carGroupOrderDO.getCarGroupId()))
-                .dueAmount(vipPayDTO.getDueAmount()).orderState("SUCCESS").payTime(DateUtils.getCurrentSecond()).build();
+                .orderState("SUCCESS").payTime(DateUtils.getCurrentSecond()).build();
         carGroupOrderService.createOrUpdate(carGroupOrderDTO);
         //修改合约状态
         if (ParkConstant.RENEW.equals(vipPayDTO.getOperateType())) {
@@ -556,8 +554,16 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         }
 
         // 同步开票元数据
-        if (carGroupOrderDTO.getDueAmount() > 0) {
+        if (carGroupOrderDO.getDueAmount() > 0) {
+            carGroupOrderDTO.setOrderNo(orderNo);
+            carGroupOrderDTO.setDueAmount(carGroupOrderDO.getDueAmount());
             carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
+            carGroupOrderDTO.setPayType(carGroupOrderDO.getPayType());
+            carGroupOrderDTO.setProjectNo(carGroupOrderDO.getProjectNo());
+            carGroupOrderDTO.setPayChannel(carGroupOrderDO.getPayChannel());
+            carGroupOrderDTO.setBeginTime(carGroupOrderDO.getBeginDate());
+            carGroupOrderDTO.setEndTime(carGroupOrderDO.getEndDate());
+            carGroupOrderDTO.setProtocolId(carGroupOrderDO.getProtocolId());
             if (invoiceTemplateService.createOrUpdateCarGroupOrderInvoice(carGroupOrderDTO) < 0) {
                 log.warn("用户ID: " + carGroupOrderDTO.getUserId() + ", 合约ID: " + carGroupOrderDTO.getProtocolId() + ",订单号: " + carGroupOrderDTO.getOrderNo() + ", 同步开票元数据失败");
             }

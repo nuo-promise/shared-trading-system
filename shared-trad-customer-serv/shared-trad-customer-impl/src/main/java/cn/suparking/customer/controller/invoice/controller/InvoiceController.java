@@ -1,5 +1,6 @@
 package cn.suparking.customer.controller.invoice.controller;
 
+import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.invoice.InvoiceModelQueryDTO;
 import cn.suparking.customer.controller.invoice.service.InvoiceService;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -34,5 +34,17 @@ public class InvoiceController {
     @PostMapping("makeInvoiceModel")
     public SpkCommonResult makeInvoiceModel(@RequestHeader("sign") final String sign, @RequestBody final InvoiceModelQueryDTO invoiceModelQueryDTO) {
         return invoiceService.makeInvoiceModel(sign, invoiceModelQueryDTO);
+    }
+
+    /**
+     * 获取可开票列表.
+     *
+     * @param sign             秘钥
+     * @param invoiceSourceDTO {@link InvoiceSourceDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("getInvoiceSource")
+    public SpkCommonResult getInvoiceSource(@RequestHeader("sign") final String sign, @RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceService.getInvoiceSource(sign, invoiceSourceDTO);
     }
 }

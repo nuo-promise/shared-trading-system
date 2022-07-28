@@ -242,6 +242,17 @@
         FROM spk_car_group_order
         WHERE order_no = #{orderNo, jdbcType=VARCHAR}
     </select>
+    <select id="findVipOrderByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            spk_car_group_order
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT} AND pay_time &gt;= #{startDate,jdbcType=BIGINT} AND pay_time &lt;= #{endDate,jdbcType=BIGINT}
+        AND
+            order_state IN ('SUCCESS','CLOSED','FAILED')
+        ORDER BY pay_time DESC
+    </select>
 
     <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
         INSERT INTO spk_car_group_order

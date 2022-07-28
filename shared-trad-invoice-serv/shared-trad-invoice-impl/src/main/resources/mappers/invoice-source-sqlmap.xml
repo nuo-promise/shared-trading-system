@@ -107,6 +107,22 @@
             </if>
         </where>
     </select>
+    <select id="getInvoiceSource" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_source
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="beginDate != null">
+                AND pay_time &gt;= #{beginDate,jdbcType=BIGINT}
+            </if>
+            <if test="endDate != null">
+                AND pay_time &lt;= #{endDate,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
 
     <insert id="insert" parameterType="cn.suparking.invoice.dao.entity.InvoiceSourceDO">
         INSERT INTO spk_invoice_source

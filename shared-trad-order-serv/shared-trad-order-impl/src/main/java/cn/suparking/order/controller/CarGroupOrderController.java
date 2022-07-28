@@ -65,7 +65,7 @@ public class CarGroupOrderController {
     /**
      * 创建或修改合约订单.
      *
-     * @param carGroupOrderDTO 合约订单信息
+     * @param carGroupOrderDTO {@link CarGroupOrderDTO}
      * @return {@linkplain Long}
      */
     @PostMapping("/createOrUpdate")
@@ -74,13 +74,24 @@ public class CarGroupOrderController {
     }
 
     /**
-     * 创建或修改合约订单.
+     * 根据订单编号查询合约订单.
      *
-     * @param carGroupOrderDTO 合约订单信息
-     * @return Integer
+     * @param carGroupOrderDTO {@link CarGroupOrderDTO}
+     * @return {@linkplain CarGroupOrderDO}
      */
     @PostMapping("/findByOrderNo")
     public CarGroupOrderDO findByOrderNo(@RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
         return carGroupOrderService.findByOrderNo(carGroupOrderDTO);
+    }
+
+    /**
+     * 根据用户id查询合约订单.
+     *
+     * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
+     * @return {@linkplain CarGroupOrderDO}
+     */
+    @PostMapping("/findVipOrderByUserId")
+    public LinkedList<LockOrderVO> findVipOrderByUserId(@RequestBody final ParkingOrderQueryDTO parkingOrderQueryDTO) {
+        return carGroupOrderService.findVipOrderByUserId(parkingOrderQueryDTO);
     }
 }

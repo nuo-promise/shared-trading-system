@@ -5,6 +5,7 @@ import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
 import cn.suparking.customer.api.beans.vip.VipPayDTO;
 import cn.suparking.customer.api.constant.ParkConstant;
+import cn.suparking.customer.api.constant.order.OrderConstant;
 import cn.suparking.customer.controller.cargrouporder.service.CarGroupOrderService;
 import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.customer.feign.order.OrderTemplateService;
@@ -90,6 +91,12 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
         carGroupOrder.setPayChannel(ParkConstant.PAY_TYPE);
         //设置支付方式
         carGroupOrder.setPayType(ParkConstant.PAY_TYPE);
+        //开票状态
+        carGroupOrder.setInvoiceState(OrderConstant.INVOICE_STATE_UNISSUED);
+        //退费状态
+        carGroupOrder.setRefundState(OrderConstant.REFUND_STATE_NONE);
+        //终端号
+        carGroupOrder.setTermNo(OrderConstant.ORDER_TERM_NO);
 
         if (orderNo.endsWith("W")) {
             carGroupOrder.setPayType(ParkConstant.WXPAY);
@@ -120,7 +127,6 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
     public CarGroupOrderDO findByOrderNo(final String orderNo) {
         CarGroupOrderDTO carGroupOrderDTO = new CarGroupOrderDTO();
         carGroupOrderDTO.setOrderNo(orderNo);
-        CarGroupOrderDO carGroupOrderDO = orderTemplateService.findByOrderNo(carGroupOrderDTO);
-        return carGroupOrderDO;
+        return orderTemplateService.findByOrderNo(carGroupOrderDTO);
     }
 }
