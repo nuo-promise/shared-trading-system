@@ -16,6 +16,8 @@ public class OrderQueryDTO {
     // 订单号
     private String orderNo;
 
+    private String projectName;
+
     // 支付类型
     private String payType;
 

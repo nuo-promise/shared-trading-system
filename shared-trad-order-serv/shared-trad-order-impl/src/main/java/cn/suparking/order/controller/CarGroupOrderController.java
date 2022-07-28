@@ -65,8 +65,8 @@ public class CarGroupOrderController {
      * @param carGroupOrderDTO 合约订单信息
      */
     @PostMapping("/createCarGroupOrder")
-    public void createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
-        carGroupOrderService.createOrUpdate(carGroupOrderDTO);
+    public Integer createCarGroupOrder(@Valid @RequestBody final CarGroupOrderDTO carGroupOrderDTO) {
+        return carGroupOrderService.createOrUpdate(carGroupOrderDTO);
     }
 
     /**

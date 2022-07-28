@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.invoice.dao.mapper.InvoiceModelMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.invoice.dao.entity.InvoiceModelDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="buyername" jdbcType="VARCHAR" property="buyername" />
+        <result column="taxnum" jdbcType="VARCHAR" property="taxnum" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+        <result column="orderno" jdbcType="VARCHAR" property="orderno" />
+        <result column="invoicedate" jdbcType="TIMESTAMP" property="invoicedate" />
+        <result column="saletaxnum" jdbcType="VARCHAR" property="saletaxnum" />
+        <result column="saleaccount" jdbcType="VARCHAR" property="saleaccount" />
+        <result column="salephone" jdbcType="VARCHAR" property="salephone" />
+        <result column="saleaddress" jdbcType="VARCHAR" property="saleaddress" />
+        <result column="kptype" jdbcType="VARCHAR" property="kptype" />
+        <result column="clerk" jdbcType="VARCHAR" property="clerk" />
+        <result column="payee" jdbcType="VARCHAR" property="payee" />
+        <result column="checker" jdbcType="VARCHAR" property="checker" />
+        <result column="tsfs" jdbcType="VARCHAR" property="tsfs" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        buyername,
+        taxnum,
+        address,
+        account,
+        telephone,
+        orderno,
+        invoicedate,
+        saletaxnum,
+        saleaccount,
+        salephone,
+        saleaddress,
+        kptype,
+        clerk,
+        payee,
+        checker,
+        tsfs,
+        email,
+        phone,
+        date_created,
+        date_updated
+    </sql>
+
+    <insert id="insert" parameterType="cn.suparking.invoice.dao.entity.InvoiceModelDO">
+        INSERT INTO spk_invoice_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="buyername != null">
+                buyername,
+            </if>
+            <if test="taxnum != null">
+                taxnum,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="orderno != null">
+                orderno,
+            </if>
+            <if test="invoicedate != null">
+                invoicedate,
+            </if>
+            <if test="saletaxnum != null">
+                saletaxnum,
+            </if>
+            <if test="saleaccount != null">
+                saleaccount,
+            </if>
+            <if test="salephone != null">
+                salephone,
+            </if>
+            <if test="saleaddress != null">
+                saleaddress,
+            </if>
+            <if test="kptype != null">
+                kptype,
+            </if>
+            <if test="clerk != null">
+                clerk,
+            </if>
+            <if test="payee != null">
+                payee,
+            </if>
+            <if test="checker != null">
+                checker,
+            </if>
+            <if test="tsfs != null">
+                tsfs,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="dateCreated != null">
+                date_created,
+            </if>
+            <if test="dateUpdated != null">
+                date_updated,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="buyername != null">
+                #{buyername,jdbcType=VARCHAR},
+            </if>
+            <if test="taxnum != null">
+                #{taxnum,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="orderno != null">
+                #{orderno,jdbcType=VARCHAR},
+            </if>
+            <if test="invoicedate != null">
+                #{invoicedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="saletaxnum != null">
+                #{saletaxnum,jdbcType=VARCHAR},
+            </if>
+            <if test="saleaccount != null">
+                #{saleaccount,jdbcType=VARCHAR},
+            </if>
+            <if test="salephone != null">
+                #{salephone,jdbcType=VARCHAR},
+            </if>
+            <if test="saleaddress != null">
+                #{saleaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="kptype != null">
+                #{kptype,jdbcType=VARCHAR},
+            </if>
+            <if test="clerk != null">
+                #{clerk,jdbcType=VARCHAR},
+            </if>
+            <if test="payee != null">
+                #{payee,jdbcType=VARCHAR},
+            </if>
+            <if test="checker != null">
+                #{checker,jdbcType=VARCHAR},
+            </if>
+            <if test="tsfs != null">
+                #{tsfs,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="dateCreated != null">
+                #{dateCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dateUpdated != null">
+                #{dateUpdated,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

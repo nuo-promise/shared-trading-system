@@ -1,8 +1,8 @@
 package cn.suparking.customer.feign.order.fallback;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
-import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.feign.order.OrderTemplateService;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.OrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
@@ -31,9 +31,9 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
         return new OrderTemplateService() {
 
             @Override
-            public void createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
+            public Integer createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
                 log.error("OrderTemplateService: createCarGroupOrder error: " + cause.getMessage());
-                return;
+                return null;
             }
 
             @Override
@@ -43,9 +43,9 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
             }
 
             @Override
-            public Boolean createAndUpdateParkingOrder(final OrderDTO orderDTO) {
+            public Long createAndUpdateParkingOrder(final OrderDTO orderDTO) {
                 log.error("OrderTemplateService: createAndUpdateParkingOrder error: " + cause.getMessage());
-                return false;
+                return -1L;
             }
 
             @Override

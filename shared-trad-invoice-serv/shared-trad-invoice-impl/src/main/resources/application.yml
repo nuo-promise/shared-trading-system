@@ -1,5 +1,5 @@
 server:
-  port: 20023
+  port: 20003
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
@@ -159,25 +159,13 @@ spring:
         watch:
           enabled: true
         watch-delay: 30000
-  rabbitmq:
-    host: ms.suparking.cn
-    port: 5666
-    username: invoice-shared
-    password: invoice2019
-    exchange: spk.shared
-    consumer-prefetch: 5
-    concurrent-consumer: 2
-    enable: true
-    queue-length: 5
-    thread-timeout: 60000
-
 mybatis:
   mapper-locations: classpath:/mappers/*.xml
 
 logging:
   level:
-    cn.suparking.invoice: info
-    org.apache.shardingsphere: info
+    cn.suparking.invoice: debug
+    org.apache.shardingsphere: debug
 feign:
   client:
     config:
@@ -194,6 +182,7 @@ feign:
   circuitbreaker:
     enabled: true
 sparking:
-  corePoolSize: 16
-  queryInterval: 100
-  orderInterval: 90
+  #电子发票服务
+  invoice:
+    nnfpurl: http://nnfpbox.nuonuocs.cn/shop/buyer/allow/ecOd/queryElectricKp.action
+    dataUrl: http://datasync.suparking.cn:25850/api/projectConfig

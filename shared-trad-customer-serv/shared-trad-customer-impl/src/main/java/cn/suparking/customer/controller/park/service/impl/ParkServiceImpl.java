@@ -28,6 +28,7 @@ import cn.suparking.customer.controller.park.service.OrderQueryService;
 import cn.suparking.customer.controller.park.service.ParkService;
 import cn.suparking.customer.dao.vo.user.ParkFeeQueryVO;
 import cn.suparking.customer.feign.data.DataTemplateService;
+import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.customer.feign.user.UserTemplateService;
 import cn.suparking.customer.spring.SharedTradCustomerInit;
 import cn.suparking.customer.tools.OrderUtils;
@@ -63,6 +64,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -384,6 +386,7 @@ public class ParkServiceImpl implements ParkService {
                 } else {
                     log.info("用户ID: " + parking.getUserId() + "订单号: " + orderNo + " 发送开闸指令失败");
                 }
+
                 // 如果存在使用优惠券则进行核销操作.
                 DiscountInfo discountInfo = parkingOrder.getDiscountInfo();
                 if (Objects.nonNull(discountInfo)) {

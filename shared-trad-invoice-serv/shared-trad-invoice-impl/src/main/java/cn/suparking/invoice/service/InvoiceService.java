@@ -2,6 +2,8 @@ package cn.suparking.invoice.service;
 
 import api.beans.InvoiceDTO;
 import cn.suparking.invoice.dao.entity.InvoiceDO;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
+import cn.suparking.order.api.beans.ParkingOrderDTO;
 
 import java.util.List;
 
@@ -21,4 +23,6 @@ public interface InvoiceService {
      * @return InvoiceDo {@linkplain InvoiceDO}
      */
     List<InvoiceDO> findByUserId(String userId);
+
+
 }

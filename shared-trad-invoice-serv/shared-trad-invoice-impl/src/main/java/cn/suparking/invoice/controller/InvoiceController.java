@@ -6,6 +6,8 @@ import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.invoice.dao.entity.InvoiceDO;
 import cn.suparking.invoice.service.InvoiceService;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
+import cn.suparking.order.api.beans.ParkingOrderDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +24,7 @@ import java.util.Optional;
 @Slf4j
 @RefreshScope
 @RestController
-@RequestMapping("shared-invoice/invoice")
+@RequestMapping("invoice-api")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;

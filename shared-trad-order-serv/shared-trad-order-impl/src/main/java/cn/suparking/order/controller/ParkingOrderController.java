@@ -91,7 +91,7 @@ public class ParkingOrderController {
      */
     @PostMapping("/parkingOrder")
     @ShardingSphereTransactionType(TransactionType.BASE)
-    public Boolean createAndUpdateParkingOrder(@Valid @RequestBody final OrderDTO orderDTO) {
+    public Long createAndUpdateParkingOrder(@Valid @RequestBody final OrderDTO orderDTO) {
         SpkCommonAssert.notNull(orderDTO.getParkingOrder(), "Order信息不能为null");
         SpkCommonAssert.notBlank(orderDTO.getPayType(), "支付类型信息不能为空");
         SpkCommonAssert.notBlank(orderDTO.getTermNo(), "支付终端不能为空");

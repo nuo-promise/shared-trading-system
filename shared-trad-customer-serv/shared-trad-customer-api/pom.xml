@@ -29,6 +29,11 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>shared-trad-invoice-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>shared-trad-data-dao</artifactId>
             <version>${project.version}</version>
         </dependency>

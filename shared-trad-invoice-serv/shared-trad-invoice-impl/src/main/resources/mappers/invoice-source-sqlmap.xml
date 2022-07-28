@@ -33,11 +33,14 @@
         protocol_id,invoice_code,
         term_no,operator
     </sql>
+    <delete id="deleteById">
+        DELETE FROM spk_invoice_source WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
 
     <select id="list" parameterType="api.beans.InvoiceSourceDTO" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM spk_invoice_info
+        FROM spk_invoice_source
         <where>
             <if test="userId != null">
                 AND user_id = #{userId,jdbcType=BIGINT}
@@ -60,8 +63,53 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="api.beans.InvoiceSourceDTO">
-        INSERT INTO spk_invoice_source_0
+    <select id="listLikeOrderNo" parameterType="api.beans.InvoiceSourceDTO" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_source
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="state != null">
+                AND state = #{state,jdbcType=BOOLEAN}
+            </if>
+            <if test="projectNo != null">
+                AND project_no = #{projectNo,jdbcType=VARCHAR}
+            </if>
+            <if test="beginDate != null">
+                AND pay_time &gt;= #{beginDate,jdbcType=BIGINT}
+            </if>
+            <if test="endDate != null">
+                AND pay_time &lt;= #{endDate,jdbcType=BIGINT}
+            </if>
+            <if test="sourceId != null">
+                AND source_id &lt;= #{sourceId,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceDoc != null">
+                AND source_doc = #{sourceDoc,jdbcType=VARCHAR}
+            </if>
+            <if test="orderNo != null">
+                AND order_no LIKE CONCAT(#{orderNo,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+    <select id="findByOrderNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_source
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="orderNo != null">
+                AND order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="cn.suparking.invoice.dao.entity.InvoiceSourceDO">
+        INSERT INTO spk_invoice_source
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,
             <if test="userId != null">
@@ -172,8 +220,8 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="cn.suparking.invoice.dao.entity.InvoiceInfoDO">
-        UPDATE spk_invoice_source_0
+    <update id="update" parameterType="cn.suparking.invoice.dao.entity.InvoiceSourceDO">
+        UPDATE spk_invoice_source
         <set>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT} ,

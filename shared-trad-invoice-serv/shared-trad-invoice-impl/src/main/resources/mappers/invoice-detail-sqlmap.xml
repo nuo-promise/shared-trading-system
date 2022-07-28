@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.suparking.invoice.dao.mapper.InvoiceDetailMapper">
+    <resultMap id="BaseResultMap" type="cn.suparking.invoice.dao.entity.InvoiceDetailDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="invoice_model_id" jdbcType="BIGINT" property="invoiceModelId" />
+        <result column="goodsname" jdbcType="VARCHAR" property="goodsname" />
+        <result column="hsbz" jdbcType="VARCHAR" property="hsbz" />
+        <result column="taxrate" jdbcType="VARCHAR" property="taxrate" />
+        <result column="spbm" jdbcType="VARCHAR" property="spbm" />
+        <result column="fphxz" jdbcType="VARCHAR" property="fphxz" />
+        <result column="taxfreeamt" jdbcType="VARCHAR" property="taxfreeamt" />
+        <result column="tax" jdbcType="VARCHAR" property="tax" />
+        <result column="taxamt" jdbcType="VARCHAR" property="taxamt" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        invoice_model_id,
+        goodsname,
+        hsbz,
+        taxrate,
+        spbm,
+        fphxz,
+        taxfreeamt,
+        tax,
+        taxamt
+    </sql>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into spk_invoice_detail (
+        id ,
+        invoice_model_id ,
+        goodsname ,
+        hsbz ,
+        taxrate ,
+        spbm ,
+        fphxz ,
+        taxfreeamt ,
+        tax ,
+        taxamt
+        ) VALUES
+        <foreach collection ="list" item="item" separator =",">
+            (
+            #{item.id,jdbcType=BIGINT} ,
+            #{item.invoiceModelId,jdbcType=BIGINT} ,
+            #{item.goodsname,jdbcType=VARCHAR} ,
+            #{item.hsbz,jdbcType=VARCHAR} ,
+            #{item.taxrate,jdbcType=VARCHAR} ,
+            #{item.spbm,jdbcType=VARCHAR} ,
+            #{item.fphxz,jdbcType=VARCHAR} ,
+            #{item.taxfreeamt,jdbcType=VARCHAR} ,
+            #{item.tax,jdbcType=VARCHAR} ,
+            #{item.taxamt,jdbcType=VARCHAR}
+            )
+        </foreach >
+    </insert>
+</mapper>

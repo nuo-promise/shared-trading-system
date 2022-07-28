@@ -8,10 +8,12 @@ import cn.suparking.customer.configuration.properties.AdapterDeviceProperties;
 import cn.suparking.customer.configuration.properties.DiscountProperties;
 import cn.suparking.customer.controller.park.service.OrderService;
 import cn.suparking.customer.feign.data.DataTemplateService;
+import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.customer.feign.order.OrderTemplateService;
 import cn.suparking.data.api.parkfee.Parking;
 import cn.suparking.data.api.parkfee.ParkingOrder;
 import cn.suparking.order.api.beans.OrderDTO;
+import cn.suparking.order.api.beans.ParkingOrderDTO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +42,14 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderTemplateService orderTemplateService;
 
-    public OrderServiceImpl(final DataTemplateService dataTemplateService, final OrderTemplateService orderTemplateService) {
+    private final InvoiceTemplateService invoiceTemplateService;
+
+    public OrderServiceImpl(final DataTemplateService dataTemplateService,
+                            final InvoiceTemplateService invoiceTemplateService,
+                            final OrderTemplateService orderTemplateService) {
         this.dataTemplateService = dataTemplateService;
         this.orderTemplateService = orderTemplateService;
+        this.invoiceTemplateService = invoiceTemplateService;
     }
 
     @Override
@@ -71,11 +78,51 @@ public class OrderServiceImpl implements OrderService {
                 .plateForm(plateForm)
                 .payTime(DateUtils.getCurrentSecond())
                 .build();
-        Boolean parkingOrderResult = orderTemplateService.createAndUpdateParkingOrder(orderDTO);
-        if (!parkingOrderResult) {
+        Long parkingOrderId = orderTemplateService.createAndUpdateParkingOrder(orderDTO);
+        if (parkingOrderId == -1L) {
             log.error("更新停车订单失败");
             return false;
         }
+        ParkingOrderDTO parkingOrderDTO = ParkingOrderDTO.builder()
+                .id(parkingOrderId.toString())
+                .userId(parkingOrder.getUserId().toString())
+                .orderNo(orderDTO.getOrderNo())
+                .payParkingId(parkingOrder.getPayParkingId())
+                .tempType(Objects.nonNull(parkingOrder.getTempType()) ? parkingOrder.getTempType() ? 1 : 0 : 1)
+                .carTypeClass(parkingOrder.getCarTypeClass())
+                .carTypeName(parkingOrder.getCarTypeName())
+                .carTypeId(parkingOrder.getCarTypeId())
+                .beginTime(parkingOrder.getBeginTime())
+                .endTime(parkingOrder.getEndTime())
+                .nextAggregateBeginTime(parkingOrder.getNextAggregateBeginTime())
+                .aggregatedMaxAmount(parkingOrder.getAggregatedMaxAmount())
+                .parkingMinutes(parkingOrder.getParkingMinutes())
+                .totalAmount(parkingOrder.getTotalAmount())
+                .discountedMinutes(parkingOrder.getDiscountedMinutes())
+                .discountedAmount(parkingOrder.getDiscountedAmount())
+                .chargeAmount(parkingOrder.getChargeAmount())
+                .extraAmount(parkingOrder.getExtraAmount())
+                .dueAmount(parkingOrder.getDueAmount())
+                .chargeDueAmount(parkingOrder.getChargeDueAmount())
+                .paidAmount(parkingOrder.getPaidAmount())
+                .payChannel(orderDTO.getPlateForm())
+                .payType(orderDTO.getPayType())
+                .payTime(orderDTO.getPayTime())
+                .receivedAmount(orderDTO.getAmount())
+                .termNo(orderDTO.getTermNo())
+                .operator("mini-user")
+                .expireTime(parkingOrder.getExpireTime())
+                .invoiceState(parkingOrder.getInvoiceState())
+                .refundState(parkingOrder.getRefundState())
+                .status(parkingOrder.getStatus())
+                .projectNo(parkingOrder.getProjectNo())
+                .creator("system")
+                .build();
+        if (invoiceTemplateService.createOrUpdateParkingOrderInvoice(parkingOrderDTO) < 0) {
+            log.error("用户ID:" + parkingOrderDTO.getUserId() + " ,订单号: " + parkingOrderDTO.getOrderNo() + ",同步发票元数据失败");
+            return false;
+        }
+        log.error("同步发票数据有问题");
         return true;
     }
 

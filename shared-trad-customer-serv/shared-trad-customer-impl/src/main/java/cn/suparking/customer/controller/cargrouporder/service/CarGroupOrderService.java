@@ -2,8 +2,8 @@ package cn.suparking.customer.controller.cargrouporder.service;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
-import cn.suparking.customer.api.beans.cargrouporder.CarGroupOrderDTO;
 import cn.suparking.customer.api.beans.vip.VipPayDTO;
+import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
 
 public interface CarGroupOrderService {
@@ -26,5 +26,10 @@ public interface CarGroupOrderService {
      */
     CarGroupOrderDTO makeCarGroupOrder(VipPayDTO vipPayDTO, CarGroupDTO carGroup, String orderState, String operateType);
 
+    /**
+     * 根据订单号查询订单信息.
+     * @param orderNo 订单号
+     * @return {@link CarGroupOrderDO}
+     */
     CarGroupOrderDO findByOrderNo(String orderNo);
 }
