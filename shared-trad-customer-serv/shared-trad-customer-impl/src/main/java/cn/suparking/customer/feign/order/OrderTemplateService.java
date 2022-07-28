@@ -57,4 +57,13 @@ public interface OrderTemplateService {
      */
     @PostMapping("/parking-order/findOrderByUserId")
     LinkedList<LockOrderVO> findOrderByUserId(@RequestBody ParkingOrderQueryDTO parkingOrderQueryDTO);
+
+
+    /**
+     * 根据用户ID 获取合约订单信息.
+     * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
+     * @return {@link LinkedList}
+     */
+    @PostMapping("/car-group-order/findOrderByOrderNo")
+    LinkedList<LockOrderVO> findGroupOrderByUserId(@RequestBody ParkingOrderQueryDTO parkingOrderQueryDTO);
 }
