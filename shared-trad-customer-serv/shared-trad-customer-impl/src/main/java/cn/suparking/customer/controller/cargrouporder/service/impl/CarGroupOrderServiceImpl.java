@@ -42,13 +42,6 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
         if (Objects.isNull(result) || result < 0) {
             return SpkCommonResult.error("合约订单操作失败");
         }
-        // 同步开票元数据
-        if (carGroupOrderDTO.getDueAmount() > 0) {
-            carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
-            if (invoiceTemplateService.createOrUpdateCarGroupOrderInvoice(carGroupOrderDTO) < 0) {
-                log.warn("用户ID: " + carGroupOrderDTO.getUserId() + ", 合约ID: " + carGroupOrderDTO.getProtocolId() + ",订单号: " + carGroupOrderDTO.getOrderNo() + ", 同步开票元数据失败");
-            }
-        }
         return SpkCommonResult.success();
     }
 
