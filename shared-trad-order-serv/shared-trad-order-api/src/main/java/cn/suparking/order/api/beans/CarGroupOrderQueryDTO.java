@@ -28,6 +28,8 @@ public class CarGroupOrderQueryDTO {
 
     private String payType;
 
+    private Long payTime;
+
     private String carGroupId;
 
     private String orderType;

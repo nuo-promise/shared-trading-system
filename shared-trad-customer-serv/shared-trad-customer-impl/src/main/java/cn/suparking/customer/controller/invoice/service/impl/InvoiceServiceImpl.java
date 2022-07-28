@@ -2,9 +2,8 @@ package cn.suparking.customer.controller.invoice.service.impl;
 
 import api.beans.InvoiceDetail;
 import api.beans.InvoiceModelDTO;
+import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
-import cn.suparking.common.api.utils.DateUtils;
-import cn.suparking.common.api.utils.HttpInvoice;
 import cn.suparking.common.api.utils.HttpUtils;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.api.beans.invoice.InvoiceModelQueryDTO;
@@ -12,11 +11,11 @@ import cn.suparking.customer.api.constant.ParkConstant;
 import cn.suparking.customer.configuration.properties.SharedProperties;
 import cn.suparking.customer.controller.invoice.service.InvoiceService;
 import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
+import cn.suparking.customer.tools.SignUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +28,7 @@ import java.util.Objects;
 public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceTemplateService invoiceTemplateService;
-    @Resource
-    private SharedProperties sharedProperties;
+
     @Value("${sparking.invoice.url}")
     private String invoiceUrl;
 
@@ -47,10 +45,16 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     public SpkCommonResult makeInvoiceModel(final String sign, final InvoiceModelQueryDTO invoiceModelQueryDTO) {
-        // // 校验 sign
-        // if (!invoke(sign, invoiceModelQueryDTO.getOrderNo())) {
-        //     return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
-        // }
+        // 校验 sign
+        if (!SignUtils.invoke(sign, invoiceModelQueryDTO.getOrderno())) {
+            return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        }
+
+        //rpc开票请求
+        // invoiceTemplateService.makeInvoiceModel(invoiceModelQueryDTO);
+
+
+
         //发送开票申请,获取开票数据
         JSONObject makeResult = HttpUtils.sendPost(invoiceUrl + ParkConstant.INTERFACE_INVOICE_MAKE, JSON.toJSONString(invoiceModelQueryDTO));
         if (Objects.isNull(makeResult) || !ParkConstant.SUCCESS.equals(makeResult.getString("code")) || Objects.isNull(makeResult.getJSONObject("invoiceModel"))) {
@@ -74,31 +78,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     /**
-     * check sign.
+     * 获取可开票列表.
      *
-     * @param sign     sign.
-     * @param deviceNo deviceNo
-     * @return Boolean
+     * @param sign             秘钥
+     * @param invoiceSourceDTO {@link InvoiceSourceDTO}
+     * @return {@link SpkCommonResult}
      */
-    private Boolean invoke(final String sign, final String deviceNo) {
-        return md5(sharedProperties.getSecret() + deviceNo + DateUtils.currentDate() + sharedProperties.getSecret(), sign);
-    }
-
-    /**
-     * MD5.
-     *
-     * @param data  the data
-     * @param token the token
-     * @return boolean
-     */
-    private boolean md5(final String data, final String token) {
-        String keyStr = DigestUtils.md5Hex(data.toUpperCase()).toUpperCase();
-        log.info("Mini MD5 Value: " + keyStr);
-        if (keyStr.equals(token)) {
-            return true;
-        } else {
-            log.warn("Mini Current MD5 :" + keyStr + ", Data Token : " + token);
-        }
-        return false;
+    @Override
+    public SpkCommonResult getInvoiceSource(final String sign, final InvoiceSourceDTO invoiceSourceDTO) {
+        // // 校验 sign
+        // if (!SignUtils.invoke(sign, String.valueOf(invoiceSourceDTO.getUserId()))) {
+        //     return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
+        // }
+        return invoiceTemplateService.getInvoiceSource(invoiceSourceDTO);
     }
 }

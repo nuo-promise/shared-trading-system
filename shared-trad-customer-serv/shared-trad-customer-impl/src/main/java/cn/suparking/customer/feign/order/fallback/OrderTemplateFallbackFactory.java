@@ -30,8 +30,8 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
         return new OrderTemplateService() {
 
             @Override
-            public Integer createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
-                log.error("OrderTemplateService: createCarGroupOrder error: " + cause.getMessage());
+            public Long createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
+                log.error("OrderTemplateService: createOrUpdate error: " + cause.getMessage());
                 return null;
             }
 
@@ -56,6 +56,12 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
             @Override
             public LinkedList<LockOrderVO> findGroupOrderByUserId(final ParkingOrderQueryDTO parkingOrderQueryDTO) {
                 log.error("OrderTemplateService: findGroupOrderByUserId error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public LinkedList<LockOrderVO> findVipOrderByUserId(ParkingOrderQueryDTO parkingOrderQueryDTO) {
+                log.error("OrderTemplateService: findVipOrderByUserId error: " + cause.getMessage());
                 return null;
             }
 

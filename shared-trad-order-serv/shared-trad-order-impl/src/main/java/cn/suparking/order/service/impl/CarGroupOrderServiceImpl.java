@@ -1,10 +1,12 @@
 package cn.suparking.order.service.impl;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
+import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
+import cn.suparking.order.dao.convert.ParkOrderToLockOrderVO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
 import cn.suparking.order.dao.mapper.CarGroupOrderMapper;
+import cn.suparking.order.dao.vo.LockOrderVO;
 import cn.suparking.order.service.CarGroupOrderService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -13,7 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -62,9 +68,28 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
         return carGroupOrderDO.getId();
     }
 
+    /**
+     * 根据orderNo查找合约订单.
+     *
+     * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
+     * @return {@linkplain CarGroupOrderDO}
+     */
     @Override
     public CarGroupOrderDO findByOrderNo(final CarGroupOrderDTO carGroupOrderDTO) {
         CarGroupOrderDO carGroupOrderDO = carGroupOrderMapper.findByOrderNo(carGroupOrderDTO.getOrderNo());
         return carGroupOrderDO;
+    }
+
+    @Override
+    public LinkedList<LockOrderVO> findVipOrderByUserId(final ParkingOrderQueryDTO parkingOrderQueryDTO) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", Long.valueOf(parkingOrderQueryDTO.getUserId()));
+        params.put("startDate", parkingOrderQueryDTO.getStartDate().getTime() / 1000);
+        params.put("endDate", parkingOrderQueryDTO.getEndDate().getTime() / 1000);
+        List<CarGroupOrderDO> carGroupOrderDOList = carGroupOrderMapper.findVipOrderByUserId(params);
+        if (Objects.nonNull(carGroupOrderDOList) && !carGroupOrderDOList.isEmpty()) {
+            return ParkOrderToLockOrderVO.convertToLockVipOrderVO(carGroupOrderDOList);
+        }
+        return null;
     }
 }

@@ -49,6 +49,8 @@ public class CarGroupOrderDO extends BaseDO {
 
     private String payType;
 
+    private Long payTime;
+
     private String userName;
 
     private String userMobile;
@@ -96,6 +98,7 @@ public class CarGroupOrderDO extends BaseDO {
                     .discountedAmount(item.getDiscountedAmount())
                     .payChannel(item.getPayChannel())
                     .payType(item.getPayType())
+                    .payTime(item.getPayTime())
                     .userMobile(item.getUserMobile())
                     .userName(item.getUserName())
                     .orderState(item.getOrderState())

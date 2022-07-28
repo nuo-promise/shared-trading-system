@@ -27,6 +27,14 @@ public interface InvoiceSourceService {
      * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
      * @return {@linkplain SpkCommonResult}
      */
+    List<InvoiceSourceDO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 获取开票订单列表.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
     List<InvoiceSourceDO> invoiceSourceListLikeOrderNo(InvoiceSourceDTO invoiceSourceDTO);
 
     /**

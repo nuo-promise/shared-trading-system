@@ -188,12 +188,12 @@ public class CarGroupServiceImpl implements CarGroupService {
                 }
             }
             CarGroupPeriod carGroupPeriod = CarGroupPeriod.builder().beginDate(beginDate).endDate(endDate).build();
-            return updateCarGroupMerge(onlineCarGroup, periodList, carGroupPeriod);
+            return updateCarGroupMerge(onlineCarGroup, periodList, carGroupPeriod,userId);
         }
         return null;
     }
 
-    private CarGroupDTO updateCarGroupMerge(final JSONObject onlineCarGroup, final List<CarGroupPeriod> periods, final CarGroupPeriod carGroupPeriod) {
+    private CarGroupDTO updateCarGroupMerge(final JSONObject onlineCarGroup, final List<CarGroupPeriod> periods, final CarGroupPeriod carGroupPeriod,final Long userId) {
         //从原合约中获取原租期列表
         periods.add(carGroupPeriod);
         //排序
@@ -203,10 +203,10 @@ public class CarGroupServiceImpl implements CarGroupService {
         List<CarGroupPeriodDTO> merged = mergePeriod(periods);
         //将新的合约租期赋值给原先的合约carGroup
         CarGroupDTO carGroupDTO = CarGroupDTO.builder().id(onlineCarGroup.getString("id")).projectNo(onlineCarGroup.getString("projectNo"))
-                .userId(onlineCarGroup.getLong("userId")).carTypeId(onlineCarGroup.getString("carTypeId"))
+                .userId(userId).carTypeId(onlineCarGroup.getString("carTypeId"))
                 .carTypeName(onlineCarGroup.getString("carTypeName")).protocolId(onlineCarGroup.getString("protocolId"))
                 .protocolName(onlineCarGroup.getString("protocolName")).dateUpdated(new Timestamp(System.currentTimeMillis()))
-                .userMobile(onlineCarGroup.getString("userMobile")).userName(onlineCarGroup.getString("userName")).modifier(ParkConstant.SYSTEM)
+                .userMobile(onlineCarGroup.getString("userMobile")).userName(onlineCarGroup.getString("userName")).modifier(ParkConstant.OPERATOR)
                 .build();
         carGroupDTO.setCarGroupPeriodDTOList(merged);
         return carGroupDTO;
@@ -302,7 +302,7 @@ public class CarGroupServiceImpl implements CarGroupService {
                 .protocolId(vipPayDTO.getProtocolId()).protocolType(protocolType).protocolName(protocol.getString("protocolName"))
                 .userMobile(vipPayDTO.getPhone()).userId(Long.valueOf(vipPayDTO.getUserId())).projectNo(vipPayDTO.getProjectNo())
                 .beginDate(beginDate).endDate(endDate).dateCreated(new Timestamp(System.currentTimeMillis())).valid(false)
-                .dateUpdated(new Timestamp(System.currentTimeMillis())).operator(ParkConstant.SYSTEM).modifier(ParkConstant.SYSTEM)
+                .dateUpdated(new Timestamp(System.currentTimeMillis())).operator(ParkConstant.OPERATOR).modifier(ParkConstant.OPERATOR)
                 .build();
         return carGroupDTO;
     }

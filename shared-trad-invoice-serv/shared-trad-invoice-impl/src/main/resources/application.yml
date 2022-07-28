@@ -5,6 +5,8 @@ server:
     include-message: always
   servlet:
     context-path: /invoice-center
+    # 增加优雅停机
+    shutdown: graceful
 spring:
 #    application:
 #  #   定义项目名称
@@ -184,5 +186,5 @@ feign:
 sparking:
   #电子发票服务
   invoice:
-    nnfpurl: http://nnfpbox.nuonuocs.cn/shop/buyer/allow/ecOd/queryElectricKp.action
+    nnfpurl: https://nnfp.jss.com.cn/shop/buyer/allow/cxfKp/cxfServerKpOrderSync.action
     dataUrl: http://datasync.suparking.cn:25850/api/projectConfig

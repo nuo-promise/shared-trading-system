@@ -49,6 +49,17 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
     }
 
     /**
+     * 小程序获取用户开票订单列表.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    @Override
+    public List<InvoiceSourceDO> getInvoiceSource(final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceSourceMapper.getInvoiceSource(invoiceSourceDTO);
+    }
+
+    /**
      * 获取开票订单列表模糊订单号.
      *
      * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
@@ -73,11 +84,6 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
         } else {
             return invoiceSourceMapper.update(invoiceSourceDO);
         }
-    }
-
-    @Override
-    public Integer deleteById(final Long id) {
-        return invoiceSourceMapper.deleteById(id);
     }
 
     @Override
@@ -257,7 +263,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         count = between / 100000;
                         if (between > 100000) {
                             for (int i = 0; i < count; i++) {
-                                 invoiceSourceDTO = InvoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(100000)
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo() + "@" + i)
@@ -412,6 +418,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .sourceDoc(InvoiceConstant.SOURCE_ORDER)
                             .sourceId(carGroupOrderDTO.getId())
                             .operator("mini-user")
+                            .termNo("502")
                             .startTime(DateUtils.secondToDateTime(carGroupOrderDTO.getBeginTime()))
                             .endTime(DateUtils.secondToDateTime(carGroupOrderDTO.getEndTime()))
                             .protocolId(carGroupOrderDTO.getProtocolId())
@@ -443,6 +450,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .sourceDoc(InvoiceConstant.SOURCE_ORDER)
                             .sourceId(carGroupOrderDTO.getId())
                             .operator("mini-user")
+                            .termNo("502")
                             .startTime(DateUtils.secondToDateTime(carGroupOrderDTO.getBeginTime()))
                             .endTime(DateUtils.secondToDateTime(carGroupOrderDTO.getEndTime()))
                             .protocolId(carGroupOrderDTO.getProtocolId())
@@ -474,6 +482,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         .sourceDoc(InvoiceConstant.SOURCE_ORDER)
                         .sourceId(carGroupOrderDTO.getId())
                         .operator("mini-user")
+                        .termNo("502")
                         .startTime(DateUtils.secondToDateTime(carGroupOrderDTO.getBeginTime()))
                         .endTime(DateUtils.secondToDateTime(carGroupOrderDTO.getEndTime()))
                         .protocolId(carGroupOrderDTO.getProtocolId())
@@ -661,5 +670,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
     @Override
     public InvoiceSourceDO findByOrderNo(final InvoiceSourceDTO invoiceSourceDTO) {
         return invoiceSourceMapper.findByOrderNo(invoiceSourceDTO);
+    }
+
+    @Override
+    public Integer deleteById(final Long id) {
+        return invoiceSourceMapper.deleteById(id);
     }
 }

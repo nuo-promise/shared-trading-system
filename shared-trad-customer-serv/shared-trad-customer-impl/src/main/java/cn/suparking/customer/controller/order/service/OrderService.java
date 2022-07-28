@@ -7,8 +7,10 @@ public interface OrderService {
 
     /**
      * 根据用户ID,获取用户信息.
+     *
+     * @param sign                 秘钥
      * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
      * @return {@link SpkCommonResult}
      */
-    SpkCommonResult getLockOrder(ParkingOrderQueryDTO parkingOrderQueryDTO);
+    SpkCommonResult getLockOrder(String sign, ParkingOrderQueryDTO parkingOrderQueryDTO);
 }
