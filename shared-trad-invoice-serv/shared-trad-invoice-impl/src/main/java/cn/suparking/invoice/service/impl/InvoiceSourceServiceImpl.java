@@ -141,7 +141,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             invoiceSourceDTO.setState(state);
                         }
                         createOrUpdate(invoiceSourceDTO);
-                        log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO.toString());
+                        log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO);
                     }
                     if (parkingOrderDTO.getReceivedAmount() % 100000 > 0) {
                         InvoiceSourceDTO invoiceSourceDTO = InvoiceSourceDTO.builder()
@@ -172,7 +172,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             invoiceSourceDTO.setState(state);
                         }
                         createOrUpdate(invoiceSourceDTO);
-                        log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO.toString());
+                        log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO);
                     }
                 } else {
                     InvoiceSourceDTO invoiceSourceDTO = InvoiceSourceDTO.builder()
@@ -190,13 +190,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .endTime(DateUtils.secondToDateTime(parkingOrderDTO.getEndTime()))
                             .payTime(parkingOrderDTO.getPayTime())
                             .build();
-                    boolean state = false;
-                    if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
-                        state = true;
-                    }
+                    boolean state = StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState));
                     invoiceSourceDTO.setState(state);
                     createOrUpdate(invoiceSourceDTO);
-                    log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO.toString());
+                    log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO);
                 }
             }
         } catch (Exception e) {
@@ -260,7 +257,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         count = between / 100000;
                         if (between > 100000) {
                             for (int i = 0; i < count; i++) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                 invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(100000)
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo() + "@" + i)
@@ -280,10 +277,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                             if (between % 100000 > 0) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(between % 100000)
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo())
@@ -303,14 +300,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .operator(invoiceSourceDO.getOperator())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                         }
                     } else {
                         count = between / invoiceLimit;
                         if (between > invoiceLimit) {
                             for (int i = 0; i < count; i++) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(invoiceLimit)
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo() + "@" + i)
@@ -330,10 +327,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .operator(invoiceSourceDO.getOperator())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                             if (between % invoiceLimit > 0) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(between % invoiceLimit)
                                         .orderNo(parkingRefundOrderDTO.getPayOrderNo())
@@ -353,7 +350,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .operator(invoiceSourceDO.getOperator())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("临停退费订单:" + parkingRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                         }
                     }
@@ -433,7 +430,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         invoiceSourceDTO.setState(state);
                     }
                     createOrUpdate(invoiceSourceDTO);
-                    log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO.toString());
+                    log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO);
                 }
                 if (carGroupOrderDTO.getDueAmount() % 100000 > 0) {
                     InvoiceSourceDTO invoiceSourceDTO = InvoiceSourceDTO.builder()
@@ -464,7 +461,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         invoiceSourceDTO.setState(state);
                     }
                     createOrUpdate(invoiceSourceDTO);
-                    log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO.toString());
+                    log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO);
                 }
             } else {
                 InvoiceSourceDTO invoiceSourceDTO = InvoiceSourceDTO.builder()
@@ -482,13 +479,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         .protocolId(carGroupOrderDTO.getProtocolId())
                         .payTime(carGroupOrderDTO.getPayTime())
                         .build();
-                boolean state = false;
-                if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
-                    state = true;
-                }
+                boolean state = StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState));
                 invoiceSourceDTO.setState(state);
                 createOrUpdate(invoiceSourceDTO);
-                log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO.toString());
+                log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO);
             }
         } catch (Exception e) {
             Arrays.stream(e.getStackTrace()).forEach(item -> log.error(item.toString()));
@@ -551,7 +545,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         count = between / 100000;
                         if (between > 100000) {
                             for (int i = 0; i < count; i++) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(100000)
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo() + "@" + i)
@@ -571,10 +565,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                             if (between % 100000 > 0) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(between % 100000)
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo())
@@ -594,14 +588,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                         }
                     } else {
                         count = between / invoiceLimit;
                         if (between > invoiceLimit) {
                             for (int i = 0; i < count; i++) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(invoiceLimit)
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo() + "@" + i)
@@ -621,10 +615,10 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                             if (between % invoiceLimit > 0) {
-                                InvoiceSourceDTO invoiceSOurceDTO = invoiceSourceDTO.builder()
+                                invoiceSourceDTO = InvoiceSourceDTO.builder()
                                         .userId(invoiceSourceDO.getUserId())
                                         .payAmount(between % invoiceLimit)
                                         .orderNo(carGroupRefundOrderDTO.getPayOrderNo())
@@ -644,7 +638,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                         .payTime(invoiceSourceDO.getPayTime())
                                         .build();
                                 createOrUpdate(invoiceSourceDTO);
-                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSOurceDTO.toString());
+                                log.info("合约退费订单:" + carGroupRefundOrderDTO.getOrderNo() + ",大于100000重新生成开票信息: " + invoiceSourceDTO.toString());
                             }
                         }
                     }
@@ -656,5 +650,16 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
             return -1;
         }
         return 0;
+    }
+
+    /**
+     * 根据订单号查找开票订单数据.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceSourceDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    @Override
+    public InvoiceSourceDO findByOrderNo(final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceSourceMapper.findByOrderNo(invoiceSourceDTO);
     }
 }

@@ -5,6 +5,7 @@ import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
+import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
 import cn.suparking.invoice.service.InvoiceSourceService;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
@@ -59,6 +60,22 @@ public class InvoiceSourceController {
                     SpkCommonAssert.notNull(item.getUserId(), "用户id不能为空");
                     Integer createCount = invoiceSourceService.createOrUpdate(invoiceSourceDTO);
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
+                }).orElseGet(() -> SpkCommonResult.error("发票订单信息不能为空"));
+    }
+
+    /**
+     * 根据订单号查找开票订单数据.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceSourceDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    @PostMapping("findByOrderNo")
+    public SpkCommonResult findByOrderNo(@RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
+        return Optional.ofNullable(invoiceSourceDTO)
+                .map(item -> {
+                    SpkCommonAssert.notNull(item.getOrderNo(), "订单号不能为空");
+                    InvoiceSourceDO invoiceSourceDO = invoiceSourceService.findByOrderNo(invoiceSourceDTO);
+                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, invoiceSourceDO);
                 }).orElseGet(() -> SpkCommonResult.error("发票订单信息不能为空"));
     }
 

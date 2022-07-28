@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -37,7 +38,10 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
      */
     @Override
     public SpkCommonResult createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
-        orderTemplateService.createCarGroupOrder(carGroupOrderDTO);
+        Integer result = orderTemplateService.createCarGroupOrder(carGroupOrderDTO);
+        if (Objects.isNull(result) || result < 0) {
+            return SpkCommonResult.error("合约订单操作失败");
+        }
         // 同步开票元数据
         if (carGroupOrderDTO.getDueAmount() > 0) {
             carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
@@ -51,9 +55,9 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
     /**
      * 组织合约订单数据.
      *
-     * @param vipPayDTO {@linkplain VipPayDTO}
-     * @param carGroup  {@linkplain CarGroupDTO}
-     * @param operateType  操作类型 新办 NEW 续费 RENEW
+     * @param vipPayDTO   {@linkplain VipPayDTO}
+     * @param carGroup    {@linkplain CarGroupDTO}
+     * @param operateType 操作类型 新办 NEW 续费 RENEW
      * @return {@link CarGroupOrderDTO}
      * @author ZDD
      * @date 2022/7/22 18:25:13

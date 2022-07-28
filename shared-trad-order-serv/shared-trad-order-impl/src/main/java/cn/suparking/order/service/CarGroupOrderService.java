@@ -1,5 +1,6 @@
 package cn.suparking.order.service;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
@@ -27,7 +28,7 @@ public interface CarGroupOrderService {
      *
      * @param carGroupOrderDTO 订单信息
      */
-    void createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
+    Integer createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
 
     /**
      * 根据订单号获取合约信息.

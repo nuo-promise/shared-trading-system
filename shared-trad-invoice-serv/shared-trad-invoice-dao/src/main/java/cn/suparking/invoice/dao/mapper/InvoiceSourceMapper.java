@@ -52,4 +52,12 @@ public interface InvoiceSourceMapper {
      * @return Integer
      */
     Integer deleteById(Long id);
+
+    /**
+     * 根据订单号查找开票订单数据.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceSourceDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    InvoiceSourceDO findByOrderNo(InvoiceSourceDTO invoiceSourceDTO);
 }

@@ -182,5 +182,7 @@ feign:
   circuitbreaker:
     enabled: true
 sparking:
+  #电子发票服务
   invoice:
+    nnfpurl: http://nnfpbox.nuonuocs.cn/shop/buyer/allow/ecOd/queryElectricKp.action
     dataUrl: http://datasync.suparking.cn:25850/api/projectConfig

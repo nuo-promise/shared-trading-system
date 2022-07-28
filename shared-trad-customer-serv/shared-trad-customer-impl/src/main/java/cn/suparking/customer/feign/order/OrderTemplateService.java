@@ -20,9 +20,10 @@ public interface OrderTemplateService {
      * 新增/更新合约订单.
      *
      * @param carGroupOrderDTO 订单内容
+     * @return {@linkplain Integer}
      */
     @PostMapping("/car-group-order/createCarGroupOrder")
-    void createCarGroupOrder(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
+    Integer createCarGroupOrder(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
 
     /**
      * 根据orderNo 获取合约订单.

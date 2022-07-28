@@ -30,9 +30,9 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
         return new OrderTemplateService() {
 
             @Override
-            public void createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
+            public Integer createCarGroupOrder(final CarGroupOrderDTO carGroupOrderDTO) {
                 log.error("OrderTemplateService: createCarGroupOrder error: " + cause.getMessage());
-                return;
+                return null;
             }
 
             @Override

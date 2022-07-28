@@ -1,5 +1,7 @@
 package cn.suparking.customer.feign.invoice;
 
+import api.beans.InvoiceModelDTO;
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.invoice.fallback.InvoiceTemplateFallbackFactory;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
@@ -42,4 +44,12 @@ public interface InvoiceTemplateService {
      */
     @PostMapping("/invoice-source-api/car-group-order/refund")
     Integer refundCarGroupOrderInvoice(@RequestBody CarGroupOrderDTO carGroupOrderDTO);
+
+    /**
+     * 开票数据存储.
+     * @param invoiceModelDTO {@linkplain InvoiceModelDTO}
+     * @return {@linkplain Integer}
+     */
+    @PostMapping("/invoice-model-api/makeInvoiceModel")
+    SpkCommonResult makeInvoiceModel(@RequestBody InvoiceModelDTO invoiceModelDTO);
 }

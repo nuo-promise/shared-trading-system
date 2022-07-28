@@ -21,7 +21,6 @@ public interface InvoiceSourceService {
      */
     List<InvoiceSourceDO> invoiceSourceList(InvoiceSourceDTO invoiceSourceDTO);
 
-
     /**
      * 获取开票订单列表.
      *
@@ -38,9 +37,9 @@ public interface InvoiceSourceService {
      */
     Integer createOrUpdate(InvoiceSourceDTO invoiceSourceDTO);
 
-
     /**
      * 根据ID删除.
+     *
      * @param id id
      * @return {@Link Integer}
      */
@@ -73,4 +72,12 @@ public interface InvoiceSourceService {
      * @return Integer
      */
     Integer refundCarGroupOrderInvoice(CarGroupRefundOrderDTO carGroupRefundOrderDTO);
+
+    /**
+     * 根据订单号查找开票订单数据.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceSourceDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    InvoiceSourceDO findByOrderNo(InvoiceSourceDTO invoiceSourceDTO);
 }
