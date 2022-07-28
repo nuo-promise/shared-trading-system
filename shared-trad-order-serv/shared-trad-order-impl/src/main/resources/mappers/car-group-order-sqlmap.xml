@@ -466,5 +466,4 @@
         WHERE
         id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
     </update>
-
 </mapper>

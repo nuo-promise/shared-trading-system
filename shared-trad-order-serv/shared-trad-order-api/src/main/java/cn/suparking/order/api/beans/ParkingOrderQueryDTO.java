@@ -94,6 +94,11 @@ public class ParkingOrderQueryDTO {
     @NotBlank
     private String userId;
 
+    // TEMP VIP
+    @NotNull
+    @NotBlank
+    private String type;
+
     private Timestamp startDate;
 
     private Timestamp endDate;
