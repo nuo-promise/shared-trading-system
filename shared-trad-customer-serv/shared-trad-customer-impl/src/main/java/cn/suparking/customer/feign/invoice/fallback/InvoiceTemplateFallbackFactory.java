@@ -1,6 +1,7 @@
 package cn.suparking.customer.feign.invoice.fallback;
 
 import api.beans.InvoiceModelDTO;
+import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
@@ -52,6 +53,12 @@ public class InvoiceTemplateFallbackFactory implements FallbackFactory<InvoiceTe
             @Override
             public SpkCommonResult makeInvoiceModel(final InvoiceModelDTO invoiceModelDTO) {
                 log.error("InvoiceTemplateService: makeInvoiceModel error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
+            public SpkCommonResult getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO) {
+                log.error("InvoiceTemplateService: getInvoiceSource error: " + cause.getMessage());
                 return null;
             }
         };

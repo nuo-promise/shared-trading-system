@@ -48,6 +48,21 @@ public class InvoiceSourceController {
     }
 
     /**
+     * 小程序获取用户开票订单列表.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    @PostMapping("getInvoiceSource")
+    public SpkCommonResult getInvoiceSource(@RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
+        return Optional.ofNullable(invoiceSourceDTO)
+                .map(item -> {
+                    SpkCommonAssert.notBlank(String.valueOf(item.getUserId()), "userId不能为空");
+                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, invoiceSourceService.getInvoiceSource(invoiceSourceDTO));
+                }).orElseGet(() -> SpkCommonResult.error("用户信息不能为空"));
+    }
+
+    /**
      * 新增 | 修改 发票订单.
      *
      * @param invoiceSourceDTO {@linkplain InvoiceSourceDTO}
@@ -62,6 +77,7 @@ public class InvoiceSourceController {
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, createCount);
                 }).orElseGet(() -> SpkCommonResult.error("发票订单信息不能为空"));
     }
+
 
     /**
      * 根据订单号查找开票订单数据.

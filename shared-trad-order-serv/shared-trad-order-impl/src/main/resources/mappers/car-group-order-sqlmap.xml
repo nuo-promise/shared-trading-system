@@ -17,6 +17,7 @@
         <result column="due_amount" jdbcType="INTEGER" property="dueAmount" />
         <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
         <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="pay_time" jdbcType="BIGINT" property="payTime" />
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
         <result column="order_state" jdbcType="VARCHAR" property="orderState" />
@@ -48,6 +49,7 @@
         <result column="due_amount" jdbcType="INTEGER" property="dueAmount" />
         <result column="pay_channel" jdbcType="VARCHAR" property="payChannel" />
         <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+        <result column="pay_time" jdbcType="BIGINT" property="payTime" />
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
         <result column="order_state" jdbcType="VARCHAR" property="orderState" />
@@ -75,7 +77,7 @@
         id, user_id, order_no, car_group_id, car_type_id,
 		car_type_name, protocol_id, protocol_name, begin_date, end_date,
 		total_amount, discounted_amount, due_amount, pay_channel,
-		pay_type, user_name, user_mobile, order_state, invoice_state,
+		pay_type, pay_time,user_name, user_mobile, order_state, invoice_state,
 		invoice_time,refund_state, term_no, project_no, order_type, creator,
 		modifier, date_created, date_updated
     </sql>
@@ -120,6 +122,9 @@
             <if test="payType != null">
                 AND a.pay_type = #{payType,jdbcType=VARCHAR}
             </if>
+            <if test="payTime != null">
+                AND a.pay_time = #{payTime,jdbcType=BIGINT}
+            </if>
             <if test="beginTime != null">
                 AND a.date_created &gt;= #{beginTime,jdbcType=BIGINT}
             </if>
@@ -158,6 +163,7 @@
             a.due_amount,
             a.pay_channel,
             a.pay_type,
+            a.pay_time,
             a.user_name,
             a.user_mobile,
             a.order_state,
@@ -206,6 +212,9 @@
             <if test="payType != null">
                 AND a.pay_type = #{payType,jdbcType=VARCHAR}
             </if>
+            <if test="payTime != null">
+                AND a.pay_time = #{payTime,jdbcType=BIGINT}
+            </if>
             <if test="beginTime != null">
                 AND a.date_created &gt;= #{beginTime,jdbcType=VARCHAR}
             </if>
@@ -232,6 +241,17 @@
         <include refid="Base_Column_List"/>
         FROM spk_car_group_order
         WHERE order_no = #{orderNo, jdbcType=VARCHAR}
+    </select>
+    <select id="findVipOrderByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            spk_car_group_order
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT} AND pay_time &gt;= #{startDate,jdbcType=BIGINT} AND pay_time &lt;= #{endDate,jdbcType=BIGINT}
+        AND
+            order_state IN ('SUCCESS','CLOSED','FAILED')
+        ORDER BY pay_time DESC
     </select>
 
     <insert id="insert" parameterType="cn.suparking.order.dao.entity.CarGroupOrderDO">
@@ -281,6 +301,9 @@
             </if>
             <if test="payType != null">
                 pay_type,
+            </if>
+            <if test="payTime != null">
+                pay_time,
             </if>
             <if test="userName != null">
                 user_name,
@@ -368,6 +391,9 @@
             <if test="payType != null">
                 #{payType,jdbcType=VARCHAR},
             </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=BIGINT},
+            </if>
             <if test="userName != null">
                 #{userName,jdbcType=VARCHAR},
             </if>
@@ -436,6 +462,8 @@
             pay_channel = #{payChannel,jdbcType=VARCHAR} , </if>
         <if test="payType != null">
             pay_type = #{payType,jdbcType=VARCHAR} , </if>
+        <if test="payTime != null">
+            pay_time = #{payTime,jdbcType=BIGINT} , </if>
         <if test="userName != null">
             user_name = #{userName,jdbcType=VARCHAR} , </if>
         <if test="userMobile != null">

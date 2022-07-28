@@ -1,6 +1,7 @@
 package cn.suparking.customer.feign.invoice;
 
 import api.beans.InvoiceModelDTO;
+import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.invoice.fallback.InvoiceTemplateFallbackFactory;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
@@ -14,8 +15,9 @@ public interface InvoiceTemplateService {
 
     /**
      * 存储parkingOrder到发票数据库中.
+     *
      * @param parkingOrderDTO {@link ParkingOrderDTO}
-     * @return  {@link Integer}
+     * @return {@link Integer}
      */
     @PostMapping("/invoice-source-api/parking-order")
     Integer createOrUpdateParkingOrderInvoice(@RequestBody ParkingOrderDTO parkingOrderDTO);
@@ -23,14 +25,16 @@ public interface InvoiceTemplateService {
 
     /**
      * parkingOrder 退款,对应到发票数据库中.
+     *
      * @param parkingOrderDTO {@link ParkingOrderDTO}
-     * @return  {@link Integer}
+     * @return {@link Integer}
      */
     @PostMapping("/invoice-source-api/parking-order/refund")
     Integer refundParkingOrderInvoice(@RequestBody ParkingOrderDTO parkingOrderDTO);
 
     /**
      * 存储 carGroupOrder 到发票数据库中.
+     *
      * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
      * @return {@linkplain Integer}
      */
@@ -39,6 +43,7 @@ public interface InvoiceTemplateService {
 
     /**
      * carGroupOrder退款,对应到发票数据库.
+     *
      * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
      * @return {@linkplain Integer}
      */
@@ -47,9 +52,19 @@ public interface InvoiceTemplateService {
 
     /**
      * 开票数据存储.
+     *
      * @param invoiceModelDTO {@linkplain InvoiceModelDTO}
      * @return {@linkplain Integer}
      */
     @PostMapping("/invoice-model-api/makeInvoiceModel")
     SpkCommonResult makeInvoiceModel(@RequestBody InvoiceModelDTO invoiceModelDTO);
+
+    /**
+     * 获取可开票列表.
+     *
+     * @param invoiceSourceDTO {@link InvoiceSourceDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/invoice-source-api/getInvoiceSource")
+    SpkCommonResult getInvoiceSource(@RequestBody InvoiceSourceDTO invoiceSourceDTO);
 }

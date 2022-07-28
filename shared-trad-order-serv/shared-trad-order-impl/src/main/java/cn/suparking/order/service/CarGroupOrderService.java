@@ -1,10 +1,13 @@
 package cn.suparking.order.service;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
+import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.dao.vo.LockOrderVO;
 import com.github.pagehelper.PageInfo;
+
+import java.util.LinkedList;
 
 public interface CarGroupOrderService {
     /**
@@ -38,4 +41,12 @@ public interface CarGroupOrderService {
      * @return Integer
      */
     CarGroupOrderDO findByOrderNo(CarGroupOrderDTO carGroupOrderDTO);
+
+    /**
+     * 根据订单编号查询合约订单.
+     *
+     * @param parkingOrderQueryDTO {@link ParkingOrderQueryDTO}
+     * @return {@linkplain CarGroupOrderDO}
+     */
+    LinkedList<LockOrderVO> findVipOrderByUserId(ParkingOrderQueryDTO parkingOrderQueryDTO);
 }

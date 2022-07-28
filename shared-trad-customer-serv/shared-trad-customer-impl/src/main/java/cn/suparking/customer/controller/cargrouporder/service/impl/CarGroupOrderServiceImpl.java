@@ -5,6 +5,7 @@ import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
 import cn.suparking.customer.api.beans.vip.VipPayDTO;
 import cn.suparking.customer.api.constant.ParkConstant;
+import cn.suparking.customer.api.constant.order.OrderConstant;
 import cn.suparking.customer.controller.cargrouporder.service.CarGroupOrderService;
 import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.customer.feign.order.OrderTemplateService;
@@ -38,11 +39,11 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
      */
     @Override
     public SpkCommonResult createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
-        Integer result = orderTemplateService.createCarGroupOrder(carGroupOrderDTO);
+        Long result = orderTemplateService.createOrUpdate(carGroupOrderDTO);
         if (Objects.isNull(result) || result < 0) {
             return SpkCommonResult.error("合约订单操作失败");
         }
-        return SpkCommonResult.success();
+        return SpkCommonResult.success(result);
     }
 
     /**
@@ -90,6 +91,12 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
         carGroupOrder.setPayChannel(ParkConstant.PAY_TYPE);
         //设置支付方式
         carGroupOrder.setPayType(ParkConstant.PAY_TYPE);
+        //开票状态
+        carGroupOrder.setInvoiceState(OrderConstant.INVOICE_STATE_UNISSUED);
+        //退费状态
+        carGroupOrder.setRefundState(OrderConstant.REFUND_STATE_NONE);
+        //终端号
+        carGroupOrder.setTermNo(OrderConstant.ORDER_TERM_NO);
 
         if (orderNo.endsWith("W")) {
             carGroupOrder.setPayType(ParkConstant.WXPAY);
@@ -104,9 +111,9 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
         //设置订单状态
         carGroupOrder.setOrderState(orderState);
         //设置创建人
-        carGroupOrder.setCreator(ParkConstant.SYSTEM);
+        carGroupOrder.setCreator(ParkConstant.OPERATOR);
         //设置修改人
-        carGroupOrder.setModifier(ParkConstant.SYSTEM);
+        carGroupOrder.setModifier(ParkConstant.OPERATOR);
         //设置创建时间
         carGroupOrder.setDateCreated(new Timestamp(System.currentTimeMillis()));
         //设置更新时间
@@ -120,7 +127,6 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
     public CarGroupOrderDO findByOrderNo(final String orderNo) {
         CarGroupOrderDTO carGroupOrderDTO = new CarGroupOrderDTO();
         carGroupOrderDTO.setOrderNo(orderNo);
-        CarGroupOrderDO carGroupOrderDO = orderTemplateService.findByOrderNo(carGroupOrderDTO);
-        return carGroupOrderDO;
+        return orderTemplateService.findByOrderNo(carGroupOrderDTO);
     }
 }

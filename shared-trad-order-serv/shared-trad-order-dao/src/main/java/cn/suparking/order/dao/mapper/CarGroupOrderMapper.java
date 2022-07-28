@@ -2,10 +2,13 @@ package cn.suparking.order.dao.mapper;
 
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.dao.vo.LockOrderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface CarGroupOrderMapper {
@@ -57,4 +60,6 @@ public interface CarGroupOrderMapper {
      * @return {@linkplain CarGroupOrderDO}
      */
     CarGroupOrderDO findByOrderNo(@Param("orderNo") String orderNo);
+
+    List<CarGroupOrderDO> findVipOrderByUserId(Map<String, Object> params);
 }

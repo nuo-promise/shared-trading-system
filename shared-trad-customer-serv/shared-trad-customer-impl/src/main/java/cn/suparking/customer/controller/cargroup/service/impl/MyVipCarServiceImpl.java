@@ -6,6 +6,7 @@ import cn.suparking.common.api.configuration.SnowflakeConfig;
 import cn.suparking.common.api.exception.SpkCommonException;
 import cn.suparking.common.api.utils.DateUtils;
 import cn.suparking.common.api.utils.HttpRequestUtils;
+import cn.suparking.common.api.utils.HttpUtils;
 import cn.suparking.common.api.utils.RandomCharUtils;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.customer.api.beans.cargroup.CarGroupDTO;
@@ -318,8 +319,6 @@ public class MyVipCarServiceImpl implements MyVipCarService {
             if (Objects.isNull(carGroupOrderResult) || carGroupOrderResult.getCode() != 200) {
                 return SpkCommonResult.error(SpkCommonResultMessage.CAR_GROUP_DATA_VALID + "保存合约订单失败！");
             }
-
-
         }
 
         // 下面进行下单.
@@ -537,33 +536,34 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         //修改合约订单状态
         CarGroupOrderDTO carGroupOrderDTO = CarGroupOrderDTO.builder().id(String.valueOf(carGroupOrderDO.getId()))
                 .userId(carGroupOrderDO.getUserId()).carGroupId(String.valueOf(carGroupOrderDO.getCarGroupId()))
-                .orderState("SUCCESS").build();
+                .orderState("SUCCESS").payTime(DateUtils.getCurrentSecond()).build();
         carGroupOrderService.createOrUpdate(carGroupOrderDTO);
         //修改合约状态
         if (ParkConstant.RENEW.equals(vipPayDTO.getOperateType())) {
             //续费合约
             CarGroupDTO carGroup = carGroupService.check(vipPayDTO, vipPayDTO.getOperateType());
-
-            Map<String, Object> params = new HashMap<>();
-            JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(carGroup));
-            for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
-                params.put(entry.getKey(), entry.getValue());
-            }
-
-            HttpRequestUtils.sendPost(sparkProperties.getUrl() + ParkConstant.INTERFACE_RENEW, params);
+            HttpUtils.sendPost(sparkProperties.getUrl() + ParkConstant.INTERFACE_RENEW, JSONObject.toJSONString(carGroup));
         } else {
             Map<String, Object> params = new HashMap<>();
             params.put("id", carGroupOrderDO.getCarGroupId());
-            HttpRequestUtils.sendGet(sparkProperties.getUrl() + ParkConstant.INTERFACE_MODIFYVALID, params);
+            HttpUtils.sendGet(sparkProperties.getUrl() + ParkConstant.INTERFACE_MODIFYVALID, params);
+            //修改库存
+            CarGroupStockQueryDTO carGroupStockQueryDTO = CarGroupStockQueryDTO.builder().operateType(ParkConstant.DECREASE).quantity(vipPayDTO.getQuantity())
+                    .modifier(ParkConstant.OPERATOR).id(Long.valueOf(vipPayDTO.getStockId())).termNo("501").build();
+            carGroupStockService.operate(carGroupStockQueryDTO);
         }
-        //修改库存
-        CarGroupStockQueryDTO carGroupStockQueryDTO = CarGroupStockQueryDTO.builder().operateType(ParkConstant.DECREASE).quantity(vipPayDTO.getQuantity())
-                .modifier(ParkConstant.SYSTEM).id(Long.valueOf(vipPayDTO.getStockId())).termNo("501").build();
-        carGroupStockService.operate(carGroupStockQueryDTO);
 
         // 同步开票元数据
-        if (carGroupOrderDTO.getDueAmount() > 0) {
+        if (carGroupOrderDO.getDueAmount() > 0) {
+            carGroupOrderDTO.setOrderNo(orderNo);
+            carGroupOrderDTO.setDueAmount(carGroupOrderDO.getDueAmount());
             carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
+            carGroupOrderDTO.setPayType(carGroupOrderDO.getPayType());
+            carGroupOrderDTO.setProjectNo(carGroupOrderDO.getProjectNo());
+            carGroupOrderDTO.setPayChannel(carGroupOrderDO.getPayChannel());
+            carGroupOrderDTO.setBeginTime(carGroupOrderDO.getBeginDate());
+            carGroupOrderDTO.setEndTime(carGroupOrderDO.getEndDate());
+            carGroupOrderDTO.setProtocolId(carGroupOrderDO.getProtocolId());
             if (invoiceTemplateService.createOrUpdateCarGroupOrderInvoice(carGroupOrderDTO) < 0) {
                 log.warn("用户ID: " + carGroupOrderDTO.getUserId() + ", 合约ID: " + carGroupOrderDTO.getProtocolId() + ",订单号: " + carGroupOrderDTO.getOrderNo() + ", 同步开票元数据失败");
             }

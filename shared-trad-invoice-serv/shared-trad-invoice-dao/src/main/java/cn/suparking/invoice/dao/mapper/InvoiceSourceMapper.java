@@ -60,4 +60,12 @@ public interface InvoiceSourceMapper {
      * @return {@linkplain SpkCommonResult}
      */
     InvoiceSourceDO findByOrderNo(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 小程序获取用户开票订单列表.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    List<InvoiceSourceDO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
 }

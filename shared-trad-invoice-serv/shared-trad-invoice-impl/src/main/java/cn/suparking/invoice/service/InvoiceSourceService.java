@@ -27,6 +27,14 @@ public interface InvoiceSourceService {
      * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
      * @return {@linkplain SpkCommonResult}
      */
+    List<InvoiceSourceDO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 获取开票订单列表.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
     List<InvoiceSourceDO> invoiceSourceListLikeOrderNo(InvoiceSourceDTO invoiceSourceDTO);
 
     /**
@@ -47,6 +55,7 @@ public interface InvoiceSourceService {
 
     /**
      * 更新或者创建临停订单对应的发票数据.
+     *
      * @param parkingOrderDTO {@linkplain ParkingOrderDTO}
      * @return Integer
      */
@@ -54,6 +63,7 @@ public interface InvoiceSourceService {
 
     /**
      * 临停订单退费对应发票数据.
+     *
      * @param parkingRefundOrderDTO {@linkplain ParkingRefundOrderDTO}
      * @return Integer
      */
@@ -61,6 +71,7 @@ public interface InvoiceSourceService {
 
     /**
      * 更新或者创建合约订单对应的发票数据.
+     *
      * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
      * @return Integer
      */
@@ -68,6 +79,7 @@ public interface InvoiceSourceService {
 
     /**
      * 临停订单退费对应发票数据.
+     *
      * @param carGroupRefundOrderDTO {@linkplain CarGroupRefundOrderDTO}
      * @return Integer
      */
