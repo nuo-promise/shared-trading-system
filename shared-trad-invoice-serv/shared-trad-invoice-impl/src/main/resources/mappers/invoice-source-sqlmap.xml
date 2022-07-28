@@ -33,6 +33,7 @@
         protocol_id,invoice_code,
         term_no,operator
     </sql>
+
     <delete id="deleteById">
         DELETE FROM spk_invoice_source WHERE id = #{id,jdbcType=BIGINT}
     </delete>

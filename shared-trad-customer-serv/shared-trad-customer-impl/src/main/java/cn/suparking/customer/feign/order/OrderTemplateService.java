@@ -1,6 +1,5 @@
 package cn.suparking.customer.feign.order;
 
-import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.order.fallback.OrderTemplateFallbackFactory;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.OrderDTO;
@@ -21,6 +20,7 @@ public interface OrderTemplateService {
      * 新增/更新合约订单.
      *
      * @param carGroupOrderDTO 订单内容
+     * @return {@linkplain Integer}
      */
     @PostMapping("/car-group-order/createCarGroupOrder")
     Integer createCarGroupOrder(@RequestBody CarGroupOrderDTO carGroupOrderDTO);

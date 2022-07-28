@@ -3,7 +3,6 @@ package cn.suparking.invoice.service;
 import api.beans.InvoiceInfoQueryDTO;
 import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
-import cn.suparking.invoice.dao.entity.InvoiceModelDO;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
@@ -48,7 +47,6 @@ public interface InvoiceSourceService {
 
     /**
      * 更新或者创建临停订单对应的发票数据.
-     *
      * @param parkingOrderDTO {@linkplain ParkingOrderDTO}
      * @return Integer
      */
@@ -56,7 +54,6 @@ public interface InvoiceSourceService {
 
     /**
      * 临停订单退费对应发票数据.
-     *
      * @param parkingRefundOrderDTO {@linkplain ParkingRefundOrderDTO}
      * @return Integer
      */
@@ -64,7 +61,6 @@ public interface InvoiceSourceService {
 
     /**
      * 更新或者创建合约订单对应的发票数据.
-     *
      * @param carGroupOrderDTO {@linkplain CarGroupOrderDTO}
      * @return Integer
      */
@@ -72,7 +68,6 @@ public interface InvoiceSourceService {
 
     /**
      * 临停订单退费对应发票数据.
-     *
      * @param carGroupRefundOrderDTO {@linkplain CarGroupRefundOrderDTO}
      * @return Integer
      */

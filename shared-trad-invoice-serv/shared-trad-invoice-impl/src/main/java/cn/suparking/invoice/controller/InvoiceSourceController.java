@@ -63,7 +63,6 @@ public class InvoiceSourceController {
                 }).orElseGet(() -> SpkCommonResult.error("发票订单信息不能为空"));
     }
 
-
     /**
      * 根据订单号查找开票订单数据.
      *

@@ -26,6 +26,7 @@ import cn.suparking.customer.dao.entity.CarGroupStockDO;
 import cn.suparking.customer.dao.vo.cargroup.MyVipCarVo;
 import cn.suparking.customer.dao.vo.cargroup.ProjectVipCarVo;
 import cn.suparking.customer.dao.vo.cargroup.ProtocolVipCarVo;
+import cn.suparking.customer.feign.invoice.InvoiceTemplateService;
 import cn.suparking.customer.spring.SharedTradCustomerInit;
 import cn.suparking.customer.tools.OrderUtils;
 import cn.suparking.customer.tools.ReactiveRedisUtils;
@@ -41,6 +42,7 @@ import com.suparking.payutils.model.APIOrderModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -83,11 +85,14 @@ public class MyVipCarServiceImpl implements MyVipCarService {
     @Resource
     private MiniProperties miniProperties;
 
+    private final InvoiceTemplateService invoiceTemplateService;
+
     public MyVipCarServiceImpl(final CarGroupService carGroupService, final CarGroupOrderService carGroupOrderService,
-                               final CarGroupStockService carGroupStockService) {
+                               final CarGroupStockService carGroupStockService, final InvoiceTemplateService invoiceTemplateService) {
         this.carGroupService = carGroupService;
         this.carGroupOrderService = carGroupOrderService;
         this.carGroupStockService = carGroupStockService;
+        this.invoiceTemplateService = invoiceTemplateService;
     }
 
     /**
@@ -307,12 +312,14 @@ public class MyVipCarServiceImpl implements MyVipCarService {
 
             // TODO 组织数据创建合约 和 创建 合约订单
             vipPayDTO.setOrderNo(orderNo);
-            CarGroupOrderDTO carGroupOrder = carGroupOrderService.makeCarGroupOrder(vipPayDTO, carGroup, ParkConstant.SUCCESS, operateType);
+            CarGroupOrderDTO carGroupOrderDTO = carGroupOrderService.makeCarGroupOrder(vipPayDTO, carGroup, ParkConstant.SUCCESS, operateType);
             //保存订单
-            SpkCommonResult carGroupOrderResult = carGroupOrderService.createOrUpdate(carGroupOrder);
+            SpkCommonResult carGroupOrderResult = carGroupOrderService.createOrUpdate(carGroupOrderDTO);
             if (Objects.isNull(carGroupOrderResult) || carGroupOrderResult.getCode() != 200) {
                 return SpkCommonResult.error(SpkCommonResultMessage.CAR_GROUP_DATA_VALID + "保存合约订单失败！");
             }
+
+
         }
 
         // 下面进行下单.
@@ -525,7 +532,7 @@ public class MyVipCarServiceImpl implements MyVipCarService {
      * @date 2022/7/22 16:29:23
      */
     @Override
-    public void vipOrderPaySuccess(final String orderNo, final VipPayDTO vipPayDTO) {
+    public Boolean vipOrderPaySuccess(final String orderNo, final VipPayDTO vipPayDTO) {
         CarGroupOrderDO carGroupOrderDO = carGroupOrderService.findByOrderNo(orderNo);
         //修改合约订单状态
         CarGroupOrderDTO carGroupOrderDTO = CarGroupOrderDTO.builder().id(String.valueOf(carGroupOrderDO.getId()))
@@ -553,6 +560,15 @@ public class MyVipCarServiceImpl implements MyVipCarService {
         CarGroupStockQueryDTO carGroupStockQueryDTO = CarGroupStockQueryDTO.builder().operateType(ParkConstant.DECREASE).quantity(vipPayDTO.getQuantity())
                 .modifier(ParkConstant.SYSTEM).id(Long.valueOf(vipPayDTO.getStockId())).termNo("501").build();
         carGroupStockService.operate(carGroupStockQueryDTO);
+
+        // 同步开票元数据
+        if (carGroupOrderDTO.getDueAmount() > 0) {
+            carGroupOrderDTO.setPayTime(DateUtils.getCurrentSecond());
+            if (invoiceTemplateService.createOrUpdateCarGroupOrderInvoice(carGroupOrderDTO) < 0) {
+                log.warn("用户ID: " + carGroupOrderDTO.getUserId() + ", 合约ID: " + carGroupOrderDTO.getProtocolId() + ",订单号: " + carGroupOrderDTO.getOrderNo() + ", 同步开票元数据失败");
+            }
+        }
+        return true;
     }
 
     /**

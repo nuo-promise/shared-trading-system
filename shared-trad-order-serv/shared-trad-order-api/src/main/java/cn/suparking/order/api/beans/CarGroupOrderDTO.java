@@ -95,6 +95,8 @@ public class CarGroupOrderDTO implements Serializable {
      */
     private Long invoiceTime;
 
+    private String operator;
+
     /**
      * 开票服务数据库对应的订单编号(可能含有@).
      */

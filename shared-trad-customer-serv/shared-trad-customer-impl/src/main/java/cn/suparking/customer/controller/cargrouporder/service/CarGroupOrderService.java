@@ -20,6 +20,8 @@ public interface CarGroupOrderService {
      *
      * @param vipPayDTO {@linkplain VipPayDTO}
      * @param carGroup  {@linkplain CarGroupDTO}
+     * @param orderState 订单状态
+     * @param operateType 操作类型 新办 NEW 续费 RENEW
      * @return {@link CarGroupOrderDTO}
      * @author ZDD
      * @date 2022/7/22 18:25:13

@@ -27,8 +27,9 @@ public interface CarGroupOrderService {
      * 创建或修改合约订单.
      *
      * @param carGroupOrderDTO 订单信息
+     * @return {@link Long}
      */
-    Integer createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
+    Long createOrUpdate(CarGroupOrderDTO carGroupOrderDTO);
 
     /**
      * 根据订单号获取合约信息.
