@@ -35,12 +35,12 @@ public class InvoiceModelQueryDTO implements Serializable {
     /**
      * 购方企业名称.
      */
-    private String buyerAme;
+    private String buyername;
 
     /**
      * 购方企业税号.
      */
-    private String taxNum;
+    private String taxnum;
 
     /**
      * 购方企业地址.
@@ -55,42 +55,42 @@ public class InvoiceModelQueryDTO implements Serializable {
     /**
      * 购方企业电话.
      */
-    private String telePhone;
+    private String telephone;
 
     /**
      * 订单号.
      */
-    private String orderNo;
+    private String orderno;
 
     /**
      * 单据时间.
      */
-    private Date invoiceDate;
+    private Date invoicedate;
 
     /**
      * 销方企业税号.
      */
-    private String saleTaxNum;
+    private String saletaxnum;
 
     /**
      * 销方企业银行开户行及账号.
      */
-    private String saleAccount;
+    private String saleaccount;
 
     /**
      * 销方企业电话.
      */
-    private String salePhone;
+    private String salephone;
 
     /**
      * 销方企业地址.
      */
-    private String saleAddress;
+    private String saleaddress;
 
     /**
      * 发票类型，1:正票;2：红票.
      */
-    private String kpType;
+    private String kptype;
 
     /**
      * 开票人.

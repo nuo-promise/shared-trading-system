@@ -317,7 +317,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     }
 
     @Override
-    public Boolean createAndUpdateParkingOrder(final OrderDTO orderDTO) {
+    public Long createAndUpdateParkingOrder(final OrderDTO orderDTO) {
         ParkingOrder parkingOrder = orderDTO.getParkingOrder();
         ParkingOrderDTO parkingOrderDTO = ParkingOrderDTO.builder()
                 .userId(parkingOrder.getUserId().toString())
@@ -356,7 +356,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         Long parkingOrderId = createOrUpdate(parkingOrderDTO);
         if (parkingOrderId == -1L) {
             log.error("操作停车订单数据库 ParkingOrder 失败 " + JSON.toJSONString(parkingOrderDTO));
-            return false;
+            return -1L;
         }
         List<ChargeInfo> chargeInfos = parkingOrder.getChargeInfos();
         if (Objects.nonNull(chargeInfos) && !chargeInfos.isEmpty()) {
@@ -414,7 +414,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
                 log.error("操作停车订单优惠券数据库 DiscountInfo 失败 " + JSON.toJSONString(discountInfoDTO));
             }
         }
-        return true;
+        return parkingOrderId;
     }
 
     @Override

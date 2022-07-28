@@ -123,7 +123,6 @@ public class InvoiceSourceDO implements Serializable {
                     .orderNo(item.getOrderNo())
                     .state(item.getState())
                     .projectNo(item.getProjectNo())
-                    .projectName(item.getProjectName())
                     .startTime(item.getStartTime())
                     .endTime(item.getEndTime())
                     .payType(item.getPayType())

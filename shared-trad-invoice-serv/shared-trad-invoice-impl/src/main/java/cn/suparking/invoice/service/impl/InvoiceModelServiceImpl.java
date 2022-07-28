@@ -3,7 +3,7 @@ package cn.suparking.invoice.service.impl;
 import api.beans.InvoiceDetail;
 import api.beans.InvoiceModelDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
-import cn.suparking.common.api.utils.HttpUtils;
+import cn.suparking.common.api.utils.HttpInvoice;
 import cn.suparking.invoice.dao.entity.InvoiceDetailDO;
 import cn.suparking.invoice.dao.entity.InvoiceModelDO;
 import cn.suparking.invoice.dao.mapper.InvoiceDetailMapper;
@@ -44,7 +44,7 @@ public class InvoiceModelServiceImpl implements InvoiceModelService {
         //请求诺诺开发票
         String makeInvoiceData = invoiceModelDTO.getMakeInvoiceData();
 
-        JSONObject result = HttpUtils.sendPost(nnfpurl, makeInvoiceData);
+        JSONObject result = HttpInvoice.requestMethod(nnfpurl, makeInvoiceData);
         if (Objects.isNull(result) || !InvoiceConstant.SUCCESS.equals(result.getString("status"))) {
             log.warn("请求获取开票失败 [{}]", JSONObject.toJSONString(result));
             return SpkCommonResult.error("请求开票失败");

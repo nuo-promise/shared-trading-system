@@ -8,9 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @ComponentScan(basePackages = {"cn.suparking"})
 @EnableDiscoveryClient
+@EnableFeignClients(basePackages = {"cn.suparking"})
 public class Application {
 
     /**

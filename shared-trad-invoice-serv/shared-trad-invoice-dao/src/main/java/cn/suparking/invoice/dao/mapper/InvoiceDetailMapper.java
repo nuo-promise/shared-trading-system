@@ -14,8 +14,8 @@ public interface InvoiceDetailMapper {
     /**
      * 新增发票抬头.
      *
-     * @param invoiceDetailDOList {@link InvoiceDetailDO}
+     * @param list {@link InvoiceDetailDO}
      * @return Integer
      */
-    Integer insertBatch(List<InvoiceDetailDO> invoiceDetailDOList);
+    Integer insertBatch(List<InvoiceDetailDO> list);
 }

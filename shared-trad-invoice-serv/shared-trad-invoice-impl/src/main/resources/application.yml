@@ -1,5 +1,5 @@
 server:
-  port: 20023
+  port: 20003
   # 返回给页面的结果里,把错误信息添加到message里
   error:
     include-message: always
@@ -164,8 +164,8 @@ mybatis:
 
 logging:
   level:
-    cn.suparking.invoice: info
-    org.apache.shardingsphere: info
+    cn.suparking.invoice: debug
+    org.apache.shardingsphere: debug
 feign:
   client:
     config:
@@ -185,3 +185,4 @@ sparking:
   #电子发票服务
   invoice:
     nnfpurl: http://nnfpbox.nuonuocs.cn/shop/buyer/allow/ecOd/queryElectricKp.action
+    dataUrl: http://datasync.suparking.cn:25850/api/projectConfig

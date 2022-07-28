@@ -1,5 +1,6 @@
 package cn.suparking.order.service.impl;
 
+import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
@@ -48,12 +49,13 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
     }
 
     @Override
-    public void createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
+    public Integer createOrUpdate(final CarGroupOrderDTO carGroupOrderDTO) {
         CarGroupOrderDO carGroupOrderDO = CarGroupOrderDO.buildCarGroupOrderDO(carGroupOrderDTO);
         if (StringUtils.isEmpty(carGroupOrderDTO.getId())) {
-            carGroupOrderMapper.insert(carGroupOrderDO);
+            return carGroupOrderMapper.insert(carGroupOrderDO);
+
         }
-        carGroupOrderMapper.update(carGroupOrderDO);
+        return carGroupOrderMapper.update(carGroupOrderDO);
     }
 
     @Override

@@ -4,18 +4,18 @@
     <resultMap id="BaseResultMap" type="cn.suparking.invoice.dao.entity.InvoiceModelDO">
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="user_id" jdbcType="BIGINT" property="userId" />
-        <result column="buyer_ame" jdbcType="VARCHAR" property="buyerAme" />
-        <result column="tax_num" jdbcType="VARCHAR" property="taxNum" />
+        <result column="buyername" jdbcType="VARCHAR" property="buyername" />
+        <result column="taxnum" jdbcType="VARCHAR" property="taxnum" />
         <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="account" jdbcType="VARCHAR" property="account" />
-        <result column="tele_phone" jdbcType="VARCHAR" property="telePhone" />
-        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
-        <result column="invoice_date" jdbcType="TIMESTAMP" property="invoiceDate" />
-        <result column="sale_tax_num" jdbcType="VARCHAR" property="saleTaxNum" />
-        <result column="sale_account" jdbcType="VARCHAR" property="saleAccount" />
-        <result column="sale_phone" jdbcType="VARCHAR" property="salePhone" />
-        <result column="sale_address" jdbcType="VARCHAR" property="saleAddress" />
-        <result column="kp_type" jdbcType="VARCHAR" property="kpType" />
+        <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+        <result column="orderno" jdbcType="VARCHAR" property="orderno" />
+        <result column="invoicedate" jdbcType="TIMESTAMP" property="invoicedate" />
+        <result column="saletaxnum" jdbcType="VARCHAR" property="saletaxnum" />
+        <result column="saleaccount" jdbcType="VARCHAR" property="saleaccount" />
+        <result column="salephone" jdbcType="VARCHAR" property="salephone" />
+        <result column="saleaddress" jdbcType="VARCHAR" property="saleaddress" />
+        <result column="kptype" jdbcType="VARCHAR" property="kptype" />
         <result column="clerk" jdbcType="VARCHAR" property="clerk" />
         <result column="payee" jdbcType="VARCHAR" property="payee" />
         <result column="checker" jdbcType="VARCHAR" property="checker" />
@@ -29,18 +29,18 @@
     <sql id="Base_Column_List">
         id,
         user_id,
-        buyer_ame,
-        tax_num,
+        buyername,
+        taxnum,
         address,
         account,
-        tele_phone,
-        order_no,
-        invoice_date,
-        sale_tax_num,
-        sale_account,
-        sale_phone,
-        sale_address,
-        kp_type,
+        telephone,
+        orderno,
+        invoicedate,
+        saletaxnum,
+        saleaccount,
+        salephone,
+        saleaddress,
+        kptype,
         clerk,
         payee,
         checker,
@@ -60,11 +60,11 @@
             <if test="userId != null">
                 user_id,
             </if>
-            <if test="buyerAme != null">
-                buyer_ame,
+            <if test="buyername != null">
+                buyername,
             </if>
-            <if test="taxNum != null">
-                tax_num,
+            <if test="taxnum != null">
+                taxnum,
             </if>
             <if test="address != null">
                 address,
@@ -72,29 +72,29 @@
             <if test="account != null">
                 account,
             </if>
-            <if test="telePhone != null">
-                tele_phone,
+            <if test="telephone != null">
+                telephone,
             </if>
-            <if test="orderNo != null">
-                order_no,
+            <if test="orderno != null">
+                orderno,
             </if>
-            <if test="invoiceDate != null">
-                invoice_date,
+            <if test="invoicedate != null">
+                invoicedate,
             </if>
-            <if test="saleTaxNum != null">
-                sale_tax_num,
+            <if test="saletaxnum != null">
+                saletaxnum,
             </if>
-            <if test="saleAccount != null">
-                sale_account,
+            <if test="saleaccount != null">
+                saleaccount,
             </if>
-            <if test="salePhone != null">
-                sale_phone,
+            <if test="salephone != null">
+                salephone,
             </if>
-            <if test="saleAddress != null">
-                sale_address,
+            <if test="saleaddress != null">
+                saleaddress,
             </if>
-            <if test="kpType != null">
-                kp_type,
+            <if test="kptype != null">
+                kptype,
             </if>
             <if test="clerk != null">
                 clerk,
@@ -128,11 +128,11 @@
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
             </if>
-            <if test="buyerAme != null">
-                #{buyerAme,jdbcType=VARCHAR},
+            <if test="buyername != null">
+                #{buyername,jdbcType=VARCHAR},
             </if>
-            <if test="taxNum != null">
-                #{taxNum,jdbcType=VARCHAR},
+            <if test="taxnum != null">
+                #{taxnum,jdbcType=VARCHAR},
             </if>
             <if test="address != null">
                 #{address,jdbcType=VARCHAR},
@@ -140,29 +140,29 @@
             <if test="account != null">
                 #{account,jdbcType=VARCHAR},
             </if>
-            <if test="telePhone != null">
-                #{telePhone,jdbcType=VARCHAR},
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
             </if>
-            <if test="orderNo != null">
-                #{orderNo,jdbcType=VARCHAR},
+            <if test="orderno != null">
+                #{orderno,jdbcType=VARCHAR},
             </if>
-            <if test="invoiceDate != null">
-                #{invoiceDate,jdbcType=TIMESTAMP},
+            <if test="invoicedate != null">
+                #{invoicedate,jdbcType=TIMESTAMP},
             </if>
-            <if test="saleTaxNum != null">
-                #{saleTaxNum,jdbcType=VARCHAR},
+            <if test="saletaxnum != null">
+                #{saletaxnum,jdbcType=VARCHAR},
             </if>
-            <if test="saleAccount != null">
-                #{saleAccount,jdbcType=VARCHAR},
+            <if test="saleaccount != null">
+                #{saleaccount,jdbcType=VARCHAR},
             </if>
-            <if test="salePhone != null">
-                #{salePhone,jdbcType=VARCHAR},
+            <if test="salephone != null">
+                #{salephone,jdbcType=VARCHAR},
             </if>
-            <if test="saleAddress != null">
-                #{saleAddress,jdbcType=VARCHAR},
+            <if test="saleaddress != null">
+                #{saleaddress,jdbcType=VARCHAR},
             </if>
-            <if test="kpType != null">
-                #{kpType,jdbcType=VARCHAR},
+            <if test="kptype != null">
+                #{kptype,jdbcType=VARCHAR},
             </if>
             <if test="clerk != null">
                 #{clerk,jdbcType=VARCHAR},

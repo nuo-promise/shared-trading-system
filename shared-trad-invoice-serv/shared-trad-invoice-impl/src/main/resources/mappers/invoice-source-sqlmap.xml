@@ -66,7 +66,7 @@
     <select id="listLikeOrderNo" parameterType="api.beans.InvoiceSourceDTO" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM spk_invoice_info
+        FROM spk_invoice_source
         <where>
             <if test="userId != null">
                 AND user_id = #{userId,jdbcType=BIGINT}
@@ -97,7 +97,7 @@
     <select id="findByOrderNo" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM spk_invoice_info
+        FROM spk_invoice_source
         <where>
             <if test="userId != null">
                 AND user_id = #{userId,jdbcType=BIGINT}

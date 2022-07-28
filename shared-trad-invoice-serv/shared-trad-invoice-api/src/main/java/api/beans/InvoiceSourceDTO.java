@@ -46,11 +46,6 @@ public class InvoiceSourceDTO implements Serializable {
     private String projectNo;
 
     /**
-     * 项目名称.
-     */
-    private String projectName;
-
-    /**
      * 开始时间.
      */
     private String startTime;
