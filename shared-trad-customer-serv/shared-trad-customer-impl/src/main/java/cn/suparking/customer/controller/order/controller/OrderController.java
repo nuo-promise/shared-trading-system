@@ -1,8 +1,8 @@
-package cn.suparking.customer.controller.parkOrder.controller;
+package cn.suparking.customer.controller.order.controller;
 
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
-import cn.suparking.customer.controller.parkOrder.service.impl.ParkOrderServiceImpl;
+import cn.suparking.customer.controller.order.service.impl.OrderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +16,11 @@ import javax.validation.Valid;
 @RefreshScope
 @RestController
 @RequestMapping("park-order-api")
-public class ParkOrderController {
+public class OrderController {
 
-    private final ParkOrderServiceImpl parkOrderService;
+    private final OrderServiceImpl parkOrderService;
 
-    public ParkOrderController(final ParkOrderServiceImpl parkOrderService) {
+    public OrderController(final OrderServiceImpl parkOrderService) {
         this.parkOrderService = parkOrderService;
     }
 

@@ -23,6 +23,7 @@ public class LockOrderVO {
 
     private Double longitude;
 
+    // 临停订单使用
     private String minutes;
 
     private Integer dueAmount;
@@ -36,4 +37,9 @@ public class LockOrderVO {
     private String invoiceState;
 
     private String refundState;
+
+    // 合约名称 VIP
+    private String protocolName;
+
+
 }

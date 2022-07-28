@@ -4,7 +4,9 @@ import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
+import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.dao.vo.LockOrderVO;
 import cn.suparking.order.service.CarGroupOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 

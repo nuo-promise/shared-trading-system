@@ -54,6 +54,12 @@ public class OrderTemplateFallbackFactory implements FallbackFactory<OrderTempla
             }
 
             @Override
+            public LinkedList<LockOrderVO> findGroupOrderByUserId(final ParkingOrderQueryDTO parkingOrderQueryDTO) {
+                log.error("OrderTemplateService: findGroupOrderByUserId error: " + cause.getMessage());
+                return null;
+            }
+
+            @Override
             public CarGroupOrderDO findByOrderNo(final CarGroupOrderDTO carGroupOrderDTO) {
                 log.error("OrderTemplateService: findByUserIOrderNo error: " + cause.getMessage());
                 return null;

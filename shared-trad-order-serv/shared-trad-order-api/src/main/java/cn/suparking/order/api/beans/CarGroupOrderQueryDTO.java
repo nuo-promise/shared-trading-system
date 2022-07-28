@@ -1,6 +1,5 @@
 package cn.suparking.order.api.beans;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +22,7 @@ public class CarGroupOrderQueryDTO {
     /**
      * 当前操作用户.
      */
-    private String LoginUserName;
+    private String loginUserName;
 
     private String orderState;
 
@@ -87,13 +86,13 @@ public class CarGroupOrderQueryDTO {
      * 页码.
      */
     @NotNull(message = "请选择页码")
-    @Min(value = 1,message = "页码最小值为1")
+    @Min(value = 1, message = "页码最小值为1")
     private Integer pageNum;
 
     /**
      * 每页显示数量.
      */
     @NotNull(message = "请选择每页显示数量")
-    @Min(value = 1,message = "每页最少显示1条")
+    @Min(value = 1, message = "每页最少显示1条")
     private Integer pageSize;
 }
