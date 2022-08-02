@@ -5,8 +5,8 @@ server:
     include-message: always
   servlet:
     context-path: /invoice-center
-    # 增加优雅停机
-    shutdown: graceful
+    # 增加优雅停机,切记会影响Nacos
+  shutdown: graceful
 spring:
 #    application:
 #  #   定义项目名称
