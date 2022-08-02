@@ -190,14 +190,7 @@
             <if test="payOrderNo != null">
                 AND pay_order_no = #{payOrderNo,jdbcType=VARCHAR}
             </if>
-            <if test="orderStateList != null">
-                AND order_state IN
-                <foreach collection="orderStateList" item="orderState" index="index" separator="," open="(" close=")">
-                    #{orderState,jdbcType=VARCHAR}
-                </foreach>
-            </if>
         </where>
         ORDER BY id DESC
-        LIMIT 1
     </select>
 </mapper>

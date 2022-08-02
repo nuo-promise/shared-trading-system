@@ -3,6 +3,7 @@
 <mapper namespace="cn.suparking.order.dao.mapper.CarGroupRefundOrderMapper">
     <resultMap id="BaseResultMap" type="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
         <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
         <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
         <result column="car_group_id" jdbcType="VARCHAR" property="carGroupId" />
@@ -29,6 +30,7 @@
 
     <sql id="Base_Column_List">
         id,
+        user_id,
 		order_no,
 		pay_order_no,
 		car_group_id,
@@ -58,11 +60,8 @@
         <include refid="Base_Column_List"/>
         FROM spk_car_group_order
         <where>
-            <if test="projectNos != null and projectNos.size > 0">
-                AND project_no in
-                <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
-                    #{projectNo,jdbcType=VARCHAR}
-                </foreach>
+            <if test="projectNo != null">
+                AND project_no = #{projectNo,jdbcType=VARCHAR}
             </if>
             <if test="keyword != null">
                 AND (order_no = #{keyword,jdbcType=VARCHAR} OR userMobile = #{keyword,jdbcType=VARCHAR})
@@ -287,6 +286,16 @@
         from spk_car_group_refund_order
         where
             id = #{id,jdbcType=BIGINT}
-
+    </select>
+    <select id="selectByPayOrderNo" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            spk_car_group_refund_order
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT}
+        AND
+            pay_order_no = #{payOrderNo,jdbcType=VARCHAR}
+        ORDER BY date_created DESC
     </select>
 </mapper>

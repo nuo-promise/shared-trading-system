@@ -2,15 +2,18 @@ package cn.suparking.invoice.controller;
 
 import api.beans.InvoiceInfoQueryDTO;
 import api.beans.InvoiceSourceDTO;
+import api.beans.ProjectConfig;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.SpkCommonAssert;
 import cn.suparking.common.api.utils.SpkCommonResultMessage;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
+import cn.suparking.invoice.dao.vo.InvoiceSourceVO;
 import cn.suparking.invoice.service.InvoiceSourceService;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -51,15 +55,33 @@ public class InvoiceSourceController {
      * 小程序获取用户开票订单列表.
      *
      * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
-     * @return {@linkplain SpkCommonResult}
+     * @return {@linkplain InvoiceSourceDO}
      */
     @PostMapping("getInvoiceSource")
-    public SpkCommonResult getInvoiceSource(@RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
-        return Optional.ofNullable(invoiceSourceDTO)
-                .map(item -> {
-                    SpkCommonAssert.notBlank(String.valueOf(item.getUserId()), "userId不能为空");
-                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, invoiceSourceService.getInvoiceSource(invoiceSourceDTO));
-                }).orElseGet(() -> SpkCommonResult.error("用户信息不能为空"));
+    public List<InvoiceSourceVO> getInvoiceSource(@RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceSourceService.getInvoiceSource(invoiceSourceDTO);
+    }
+
+    /**
+     * 根据开票历史记录 查询对应的开票订单.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain InvoiceSourceDO}
+     */
+    @PostMapping("getInvoiceSourceByNo")
+    public List<InvoiceSourceVO> getInvoiceSourceByNo(@RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceSourceService.getInvoiceSourceByNo(invoiceSourceDTO);
+    }
+
+    /**
+     * 获取开票内容.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain ProjectConfig}
+     */
+    @PostMapping("getInvoiceContent")
+    public JSONObject getInvoiceContent(@RequestBody final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceSourceService.getInvoiceContent(invoiceSourceDTO);
     }
 
     /**

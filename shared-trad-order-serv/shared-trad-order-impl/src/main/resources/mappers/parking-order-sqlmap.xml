@@ -484,44 +484,9 @@
     </select>
 
     <select id="list" parameterType="cn.suparking.order.api.beans.ParkingOrderQueryDTO" resultMap="BaseResultMap1">
-        select
-            id,
-            user_id,
-            order_no,
-            pay_parking_id,
-            temp_type,
-            car_type_class,
-            car_type_name,
-            car_type_id,
-            begin_time,
-            end_time,
-            next_aggregate_begin_time,
-            aggregated_max_amount,
-            parking_minutes,
-            total_amount,
-            discounted_minutes,
-            discounted_amount,
-            charge_amount,
-            extra_amount,
-            due_amount,
-            charge_due_amount,
-            paid_amount,
-            pay_channel,
-            pay_type,
-            pay_time,
-            received_amount,
-            term_no,
-            operator,
-            expire_time,
-            invoice_state,
-            invoice_time,
-            refund_state,
-            project_no,
-            creator,
-            modifier,
-            date_created,
-            date_updated
-        from spk_parking_order
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_parking_order
         <where>
             <if test="userId != null">
                 AND user_id = #{userId,jdbcType=BIGINT}

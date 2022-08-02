@@ -40,9 +40,9 @@ public class InvoiceSourceDO implements Serializable {
     private String orderNo;
 
     /**
-     * 开票状态 true: 已开票， false: 未开票.
+     * 开票状态 2:开票完成 20:开票中 21:开票成功签章中 22:开票失败 24:开票成功签章失败 .
      */
-    private Boolean state;
+    private String state;
 
     /**
      * 项目编号.

@@ -21,12 +21,12 @@ public class InvoiceInfoQueryDTO implements Serializable {
     /**
      * 发票抬头唯一ID.
      */
-    private Long id;
+    private String id;
 
     /**
      * 用户ID.
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 抬头名称.

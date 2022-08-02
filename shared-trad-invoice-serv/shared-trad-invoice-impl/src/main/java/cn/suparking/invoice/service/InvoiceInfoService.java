@@ -4,6 +4,7 @@ import api.beans.InvoiceInfoDTO;
 import api.beans.InvoiceInfoQueryDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.invoice.dao.entity.InvoiceInfoDO;
+import cn.suparking.invoice.dao.vo.InvoiceInfoVO;
 
 import java.util.List;
 
@@ -30,5 +31,5 @@ public interface InvoiceInfoService {
      * @param invoiceInfoQueryDTO {@linkplain InvoiceInfoQueryDTO}
      * @return {@linkplain SpkCommonResult}
      */
-    List<InvoiceInfoDO> sharedInvoiceList(InvoiceInfoQueryDTO invoiceInfoQueryDTO);
+    List<InvoiceInfoVO> sharedInvoiceList(InvoiceInfoQueryDTO invoiceInfoQueryDTO);
 }

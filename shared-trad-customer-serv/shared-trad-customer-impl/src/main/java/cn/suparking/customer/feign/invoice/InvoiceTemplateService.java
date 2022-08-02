@@ -1,14 +1,21 @@
 package cn.suparking.customer.feign.invoice;
 
-import api.beans.InvoiceModelDTO;
+import api.beans.InvoiceInfoDTO;
+import api.beans.InvoiceModelQueryDTO;
 import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.customer.feign.invoice.fallback.InvoiceTemplateFallbackFactory;
+import cn.suparking.invoice.dao.entity.InvoiceModelDO;
+import cn.suparking.invoice.dao.vo.InvoiceModelVO;
+import cn.suparking.invoice.dao.vo.InvoiceSourceVO;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @FeignClient(value = "shared-trad-invoice-serv", path = "/invoice-center", fallbackFactory = InvoiceTemplateFallbackFactory.class)
 public interface InvoiceTemplateService {
@@ -53,11 +60,11 @@ public interface InvoiceTemplateService {
     /**
      * 开票数据存储.
      *
-     * @param invoiceModelDTO {@linkplain InvoiceModelDTO}
-     * @return {@linkplain Integer}
+     * @param invoiceModelQueryDTO {@linkplain InvoiceModelQueryDTO}
+     * @return {@linkplain SpkCommonResult}
      */
     @PostMapping("/invoice-model-api/makeInvoiceModel")
-    SpkCommonResult makeInvoiceModel(@RequestBody InvoiceModelDTO invoiceModelDTO);
+    SpkCommonResult makeInvoiceModel(@RequestBody InvoiceModelQueryDTO invoiceModelQueryDTO);
 
     /**
      * 获取可开票列表.
@@ -66,5 +73,41 @@ public interface InvoiceTemplateService {
      * @return {@link SpkCommonResult}
      */
     @PostMapping("/invoice-source-api/getInvoiceSource")
-    SpkCommonResult getInvoiceSource(@RequestBody InvoiceSourceDTO invoiceSourceDTO);
+    List<InvoiceSourceVO> getInvoiceSource(@RequestBody InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 获取可开票列表.
+     *
+     * @param invoiceSourceDTO {@link InvoiceSourceDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/invoice-source-api/getInvoiceContent")
+    JSONObject getInvoiceContent(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 获取用户开票历史列表.
+     *
+     * @param invoiceModelQueryDTO {@linkplain InvoiceModelQueryDTO}
+     * @return {@linkplain InvoiceModelDO}
+     */
+    @PostMapping("/invoice-model-api/invoiceModelList")
+    List<InvoiceModelVO> invoiceModelList(InvoiceModelQueryDTO invoiceModelQueryDTO);
+
+    /**
+     * 根据开票历史记录 查询对应的开票订单.
+     *
+     * @param invoiceSourceDTO {@link InvoiceSourceDTO}
+     * @return {@link SpkCommonResult}
+     */
+    @PostMapping("/invoice-source-api/getInvoiceSourceByNo")
+    List<InvoiceSourceVO> getInvoiceSourceByNo(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 删除常用地址.
+     *
+     * @param invoiceInfoDTO {@linkplain InvoiceInfoDTO}
+     * @return {@linkplain SpkCommonResult}
+     */
+    @PostMapping("/invoice-info-api/deleteInvoiceInfo")
+    Integer deleteInvoiceInfo(InvoiceInfoDTO invoiceInfoDTO);
 }

@@ -28,7 +28,7 @@ spring:
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          jdbc-url: jdbc:mysql://47.98.44.236:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
 #          username: SPKRoot
-#          password: SPKRoot2017!
+#          password: SPKRoot2022!
 #          max-active: 16
 #          hikari:
 #            pool-name: SharedTradUserMHikari
@@ -43,7 +43,7 @@ spring:
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
 #          username: SPKRoot
-#          password: SPKRoot2017!
+#          password: SPKRoot2022!
 #          max-active: 16
 #          hikari:
 #            pool-name: SharedTradUserSHikari
@@ -58,7 +58,7 @@ spring:
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_order?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
 #          username: SPKRoot
-#          password: SPKRoot2017!
+#          password: SPKRoot2022!
 #          max-active: 16
 #          hikari:
 #            pool-name: SharedTradUserSSHikari
@@ -232,7 +232,7 @@ spring:
         # 服务发现默认开关打开
         enabled: true
         # 服务地址,集群用逗号分开
-        server-addr: 47.98.44.236:8084
+        server-addr: 47.98.44.236:8004
         # 注册中心服务名称 application name,一般不用配置
         service: shared-trad-order-serv
         # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
@@ -272,14 +272,14 @@ seata:
     vgroup-mapping:
       seata-server-group: default
     grouplist:
-      node1: 47.98.44.236:8091
-      node2: 47.98.44.236:8092
-      node3: 47.98.44.236:8093
+      node1: 47.98.44.236:8001
+      node2: 47.98.44.236:8002
+      node3: 47.98.44.236:8003
   registry:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 47.98.44.236:8084
+      server-addr: 47.98.44.236:8004
       namespace: dev
       group: myGroup
       cluster: default

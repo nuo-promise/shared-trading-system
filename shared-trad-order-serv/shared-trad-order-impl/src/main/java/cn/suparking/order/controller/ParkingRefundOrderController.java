@@ -59,15 +59,4 @@ public class ParkingRefundOrderController {
                     return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, count);
                 }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
     }
-
-    /**
-     * 根据原支付订单号获取数据.
-     *
-     * @param parkingRefundOrderQueryDTO {@link ParkingRefundOrderQueryDTO}
-     * @return {@link SpkCommonResult}
-     */
-    @PostMapping("getParkingRefundOrderByPayOrderNO")
-    public SpkCommonResult getParkingRefundOrderByPayOrderNO(@RequestBody final ParkingRefundOrderQueryDTO parkingRefundOrderQueryDTO) {
-        return parkingRefundOrderService.getParkingRefundOrderByPayOrderNO(parkingRefundOrderQueryDTO);
-    }
 }

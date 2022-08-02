@@ -36,7 +36,7 @@ public class ParkingOrderQueryDTO {
     private Integer receivedAmountType;
 
     // 查询入场时间ENTER/出场时间LEAVE -- 可以为空
-    private String timeType;
+    private String timeType = "ENTER";
 
     // 入场/出场 ======> 开始时间
     private String beginTime;

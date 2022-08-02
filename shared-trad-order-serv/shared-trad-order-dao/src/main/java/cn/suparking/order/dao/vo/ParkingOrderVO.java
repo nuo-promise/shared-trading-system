@@ -2,6 +2,7 @@ package cn.suparking.order.dao.vo;
 
 import cn.suparking.order.dao.entity.DiscountInfoDO;
 import cn.suparking.order.dao.entity.ParkingOrderDO;
+import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,4 +24,8 @@ public class ParkingOrderVO extends ParkingOrderDO {
     private DiscountInfoDO discountInfoDO;
 
     private LinkedList<ChargeInfoVO> chargeInfos;
+
+    private ParkingRefundOrderDO parkingRefundAmountDO;
+
+    private ParkingRefundOrderDO parkingRefundOrderDO;
 }

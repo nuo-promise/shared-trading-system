@@ -1,4 +1,4 @@
-package cn.suparking.customer.api.beans.invoice;
+package cn.suparking.invoice.dao.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,26 +6,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvoiceModelQueryDTO implements Serializable {
+public class InvoiceModelVO implements Serializable {
 
-    private static final long serialVersionUID = 6140270669087356597L;
+    private static final long serialVersionUID = 3914877750106917179L;
 
     /**
      * 发票记录ID.
      */
-    private Long id;
+    private String id;
 
     /**
      * 用户ID.
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 场库编号.
@@ -65,7 +64,7 @@ public class InvoiceModelQueryDTO implements Serializable {
     /**
      * 单据时间.
      */
-    private Date invoicedate;
+    private String invoicedate;
 
     /**
      * 销方企业税号.
@@ -128,7 +127,47 @@ public class InvoiceModelQueryDTO implements Serializable {
     private String fpqqlsh;
 
     /**
-     * 发票请求流水号.
+     * 图片 url.
      */
-    private List<String> codeList;
+    private String imgUrl;
+
+    /**
+     * PDF url.
+     */
+    private String pdfUrl;
+
+    /**
+     * 本地图片路径.
+     */
+    private String imgPath;
+
+    /**
+     * 本地PDF路径.
+     */
+    private String pdfPath;
+
+    /**
+     * 2:开票完成 20:开票中 21:开票成功签章中 22:开票失败 24:开票成功签章失败.
+     */
+    private String state;
+
+    /**
+     * 创建时间.
+     */
+    private Timestamp dateCreated;
+
+    /**
+     * 更新时间.
+     */
+    private Timestamp dateUpdated;
+
+    /**
+     * 关联订单数.
+     */
+    private Integer count;
+
+    /**
+     * 支付金额.
+     */
+    private Integer dueAmount;
 }

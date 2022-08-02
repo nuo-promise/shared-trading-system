@@ -17,6 +17,22 @@
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
     </resultMap>
+    <resultMap id="BaseResultMap1" type="cn.suparking.invoice.dao.vo.InvoiceInfoVO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="head_name" jdbcType="VARCHAR" property="headName"/>
+        <result column="tax_code" jdbcType="VARCHAR" property="taxCode"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="iphone" jdbcType="VARCHAR" property="iphone"/>
+        <result column="bank_code" jdbcType="VARCHAR" property="bankCode"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone"/>
+        <result column="tsfs" jdbcType="VARCHAR" property="tsfs"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="default_info" jdbcType="INTEGER" property="defaultInfo"/>
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated"/>
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated"/>
+    </resultMap>
 
     <sql id="Base_Column_List">
         id,
@@ -38,11 +54,15 @@
         FROM spk_invoice_info
         WHERE id = #{id, jdbcType=BIGINT}
     </select>
-    <select id="findByUserId" resultMap="BaseResultMap">
+    <select id="findByUserId" resultMap="BaseResultMap1">
         SELECT
         <include refid="Base_Column_List"/>
         FROM spk_invoice_info
-        WHERE user_id = #{userId, jdbcType=BIGINT}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId, jdbcType=BIGINT}
+            </if>
+        </where>
         ORDER BY date_created DESC
     </select>
 

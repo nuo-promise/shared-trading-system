@@ -28,7 +28,7 @@ public class CarGroupOrderVO extends BaseDO {
 
     private String orderNo;
 
-    private Long carGroupId;
+    private String carGroupId;
 
     private String carTypeId;
 
@@ -76,7 +76,7 @@ public class CarGroupOrderVO extends BaseDO {
 
     private String modifier;
 
-    private List<CarGroupRefundOrderDO> carGroupRefundOrderDOList;
+    private List<CarGroupRefundOrderDO> CarGroupRefundOrder;
 
     /**
      * build CarGroupOrderDO.
@@ -88,7 +88,7 @@ public class CarGroupOrderVO extends BaseDO {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             CarGroupOrderVO carGroupOrderDO = CarGroupOrderVO.builder()
                     .orderNo(item.getOrderNo())
-                    .carGroupId(Long.valueOf(item.getCarGroupId()))
+                    .carGroupId(item.getCarGroupId())
                     .carTypeId(item.getCarTypeId())
                     .carTypeName(item.getCarTypeName())
                     .protocolId(item.getProtocolId())

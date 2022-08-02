@@ -3,6 +3,7 @@ package cn.suparking.order.dao.mapper;
 import cn.suparking.order.api.beans.CarGroupRefundOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupRefundOrderDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -40,4 +41,13 @@ public interface CarGroupRefundOrderMapper {
      * @return int
      */
     int update(CarGroupRefundOrderDO carGroupRefundOrderDO);
+
+    /**
+     * 通过合约订单号查询对应合约退费订单.
+     *
+     * @param userId     用户id
+     * @param payOrderNo 原支付订单号
+     * @return {@linkplain CarGroupRefundOrderDO}
+     */
+    List<CarGroupRefundOrderDO> selectByPayOrderNo(@Param("userId") Long userId, @Param("payOrderNo") String payOrderNo);
 }

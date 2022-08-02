@@ -5,6 +5,8 @@ import cn.suparking.order.api.beans.ParkingRefundOrderQueryDTO;
 import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface ParkingRefundOrderMapper {
 
@@ -38,5 +40,5 @@ public interface ParkingRefundOrderMapper {
      * @param parkingRefundOrderQueryDTO {@link ParkingRefundOrderQueryDTO}
      * @return {@link SpkCommonResult}
      */
-    ParkingRefundOrderDO getParkingRefundOrderByPayOrderNO(ParkingRefundOrderQueryDTO parkingRefundOrderQueryDTO);
+    List<ParkingRefundOrderDO> getParkingRefundOrderByPayOrderNO(ParkingRefundOrderQueryDTO parkingRefundOrderQueryDTO);
 }

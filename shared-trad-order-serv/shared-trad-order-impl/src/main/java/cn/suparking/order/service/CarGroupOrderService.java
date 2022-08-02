@@ -4,6 +4,7 @@ import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.dao.vo.CarGroupOrderVO;
 import cn.suparking.order.dao.vo.LockOrderVO;
 import com.github.pagehelper.PageInfo;
 
@@ -16,7 +17,7 @@ public interface CarGroupOrderService {
      * @param carGroupOrderQueryDTO 订单信息
      * @return Integer
      */
-    PageInfo<CarGroupOrderDO> list(CarGroupOrderQueryDTO carGroupOrderQueryDTO);
+    PageInfo<CarGroupOrderVO> list(CarGroupOrderQueryDTO carGroupOrderQueryDTO);
 
     /**
      * 根据合约id查询合约信息.

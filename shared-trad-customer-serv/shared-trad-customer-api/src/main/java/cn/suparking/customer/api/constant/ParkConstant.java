@@ -118,11 +118,6 @@ public class ParkConstant {
      */
     public static final String INTERFACE_GETDEVICENO = "/map/getDeviceNo";
 
-    /**
-     * 开票.
-     */
-    public static final String INTERFACE_INVOICE_MAKE = "/commonInvoice/make";
-
     // 核销优惠券方法名
     public static final String INTERFACE_DISCOUNT_USED = "/used";
 

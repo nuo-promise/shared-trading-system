@@ -4,6 +4,7 @@ import api.beans.InvoiceInfoDTO;
 import api.beans.InvoiceInfoQueryDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.invoice.dao.entity.InvoiceInfoDO;
+import cn.suparking.invoice.dao.vo.InvoiceInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public interface InvoiceInfoMapper {
      * @param userId 用户id
      * @return {@linkplain SpkCommonResult}
      */
-    List<InvoiceInfoDO> findByUserId(Long userId);
+    List<InvoiceInfoVO> findByUserId(Long userId);
 
     /**
      * 删除抬头信息.

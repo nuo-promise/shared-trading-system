@@ -54,6 +54,11 @@ public class DateUtils {
         return new Timestamp(calendar.getTime().getTime());
     }
 
+    public static String dateToString(Date date) {
+        SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMAT_DATETIME);
+        return date == null ? "" : sf.format(date);
+    }
+
     /**
      * 将秒转x天x时x分x秒.
      *

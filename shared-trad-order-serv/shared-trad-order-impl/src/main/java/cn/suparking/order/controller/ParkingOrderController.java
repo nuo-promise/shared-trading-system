@@ -156,11 +156,8 @@ public class ParkingOrderController {
      * @return {@link SpkCommonResult}
      */
     @PostMapping("/list")
-    public SpkCommonResult list(@Valid @RequestBody final ParkingOrderQueryDTO parkingOrderQueryDTO) {
-        return Optional.ofNullable(parkingOrderQueryDTO)
-                .map(item -> {
-                    return parkingOrderService.list(item);
-                }).orElseGet(() -> SpkCommonResult.error("订单信息不存在"));
+    public SpkCommonResult list(@RequestBody final ParkingOrderQueryDTO parkingOrderQueryDTO) {
+        return SpkCommonResult.success(parkingOrderService.list(parkingOrderQueryDTO));
     }
 
     /**

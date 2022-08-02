@@ -63,14 +63,6 @@
         <result column="modifier" jdbcType="VARCHAR" property="modifier" />
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
-        <collection property="carGroupRefundOrderDOList" ofType="cn.suparking.order.dao.entity.CarGroupRefundOrderDO">
-            <id property="id" jdbcType="BIGINT" column="refundOrderId"/>
-            <result column="refundOrderBeginDate" jdbcType="BIGINT" property="beginDate" />
-            <result column="refundOrderEndDate" jdbcType="BIGINT" property="endDate" />
-            <result column="refundOrderOrderState" jdbcType="BIGINT" property="orderState" />
-            <result column="max_refund_amount" jdbcType="BIGINT" property="maxRefundAmount" />
-            <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
-        </collection>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -148,93 +140,54 @@
 
     <select id="list" parameterType="cn.suparking.order.api.beans.CarGroupOrderQueryDTO" resultMap="BaseResultMap1">
         SELECT
-            a.id,
-            a.user_id,
-            a.order_no,
-            a.car_group_id,
-            a.car_type_id,
-            a.car_type_name,
-            a.protocol_id,
-            a.protocol_name,
-            a.begin_date,
-            a.end_date,
-            a.total_amount,
-            a.discounted_amount,
-            a.due_amount,
-            a.pay_channel,
-            a.pay_type,
-            a.pay_time,
-            a.user_name,
-            a.user_mobile,
-            a.order_state,
-            a.invoice_state,
-            a.invoice_time,
-            a.refund_state,
-            a.term_no,
-            a.project_no,
-            a.order_type,
-            a.creator,
-            a.`modifier`,
-            a.date_created,
-            a.date_updated,
-            b.id as refundOrderId,
-            b.order_state,
-            b.max_refund_amount,
-            b.refund_amount,
-            b.begin_date as refundOrderBeginDate,
-            b.end_date as refundOrderEndDate
+        <include refid="Base_Column_List"></include>
         FROM
-            spk_car_group_order AS a
-        LEFT JOIN
-            spk_car_group_refund_order as b
+            spk_car_group_order
         <where>
             <if test="userId != null">
-                AND a.user_id = #{userId,jdbcType=BIGINT}
+                AND user_id = #{userId,jdbcType=BIGINT}
             </if>
-            <if test="projectNos != null and projectNos.size > 0">
-                AND project_no in
-                <foreach collection="projectNos" item="projectNo" index="index" open="(" close=")" separator=",">
-                    #{projectNo,jdbcType=VARCHAR}
-                </foreach>
+            <if test="projectNo != null">
+                AND project_no = #{projectNo,jdbcType=VARCHAR}
             </if>
             <if test="keyword != null">
-                AND (a.order_no CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')  OR a.userMobile = #{keyword,jdbcType=VARCHAR})
+                AND (order_no LIKE CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')  OR user_mobile = #{keyword,jdbcType=VARCHAR})
             </if>
             <if test="carTypeIds != null and carTypeIds.size > 0">
-                AND a.car_type_id in
+                AND car_type_id IN
                 <foreach collection="carTypeIds" item="carTypeId" index="index" open="(" close=")" separator=",">
                     #{carTypeId,jdbcType=VARCHAR}
                 </foreach>
             </if>
             <if test="orderState != null">
-                AND a.order_state = #{orderState,jdbcType=VARCHAR}
+                AND order_state = #{orderState,jdbcType=VARCHAR}
             </if>
             <if test="payType != null">
-                AND a.pay_type = #{payType,jdbcType=VARCHAR}
+                AND pay_type = #{payType,jdbcType=VARCHAR}
             </if>
             <if test="payTime != null">
-                AND a.pay_time = #{payTime,jdbcType=BIGINT}
+                AND pay_time = #{payTime,jdbcType=BIGINT}
             </if>
-            <if test="beginTime != null">
-                AND a.date_created &gt;= #{beginTime,jdbcType=VARCHAR}
+            <if test="beginDate != null">
+                AND date_created &gt;= #{beginDate,jdbcType=VARCHAR}
             </if>
-            <if test="endTime != null">
-                AND a.date_created &lt;= #{endTime,jdbcType=VARCHAR}
+            <if test="endDate != null">
+                AND date_created &lt;= #{endDate,jdbcType=VARCHAR}
             </if>
             <if test="carGroupId != null">
-                AND a.car_group_id = #{carGroupId,jdbcType=VARCHAR}
+                AND car_group_id = #{carGroupId,jdbcType=VARCHAR}
             </if>
             <if test="orderType != null">
-                AND a.order_type = #{orderType,jdbcType=VARCHAR}
+                AND order_type = #{orderType,jdbcType=VARCHAR}
             </if>
             <if test="invoiceBeginTime != null">
-                AND a.invoice_time &gt;= #{invoiceBeginTime,jdbcType=VARCHAR}
+                AND invoice_time &gt;= #{invoiceBeginTime,jdbcType=TIMESTAMP}
             </if>
             <if test="invoiceEndTime != null">
-                AND a.invoice_time &lt;= #{invoiceEndTime,jdbcType=VARCHAR}
+                AND invoice_time &lt;= #{invoiceEndTime,jdbcType=TIMESTAMP}
             </if>
         </where>
-        ORDER BY a.id DESC
+        ORDER BY id DESC
     </select>
     <select id="findByOrderNo" resultMap="BaseResultMap">
         SELECT

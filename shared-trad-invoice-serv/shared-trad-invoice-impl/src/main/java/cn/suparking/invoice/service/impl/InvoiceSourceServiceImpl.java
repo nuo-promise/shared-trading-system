@@ -5,8 +5,12 @@ import api.beans.InvoiceSourceDTO;
 import api.beans.ProjectConfig;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.common.api.utils.DateUtils;
+import cn.suparking.invoice.dao.entity.InvoiceInfoDO;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
 import cn.suparking.invoice.dao.mapper.InvoiceSourceMapper;
+import cn.suparking.invoice.dao.vo.InvoiceInfoVO;
+import cn.suparking.invoice.dao.vo.InvoiceSourceVO;
+import cn.suparking.invoice.service.InvoiceInfoService;
 import cn.suparking.invoice.service.InvoiceSourceService;
 import cn.suparking.invoice.service.ProjectConfigService;
 import cn.suparking.invoice.tools.InvoiceConstant;
@@ -14,6 +18,7 @@ import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,9 +38,12 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
 
     private final ProjectConfigService projectConfigService;
 
-    public InvoiceSourceServiceImpl(final InvoiceSourceMapper invoiceSourceMapper, final ProjectConfigService projectConfigService) {
+    private final InvoiceInfoService invoiceInfoService;
+
+    public InvoiceSourceServiceImpl(final InvoiceSourceMapper invoiceSourceMapper, final ProjectConfigService projectConfigService, final InvoiceInfoService invoiceInfoService) {
         this.invoiceSourceMapper = invoiceSourceMapper;
         this.projectConfigService = projectConfigService;
+        this.invoiceInfoService = invoiceInfoService;
     }
 
     /**
@@ -56,7 +64,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
      * @return {@linkplain SpkCommonResult}
      */
     @Override
-    public List<InvoiceSourceDO> getInvoiceSource(final InvoiceSourceDTO invoiceSourceDTO) {
+    public List<InvoiceSourceVO> getInvoiceSource(final InvoiceSourceDTO invoiceSourceDTO) {
         return invoiceSourceMapper.getInvoiceSource(invoiceSourceDTO);
     }
 
@@ -108,7 +116,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                 List<InvoiceSourceDO> invoiceSourceDOList = invoiceSourceList(invoiceSourceDTO);
                 if (Objects.nonNull(invoiceSourceDOList) && invoiceSourceDOList.size() > 0) {
                     invoiceSourceDOList.forEach(item -> {
-                        item.setState(true);
+                        item.setState("2");
                         invoiceSourceMapper.update(item);
                     });
                 }
@@ -135,14 +143,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                 .endTime(DateUtils.secondToDateTime(parkingOrderDTO.getEndTime()))
                                 .payTime(parkingOrderDTO.getPayTime())
                                 .build();
-                        boolean state = false;
+                        String state = "0";
                         if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
                             String invoiceOrderNo = parkingOrderDTO.getInvoiceOrderNo();
                             if (StringUtils.isEmpty(invoiceOrderNo)) {
-                                state = true;
+                                state = "2";
                             } else {
                                 if (invoiceSourceDTO.getOrderNo().equals(invoiceOrderNo)) {
-                                    state = true;
+                                    state = "2";
                                 }
                             }
                             invoiceSourceDTO.setState(state);
@@ -166,14 +174,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                                 .endTime(DateUtils.secondToDateTime(parkingOrderDTO.getEndTime()))
                                 .payTime(parkingOrderDTO.getPayTime())
                                 .build();
-                        boolean state = false;
+                        String state = "0";
                         if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
                             String invoiceOrderNo = parkingOrderDTO.getInvoiceOrderNo();
                             if (StringUtils.isEmpty(invoiceOrderNo)) {
-                                state = true;
+                                state = "2";
                             } else {
                                 if (invoiceSourceDTO.getOrderNo().equals(invoiceOrderNo)) {
-                                    state = true;
+                                    state = "2";
                                 }
                             }
                             invoiceSourceDTO.setState(state);
@@ -198,7 +206,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .payTime(parkingOrderDTO.getPayTime())
                             .build();
                     boolean state = StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState));
-                    invoiceSourceDTO.setState(state);
+                    invoiceSourceDTO.setState(state ? "2" : "0");
                     createOrUpdate(invoiceSourceDTO);
                     log.info("根据ParkingOrder生成开票信息: " + invoiceSourceDTO);
                 }
@@ -388,7 +396,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                 List<InvoiceSourceDO> invoiceSourceDOList = invoiceSourceList(invoiceSourceDTO);
                 if (Objects.nonNull(invoiceSourceDOList) && invoiceSourceDOList.size() > 0) {
                     invoiceSourceDOList.forEach(item -> {
-                        item.setState(true);
+                        item.setState("2");
                         invoiceSourceMapper.update(item);
                     });
                 }
@@ -425,14 +433,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .protocolId(carGroupOrderDTO.getProtocolId())
                             .payTime(carGroupOrderDTO.getPayTime())
                             .build();
-                    boolean state = false;
+                    String state = "0";
                     if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
                         String invoiceOrderNo = carGroupOrderDTO.getInvoiceOrderNo();
                         if (StringUtils.isEmpty(invoiceOrderNo)) {
-                            state = true;
+                            state = "2";
                         } else {
                             if (invoiceSourceDTO.getOrderNo().equals(invoiceOrderNo)) {
-                                state = true;
+                                state = "2";
                             }
                         }
                         invoiceSourceDTO.setState(state);
@@ -457,14 +465,14 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                             .protocolId(carGroupOrderDTO.getProtocolId())
                             .payTime(carGroupOrderDTO.getPayTime())
                             .build();
-                    boolean state = false;
+                    String state = "0";
                     if (StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState))) {
                         String invoiceOrderNo = carGroupOrderDTO.getInvoiceOrderNo();
                         if (StringUtils.isEmpty(invoiceOrderNo)) {
-                            state = true;
+                            state = "2";
                         } else {
                             if (invoiceSourceDTO.getOrderNo().equals(invoiceOrderNo)) {
-                                state = true;
+                                state = "2";
                             }
                         }
                         invoiceSourceDTO.setState(state);
@@ -490,7 +498,7 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
                         .payTime(carGroupOrderDTO.getPayTime())
                         .build();
                 boolean state = StringUtils.isNotBlank(invoiceState) && (InvoiceConstant.INVOICE_STATE_PAPER.equals(invoiceState) || InvoiceConstant.INVOICE_STATE_ELECTRONIC.equals(invoiceState));
-                invoiceSourceDTO.setState(state);
+                invoiceSourceDTO.setState(state ? "2" : "0");
                 createOrUpdate(invoiceSourceDTO);
                 log.info("根据CarGroupOrder生成开票信息: " + invoiceSourceDTO);
             }
@@ -671,6 +679,34 @@ public class InvoiceSourceServiceImpl implements InvoiceSourceService {
     @Override
     public InvoiceSourceDO findByOrderNo(final InvoiceSourceDTO invoiceSourceDTO) {
         return invoiceSourceMapper.findByOrderNo(invoiceSourceDTO);
+    }
+
+    /**
+     * 获取开票内容.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain ProjectConfig}
+     */
+    @Override
+    public JSONObject getInvoiceContent(final InvoiceSourceDTO invoiceSourceDTO) {
+        ProjectConfig projectConfig = projectConfigService.findOneByProjectNo(invoiceSourceDTO.getProjectNo());
+        InvoiceInfoQueryDTO invoiceInfoQueryDTO = InvoiceInfoQueryDTO.builder().userId(String.valueOf(invoiceSourceDTO.getUserId())).build();
+        List<InvoiceInfoVO> invoiceInfoDOList = invoiceInfoService.sharedInvoiceList(invoiceInfoQueryDTO);
+        JSONObject result = new JSONObject();
+        result.put("projectConfig", projectConfig);
+        result.put("invoiceInfoList", invoiceInfoDOList);
+        return result;
+    }
+
+    /**
+     * 根据开票历史记录 查询对应的开票订单.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain InvoiceSourceDO}
+     */
+    @Override
+    public List<InvoiceSourceVO> getInvoiceSourceByNo(final InvoiceSourceDTO invoiceSourceDTO) {
+        return invoiceSourceMapper.getInvoiceSourceByInvoiceCode(invoiceSourceDTO.getInvoiceCode());
     }
 
     @Override

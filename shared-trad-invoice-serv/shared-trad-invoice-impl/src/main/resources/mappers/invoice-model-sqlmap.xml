@@ -5,6 +5,7 @@
         <result column="id" jdbcType="BIGINT" property="id" />
         <result column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="buyername" jdbcType="VARCHAR" property="buyername" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
         <result column="taxnum" jdbcType="VARCHAR" property="taxnum" />
         <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="account" jdbcType="VARCHAR" property="account" />
@@ -22,6 +23,44 @@
         <result column="tsfs" jdbcType="VARCHAR" property="tsfs" />
         <result column="email" jdbcType="VARCHAR" property="email" />
         <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="fpqqlsh" jdbcType="VARCHAR" property="fpqqlsh" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="pdf_url" jdbcType="VARCHAR" property="pdfUrl" />
+        <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
+        <result column="pdf_path" jdbcType="VARCHAR" property="pdfPath" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+        <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="cn.suparking.invoice.dao.vo.InvoiceModelVO">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="buyername" jdbcType="VARCHAR" property="buyername" />
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
+        <result column="taxnum" jdbcType="VARCHAR" property="taxnum" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+        <result column="orderno" jdbcType="VARCHAR" property="orderno" />
+        <result column="invoicedate" jdbcType="TIMESTAMP" property="invoicedate" />
+        <result column="saletaxnum" jdbcType="VARCHAR" property="saletaxnum" />
+        <result column="saleaccount" jdbcType="VARCHAR" property="saleaccount" />
+        <result column="salephone" jdbcType="VARCHAR" property="salephone" />
+        <result column="saleaddress" jdbcType="VARCHAR" property="saleaddress" />
+        <result column="kptype" jdbcType="VARCHAR" property="kptype" />
+        <result column="clerk" jdbcType="VARCHAR" property="clerk" />
+        <result column="payee" jdbcType="VARCHAR" property="payee" />
+        <result column="checker" jdbcType="VARCHAR" property="checker" />
+        <result column="tsfs" jdbcType="VARCHAR" property="tsfs" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="fpqqlsh" jdbcType="VARCHAR" property="fpqqlsh" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="pdf_url" jdbcType="VARCHAR" property="pdfUrl" />
+        <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
+        <result column="pdf_path" jdbcType="VARCHAR" property="pdfPath" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
         <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
         <result column="date_updated" jdbcType="TIMESTAMP" property="dateUpdated" />
     </resultMap>
@@ -29,6 +68,7 @@
     <sql id="Base_Column_List">
         id,
         user_id,
+        project_no,
         buyername,
         taxnum,
         address,
@@ -47,6 +87,12 @@
         tsfs,
         email,
         phone,
+        fpqqlsh,
+        img_url,
+        pdf_url,
+        img_path,
+        pdf_path,
+        state,
         date_created,
         date_updated
     </sql>
@@ -59,6 +105,9 @@
             </if>
             <if test="userId != null">
                 user_id,
+            </if>
+            <if test="projectNo != null">
+                project_no,
             </if>
             <if test="buyername != null">
                 buyername,
@@ -114,6 +163,24 @@
             <if test="phone != null">
                 phone,
             </if>
+            <if test="fpqqlsh != null">
+                fpqqlsh,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+            <if test="pdfUrl != null">
+                pdf_url,
+            </if>
+            <if test="imgPath != null">
+                img_path,
+            </if>
+            <if test="pdfPath != null">
+                pdf_path,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
             <if test="dateCreated != null">
                 date_created,
             </if>
@@ -127,6 +194,9 @@
             </if>
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="projectNo != null">
+                #{projectNo,jdbcType=VARCHAR},
             </if>
             <if test="buyername != null">
                 #{buyername,jdbcType=VARCHAR},
@@ -182,6 +252,24 @@
             <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
             </if>
+            <if test="fpqqlsh != null">
+                #{fpqqlsh,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pdfUrl != null">
+                #{pdfUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="imgPath != null">
+                #{imgPath,jdbcType=VARCHAR},
+            </if>
+            <if test="pdfPath != null">
+                #{pdfPath,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
             <if test="dateCreated != null">
                 #{dateCreated,jdbcType=TIMESTAMP},
             </if>
@@ -190,4 +278,49 @@
             </if>
         </trim>
     </insert>
+    <update id="updateByFpqqlsh" parameterType="cn.suparking.invoice.dao.entity.InvoiceModelDO">
+        UPDATE
+            spk_invoice_model
+        <set>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pdfUrl != null">
+                pdf_url = #{pdfUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="imgPath != null">
+                img_path = #{imgPath,jdbcType=VARCHAR},
+            </if>
+            <if test="pdfPath != null">
+                pdf_path = #{pdfPath,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="dateUpdated != null">
+                date_updated = #{dateUpdated,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT} AND fpqqlsh = #{fpqqlsh,jdbcType=VARCHAR}
+    </update>
+    <select id="invoiceModelList" resultMap="BaseResultMap1" parameterType="api.beans.InvoiceModelQueryDTO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_model
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="projectNo != null">
+                AND project_no = #{projectNo,jdbcType=BIGINT}
+            </if>
+            <if test="beginDate != null">
+                AND invoicedate &gt;= #{beginDate,jdbcType=BIGINT}
+            </if>
+            <if test="endDate != null">
+                AND invoicedate &lt;= #{endDate,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
 </mapper>

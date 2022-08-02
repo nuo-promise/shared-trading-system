@@ -2,12 +2,15 @@ package cn.suparking.invoice.service;
 
 import api.beans.InvoiceInfoQueryDTO;
 import api.beans.InvoiceSourceDTO;
+import api.beans.ProjectConfig;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
+import cn.suparking.invoice.dao.vo.InvoiceSourceVO;
 import cn.suparking.order.api.beans.CarGroupOrderDTO;
 import cn.suparking.order.api.beans.CarGroupRefundOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingRefundOrderDTO;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
@@ -27,7 +30,7 @@ public interface InvoiceSourceService {
      * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
      * @return {@linkplain SpkCommonResult}
      */
-    List<InvoiceSourceDO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
+    List<InvoiceSourceVO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
 
     /**
      * 获取开票订单列表.
@@ -92,4 +95,20 @@ public interface InvoiceSourceService {
      * @return {@linkplain SpkCommonResult}
      */
     InvoiceSourceDO findByOrderNo(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 获取开票内容.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain ProjectConfig}
+     */
+    JSONObject getInvoiceContent(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 根据开票历史记录 查询对应的开票订单.
+     *
+     * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
+     * @return {@linkplain InvoiceSourceDO}
+     */
+    List<InvoiceSourceVO> getInvoiceSourceByNo(InvoiceSourceDTO invoiceSourceDTO);
 }

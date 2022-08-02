@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -50,7 +51,7 @@ public class CarGroupOrderQueryDTO {
     /**
      * 项目编号.
      */
-    private List<String> projectNos;
+    private String projectNo;
 
     /**
      * 手机号.
@@ -95,4 +96,8 @@ public class CarGroupOrderQueryDTO {
     @NotNull(message = "请选择每页显示数量")
     @Min(value = 1, message = "每页最少显示1条")
     private Integer pageSize;
+
+    private Timestamp beginDate;
+
+    private Timestamp endDate;
 }

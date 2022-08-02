@@ -1,29 +1,33 @@
-package api.beans;
+package cn.suparking.invoice.dao.vo;
 
+import api.beans.InvoiceSourceDTO;
+import cn.suparking.common.api.configuration.SnowflakeConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvoiceSourceDTO implements Serializable {
+public class InvoiceSourceVO implements Serializable {
 
-    private static final long serialVersionUID = 5607215789874263107L;
+    private static final long serialVersionUID = -5933208002676594860L;
 
     /**
      * 主键id.
      */
-    private Long id;
+    private String id;
 
     /**
      * 用户id.
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 支付金额.
@@ -44,6 +48,11 @@ public class InvoiceSourceDTO implements Serializable {
      * 项目编号.
      */
     private String projectNo;
+
+    /**
+     * 项目名称.
+     */
+    private String projectName;
 
     /**
      * 开始时间.
@@ -76,11 +85,6 @@ public class InvoiceSourceDTO implements Serializable {
     private String sourceDoc;
 
     /**
-     * type: VIP  PARKING.
-     */
-    private String type;
-
-    /**
      * 源数据主键.
      */
     private String sourceId;
@@ -105,13 +109,5 @@ public class InvoiceSourceDTO implements Serializable {
      */
     private String operator;
 
-    /**
-     * 开始时间 - 查询用.
-     */
-    private Long beginDate;
-
-    /**
-     * 结束时间 - 查询用.
-     */
-    private Long endDate;
+    private String address;
 }

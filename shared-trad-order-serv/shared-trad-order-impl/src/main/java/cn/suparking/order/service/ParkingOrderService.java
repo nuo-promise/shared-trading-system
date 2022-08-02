@@ -6,7 +6,10 @@ import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
 import cn.suparking.order.api.beans.ParkingQuery;
 import cn.suparking.order.dao.entity.ParkingOrderDO;
+import cn.suparking.order.dao.vo.CarGroupOrderVO;
 import cn.suparking.order.dao.vo.LockOrderVO;
+import cn.suparking.order.dao.vo.ParkingOrderVO;
+import com.github.pagehelper.PageInfo;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +71,7 @@ public interface ParkingOrderService {
      * @param parkingOrderQueryDTO 订单详情信息
      * @return Integer
      */
-    SpkCommonResult list(ParkingOrderQueryDTO parkingOrderQueryDTO);
+    PageInfo<ParkingOrderVO> list(ParkingOrderQueryDTO parkingOrderQueryDTO);
 
     /**
      * update parking order.

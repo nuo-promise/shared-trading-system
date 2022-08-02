@@ -5,7 +5,10 @@ import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
 import cn.suparking.order.dao.convert.ParkOrderToLockOrderVO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.dao.entity.CarGroupRefundOrderDO;
 import cn.suparking.order.dao.mapper.CarGroupOrderMapper;
+import cn.suparking.order.dao.mapper.CarGroupRefundOrderMapper;
+import cn.suparking.order.dao.vo.CarGroupOrderVO;
 import cn.suparking.order.dao.vo.LockOrderVO;
 import cn.suparking.order.service.CarGroupOrderService;
 import com.alibaba.fastjson.JSONObject;
@@ -27,8 +30,11 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
 
     private final CarGroupOrderMapper carGroupOrderMapper;
 
-    public CarGroupOrderServiceImpl(final CarGroupOrderMapper carGroupOrderMapper) {
+    private final CarGroupRefundOrderMapper carGroupRefundOrderMapper;
+
+    public CarGroupOrderServiceImpl(final CarGroupOrderMapper carGroupOrderMapper, final CarGroupRefundOrderMapper carGroupRefundOrderMapper) {
         this.carGroupOrderMapper = carGroupOrderMapper;
+        this.carGroupRefundOrderMapper = carGroupRefundOrderMapper;
     }
 
     /**
@@ -38,15 +44,17 @@ public class CarGroupOrderServiceImpl implements CarGroupOrderService {
      * @return java.lang.String
      */
     @Override
-    public PageInfo<CarGroupOrderDO> list(final CarGroupOrderQueryDTO carGroupOrderQueryDTO) {
+    public PageInfo<CarGroupOrderVO> list(final CarGroupOrderQueryDTO carGroupOrderQueryDTO) {
         log.info("用户 [{}] 请求获取合约订单列表,请求参数 -> {}", carGroupOrderQueryDTO.getLoginUserName(), JSONObject.toJSONString(carGroupOrderQueryDTO));
         PageHelper.startPage(carGroupOrderQueryDTO.getPageNum(), carGroupOrderQueryDTO.getPageSize());
-        //求总数
-        long total = carGroupOrderMapper.listTotal(carGroupOrderQueryDTO);
-        List<CarGroupOrderDO> carGroupList = carGroupOrderMapper.list(carGroupOrderQueryDTO);
-        PageInfo<CarGroupOrderDO> carGroupOrderDOPageInfo = new PageInfo<>(carGroupList);
-        carGroupOrderDOPageInfo.setTotal(total);
-        return carGroupOrderDOPageInfo;
+        List<CarGroupOrderVO> carGroupList = carGroupOrderMapper.list(carGroupOrderQueryDTO);
+        for (CarGroupOrderVO carGroupOrderVO : carGroupList) {
+            Long userId = carGroupOrderVO.getUserId();
+            String orderNo = carGroupOrderVO.getOrderNo();
+            List<CarGroupRefundOrderDO> carGroupRefundOrderDOList = carGroupRefundOrderMapper.selectByPayOrderNo(userId, orderNo);
+            carGroupOrderVO.setCarGroupRefundOrder(carGroupRefundOrderDOList);
+        }
+        return new PageInfo<>(carGroupList);
     }
 
     @Override

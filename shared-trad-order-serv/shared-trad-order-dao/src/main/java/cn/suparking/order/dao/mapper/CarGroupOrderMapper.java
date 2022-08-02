@@ -2,6 +2,7 @@ package cn.suparking.order.dao.mapper;
 
 import cn.suparking.order.api.beans.CarGroupOrderQueryDTO;
 import cn.suparking.order.dao.entity.CarGroupOrderDO;
+import cn.suparking.order.dao.vo.CarGroupOrderVO;
 import cn.suparking.order.dao.vo.LockOrderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,7 +28,7 @@ public interface CarGroupOrderMapper {
      * @param carGroupOrderQueryDTO 订单信息
      * @return {@linkplain CarGroupOrderDO}
      */
-    List<CarGroupOrderDO> list(CarGroupOrderQueryDTO carGroupOrderQueryDTO);
+    List<CarGroupOrderVO> list(CarGroupOrderQueryDTO carGroupOrderQueryDTO);
 
     /**
      * 根据id查找合约订单.

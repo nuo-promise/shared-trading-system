@@ -1,10 +1,13 @@
 package cn.suparking.invoice.dao.mapper;
 
 import api.beans.InvoiceInfoQueryDTO;
+import api.beans.InvoiceModelQueryDTO;
 import api.beans.InvoiceSourceDTO;
 import cn.suparking.common.api.beans.SpkCommonResult;
 import cn.suparking.invoice.dao.entity.InvoiceSourceDO;
+import cn.suparking.invoice.dao.vo.InvoiceSourceVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -48,6 +51,7 @@ public interface InvoiceSourceMapper {
 
     /**
      * 根据id删除发票信息.
+     *
      * @param id 发票id
      * @return Integer
      */
@@ -67,5 +71,31 @@ public interface InvoiceSourceMapper {
      * @param invoiceSourceDTO {@linkplain InvoiceInfoQueryDTO}
      * @return {@linkplain SpkCommonResult}
      */
-    List<InvoiceSourceDO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
+    List<InvoiceSourceVO> getInvoiceSource(InvoiceSourceDTO invoiceSourceDTO);
+
+    /**
+     * 根据订单号修改发票订单的状态和编号.
+     *
+     * @param invoiceModelQueryDTO {@linkplain InvoiceModelQueryDTO}
+     * @return {@linkplain Integer}
+     */
+    Integer updateByCodeList(InvoiceModelQueryDTO invoiceModelQueryDTO);
+
+    /**
+     * 根据订单号修改发票订单的状态.
+     *
+     * @param invoiceCode 发票信息编号
+     * @param state       状态
+     * @param userId      用户id
+     * @return {@linkplain Integer}
+     */
+    Integer updateByInvoiceCode(@Param("invoiceCode") String invoiceCode, @Param("state") String state, @Param("userId") Long userId);
+
+    /**
+     * 根据开票历史记录 查询对应的开票订单.
+     *
+     * @param invoiceCode 开票信息编号
+     * @return {@linkplain InvoiceSourceDO}
+     */
+    List<InvoiceSourceVO> getInvoiceSourceByInvoiceCode(@Param("invoiceCode") String invoiceCode);
 }

@@ -67,14 +67,8 @@ public class InvoiceInfoController {
      * @param invoiceInfoDTO {@linkplain InvoiceInfoDTO}
      * @return {@linkplain SpkCommonResult}
      */
-    @PostMapping("remove")
-    public SpkCommonResult remove(@RequestParam final InvoiceInfoDTO invoiceInfoDTO) {
-        return Optional.ofNullable(invoiceInfoDTO)
-                .map(item -> {
-                    SpkCommonAssert.notNull(item.getUserId(), "用户id不能为空");
-                    SpkCommonAssert.notNull(item.getId(), "id不能为空");
-                    Integer removeCount = invoiceInfoService.remove(invoiceInfoDTO);
-                    return SpkCommonResult.success(SpkCommonResultMessage.CREATE_SUCCESS, removeCount);
-                }).orElseGet(() -> SpkCommonResult.error("发票id不能为空"));
+    @PostMapping("deleteInvoiceInfo")
+    public Integer deleteInvoiceInfo(@RequestBody final InvoiceInfoDTO invoiceInfoDTO) {
+        return invoiceInfoService.remove(invoiceInfoDTO);
     }
 }

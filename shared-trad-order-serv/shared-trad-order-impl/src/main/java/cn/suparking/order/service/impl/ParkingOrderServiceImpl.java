@@ -12,15 +12,18 @@ import cn.suparking.order.api.beans.OrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderDTO;
 import cn.suparking.order.api.beans.ParkingOrderQueryDTO;
 import cn.suparking.order.api.beans.ParkingQuery;
+import cn.suparking.order.api.beans.ParkingRefundOrderQueryDTO;
 import cn.suparking.order.dao.convert.ParkOrderToLockOrderVO;
 import cn.suparking.order.dao.entity.ChargeDetailDO;
 import cn.suparking.order.dao.entity.ChargeInfoDO;
 import cn.suparking.order.dao.entity.DiscountInfoDO;
 import cn.suparking.order.dao.entity.ParkingOrderDO;
+import cn.suparking.order.dao.entity.ParkingRefundOrderDO;
 import cn.suparking.order.dao.mapper.ChargeDetailMapper;
 import cn.suparking.order.dao.mapper.ChargeInfoMapper;
 import cn.suparking.order.dao.mapper.DiscountInfoMapper;
 import cn.suparking.order.dao.mapper.ParkingOrderMapper;
+import cn.suparking.order.dao.mapper.ParkingRefundOrderMapper;
 import cn.suparking.order.dao.vo.ChargeInfoVO;
 import cn.suparking.order.dao.vo.LockOrderVO;
 import cn.suparking.order.dao.vo.ParkingOrderVO;
@@ -59,6 +62,8 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
 
     private final ParkingOrderMapper parkingOrderMapper;
 
+    private final ParkingRefundOrderMapper parkingRefundOrderMapper;
+
     private final UserTemplateService userTemplateService;
 
     private final ChargeInfoService chargeInfoService;
@@ -70,7 +75,8 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
     public ParkingOrderServiceImpl(final ChargeDetailMapper chargeDetailMapper, final DiscountInfoMapper discountInfoMapper,
                                    final ChargeInfoMapper chargeInfoMapper, final UserTemplateService userTemplateService,
                                    final ParkingOrderMapper parkingOrderMapper, final ChargeInfoService chargeInfoService,
-                                   final ChargeDetailService chargeDetailService, final DiscountInfoService discountInfoService) {
+                                   final ChargeDetailService chargeDetailService, final DiscountInfoService discountInfoService,
+                                   final ParkingRefundOrderMapper parkingRefundOrderMapper) {
         this.chargeDetailMapper = chargeDetailMapper;
         this.discountInfoMapper = discountInfoMapper;
         this.chargeInfoMapper = chargeInfoMapper;
@@ -79,6 +85,7 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
         this.chargeInfoService = chargeInfoService;
         this.chargeDetailService = chargeDetailService;
         this.discountInfoService = discountInfoService;
+        this.parkingRefundOrderMapper = parkingRefundOrderMapper;
     }
 
     @Override
@@ -233,13 +240,13 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
      * @return Integer
      */
     @Override
-    public SpkCommonResult list(final ParkingOrderQueryDTO parkingOrderQueryDTO) {
+    public PageInfo<ParkingOrderVO> list(final ParkingOrderQueryDTO parkingOrderQueryDTO) {
         //如果手机号不为空，先根据手机号查询user表，获取userId
         String iphone = parkingOrderQueryDTO.getKeyword();
         if (!StringUtils.isBlank(iphone)) {
             JSONObject userByIphone = userTemplateService.getUserByIphone(iphone);
             if (userByIphone == null || userByIphone.getInteger("code") != 200 || ObjectUtils.isEmpty(userByIphone.getJSONObject("data"))) {
-                return SpkCommonResult.success();
+                return null;
             }
             JSONObject data = userByIphone.getJSONObject("data");
             parkingOrderQueryDTO.setUserId(String.valueOf(data.getLong("id")));
@@ -254,9 +261,20 @@ public class ParkingOrderServiceImpl implements ParkingOrderService {
             item.setDiscountInfoDO(getDiscountInfo(item.getId()));
             //查询计费详情
             item.setChargeInfos(getChargeInfoVOList(item.getId()));
+            //查询退费相关
+            ParkingRefundOrderQueryDTO refundOrderQueryDTO = ParkingRefundOrderQueryDTO.builder().userId(item.getUserId())
+                    .payOrderNo(item.getOrderNo()).build();
+            List<ParkingRefundOrderDO> parkingRefundOrderList = parkingRefundOrderMapper.getParkingRefundOrderByPayOrderNO(refundOrderQueryDTO);
+            //查询可退金额相关内容
+            item.setParkingRefundAmountDO(getParkingRefundOrder(parkingRefundOrderList, "SUCCESS,PENDING"));
+            //查询退费详情
+            item.setParkingRefundOrderDO(getParkingRefundOrder(parkingRefundOrderList, "PENDING,FAILED,SUCCESS,ERROR"));
         });
-        PageInfo<ParkingOrderVO> parkingOrderVOPageInfo = new PageInfo<>(parkingDOList);
-        return SpkCommonResult.success(parkingOrderVOPageInfo);
+        return new PageInfo<>(parkingDOList);
+    }
+
+    private ParkingRefundOrderDO getParkingRefundOrder(final List<ParkingRefundOrderDO> parkingRefundOrderList, final String orderState) {
+        return parkingRefundOrderList.stream().filter(item -> orderState.contains(item.getOrderState())).findFirst().orElse(null);
     }
 
     /**

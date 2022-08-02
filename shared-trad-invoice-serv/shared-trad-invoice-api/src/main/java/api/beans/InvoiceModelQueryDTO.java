@@ -7,16 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvoiceModelDTO implements Serializable {
+public class InvoiceModelQueryDTO implements Serializable {
 
-    private static final long serialVersionUID = 3914877750106917179L;
+    private static final long serialVersionUID = 6140270669087356597L;
 
     /**
      * 发票记录ID.
@@ -66,7 +65,7 @@ public class InvoiceModelDTO implements Serializable {
     /**
      * 单据时间.
      */
-    private String invoicedate;
+    private Date invoicedate;
 
     /**
      * 销方企业税号.
@@ -129,39 +128,37 @@ public class InvoiceModelDTO implements Serializable {
     private String fpqqlsh;
 
     /**
-     * 图片 url.
+     * 开票总金额.
      */
-    private String imgUrl;
+    private Integer totalAmount;
 
     /**
-     * PDF url.
+     * 开票订单号.
      */
-    private String pdfUrl;
+    private List<String> codeList;
 
     /**
-     * 本地图片路径.
+     * 开票订单信息.
      */
-    private String imgPath;
+    private List<InvoiceSourceDTO> lockOrderList;
 
     /**
-     * 本地PDF路径.
+     * 开票抬头信息.
      */
-    private String pdfPath;
+    private InvoiceInfoDTO invoiceInfo;
 
     /**
-     * 2:开票完成 20:开票中 21:开票成功签章中 22:开票失败 24:开票成功签章失败.
+     * 是否保存抬头.
      */
-    private String state;
+    private Boolean invoiceHeadSaveStatus;
 
     /**
-     * 创建时间.
+     * 开始时间 - 查询用.
      */
-    private Timestamp dateCreated;
+    private String beginDate;
 
     /**
-     * 更新时间.
+     * 结束时间 - 查询用.
      */
-    private Timestamp dateUpdated;
-
-    private List<InvoiceDetail> invoiceDetailList;
+    private String endDate;
 }

@@ -14,5 +14,10 @@ import org.springframework.stereotype.Component;
 @Component("InvoiceProperties")
 @ConfigurationProperties(prefix = "sparking.invoice")
 public class InvoiceProperties {
+
+    private String invoiceUrl;
+
     private String dataUrl;
+
+    private String imagePath;
 }

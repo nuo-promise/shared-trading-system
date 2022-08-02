@@ -5,8 +5,8 @@ server:
     include-message: always
   servlet:
     context-path: /invoice-center
-    # 增加优雅停机
-    shutdown: graceful
+  # 增加优雅停机
+  shutdown: graceful
 spring:
 #    application:
 #  #   定义项目名称
@@ -28,7 +28,7 @@ spring:
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          jdbc-url: jdbc:mysql://47.98.44.236:3306/tbl_invoice?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
 #          username: SPKRoot
-#          password: SPKRoot2017!
+#          password: SPKRoot2022!
 #          max-active: 16
 #          hikari:
 #            pool-name: SharedTradInvoiceMHikari
@@ -43,7 +43,7 @@ spring:
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_invoice?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
 #          username: SPKRoot
-#          password: SPKRoot2017!
+#          password: SPKRoot2022!
 #          max-active: 16
 #          hikari:
 #            pool-name: SharedTradInvoiceSHikari
@@ -58,7 +58,7 @@ spring:
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          jdbc-url: jdbc:mysql://47.111.104.238:3306/tbl_invoice?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
 #          username: SPKRoot
-#          password: SPKRoot2017!
+#          password: SPKRoot2022!
 #          max-active: 16
 #          hikari:
 #            pool-name: SharedTradInvocieSSHikari
@@ -131,7 +131,7 @@ spring:
         # 服务发现默认开关打开
         enabled: true
         # 服务地址,集群用逗号分开
-        server-addr: 47.98.44.236:8084
+        server-addr: 47.98.44.236:8004
         # 注册中心服务名称 application name,一般不用配置
         service: shared-trad-invoice-serv
         # nacos 客户端向服务端发送心跳时间间隔,时间单位其实是ms
@@ -184,7 +184,12 @@ feign:
   circuitbreaker:
     enabled: true
 sparking:
+  corePoolSize: 16
+  initialDelay: 5
+  queryInterval: 10
+  invoiceCount: 5
   #电子发票服务
   invoice:
-    nnfpurl: https://nnfp.jss.com.cn/shop/buyer/allow/cxfKp/cxfServerKpOrderSync.action
+    invoiceUrl: http://localhost:8081
     dataUrl: http://datasync.suparking.cn:25850/api/projectConfig
+    imagePath: D://file/pic/

@@ -6,7 +6,27 @@
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="pay_amount" jdbcType="INTEGER" property="payAmount"/>
         <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
-        <result column="state" jdbcType="BOOLEAN" property="state"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="project_no" jdbcType="VARCHAR" property="projectNo"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="pay_type" jdbcType="VARCHAR" property="payType"/>
+        <result column="pay_channel" jdbcType="VARCHAR" property="payChannel"/>
+        <result column="pay_time" jdbcType="BIGINT" property="payTime"/>
+        <result column="source_doc" jdbcType="VARCHAR" property="sourceDoc"/>
+        <result column="source_id" jdbcType="VARCHAR" property="sourceId"/>
+        <result column="protocol_id" jdbcType="VARCHAR" property="protocolId"/>
+        <result column="invoice_code" jdbcType="VARCHAR" property="invoiceCode"/>
+        <result column="term_no" jdbcType="VARCHAR" property="termNo"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="cn.suparking.invoice.dao.vo.InvoiceSourceVO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="pay_amount" jdbcType="INTEGER" property="payAmount"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
         <result column="project_no" jdbcType="VARCHAR" property="projectNo"/>
         <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
         <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
@@ -46,7 +66,7 @@
                 AND user_id = #{userId,jdbcType=BIGINT}
             </if>
             <if test="state != null">
-                AND state = #{state,jdbcType=BOOLEAN}
+                AND state = #{state,jdbcType=VARCHAR}
             </if>
             <if test="projectNo != null">
                 AND project_no = #{projectNo,jdbcType=VARCHAR}
@@ -72,7 +92,7 @@
                 AND user_id = #{userId,jdbcType=BIGINT}
             </if>
             <if test="state != null">
-                AND state = #{state,jdbcType=BOOLEAN}
+                AND state = #{state,jdbcType=VARCHAR}
             </if>
             <if test="projectNo != null">
                 AND project_no = #{projectNo,jdbcType=VARCHAR}
@@ -107,7 +127,7 @@
             </if>
         </where>
     </select>
-    <select id="getInvoiceSource" resultMap="BaseResultMap">
+    <select id="getInvoiceSource" resultMap="BaseResultMap1">
         SELECT
         <include refid="Base_Column_List"/>
         FROM spk_invoice_source
@@ -115,13 +135,25 @@
             <if test="userId != null">
                 AND user_id = #{userId,jdbcType=BIGINT}
             </if>
+            <if test="projectNo != null">
+                AND project_no = #{projectNo,jdbcType=BIGINT}
+            </if>
             <if test="beginDate != null">
                 AND pay_time &gt;= #{beginDate,jdbcType=BIGINT}
             </if>
             <if test="endDate != null">
                 AND pay_time &lt;= #{endDate,jdbcType=BIGINT}
             </if>
+            <if test="sourceDoc != null">
+                AND source_doc = #{sourceDoc,jdbcType=VARCHAR}
+            </if>
         </where>
+    </select>
+    <select id="getInvoiceSourceByInvoiceCode" resultMap="BaseResultMap1">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM spk_invoice_source
+        WHERE invoice_code = #{invoiceCode,jdbcType=VARCHAR}
     </select>
 
     <insert id="insert" parameterType="cn.suparking.invoice.dao.entity.InvoiceSourceDO">
@@ -192,7 +224,7 @@
                 #{orderNo,jdbcType=VARCHAR},
             </if>
             <if test="state != null">
-                #{state,jdbcType=BOOLEAN},
+                #{state,jdbcType=VARCHAR},
             </if>
             <if test="projectNo != null">
                 #{projectNo,jdbcType=VARCHAR},
@@ -249,7 +281,7 @@
                 order_no = #{orderNo,jdbcType=VARCHAR} ,
             </if>
             <if test="state != null">
-                state = #{state,jdbcType=BIGINT} ,
+                state = #{state,jdbcType=VARCHAR} ,
             </if>
             <if test="projectNo != null">
                 project_no = #{projectNo,jdbcType=VARCHAR} ,
@@ -292,5 +324,29 @@
             </if>
         </set>
         WHERE id = #{id, jdbcType=BIGINT} AND user_id = #{userId, jdbcType=BIGINT}
+    </update>
+    <update id="updateByCodeList" parameterType="api.beans.InvoiceModelQueryDTO">
+        UPDATE
+            spk_invoice_source
+        SET
+            invoice_code = #{orderno,jdbcType=VARCHAR}
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT}
+        AND
+            order_no IN
+        <foreach collection="codeList" item="code" index="index" open="(" close=")" separator=",">
+            #{code,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="updateByInvoiceCode">
+        UPDATE
+            spk_invoice_source
+        SET
+            state = #{state,jdbcType=VARCHAR}
+        WHERE
+            user_id = #{userId,jdbcType=BIGINT}
+        AND
+            invoice_code = #{invoiceCode,jdbcType=VARCHAR}
     </update>
 </mapper>

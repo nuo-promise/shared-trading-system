@@ -69,7 +69,7 @@ public class InvoiceModelDO implements Serializable {
     /**
      * 单据时间.
      */
-    private Date invoicedate;
+    private String invoicedate;
 
     /**
      * 销方企业税号.
@@ -132,6 +132,31 @@ public class InvoiceModelDO implements Serializable {
     private String fpqqlsh;
 
     /**
+     * 图片 url.
+     */
+    private String imgUrl;
+
+    /**
+     * PDF url.
+     */
+    private String pdfUrl;
+
+    /**
+     * 本地图片路径.
+     */
+    private String imgPath;
+
+    /**
+     * 本地PDF路径.
+     */
+    private String pdfPath;
+
+    /**
+     * 2:开票完成 20:开票中 21:开票成功签章中 22:开票失败 24:开票成功签章失败.
+     */
+    private String state;
+
+    /**
      * 创建时间.
      */
     private Timestamp dateCreated;
@@ -170,6 +195,11 @@ public class InvoiceModelDO implements Serializable {
                     .email(item.getEmail())
                     .phone(item.getPhone())
                     .fpqqlsh(item.getFpqqlsh())
+                    .imgUrl(item.getImgUrl())
+                    .pdfUrl(item.getPdfUrl())
+                    .imgPath(item.getImgPath())
+                    .pdfPath(item.getPdfPath())
+                    .state(item.getState())
                     .build();
             if (Objects.isNull(item.getId())) {
                 invoiceModelDO.setId(SnowflakeConfig.snowflakeId());
