@@ -312,7 +312,7 @@ public class ParkServiceImpl implements ParkService {
         if (!invoke(sign, parkPayDTO.getTmpOrderNo())) {
             return SpkCommonResult.error(SpkCommonResultMessage.SIGN_NOT_VALID);
         }
-        // 下面进行下单操作,根据前置传递过来的临时订单号,获取费用信息,然后下单.
+        // 下面进行下单操作,根据前置传递过来的parkingId + userId,获取费用信息,然后下单.
         ParkFeeRet parkFeeRet = getParkFeeRet(parkPayDTO.getParkingId() + "-" + parkPayDTO.getUserId());
         if (Objects.isNull(parkFeeRet)) {
             return SpkCommonResult.error(SpkCommonResultMessage.ORDER_EXPIRE);
@@ -347,7 +347,7 @@ public class ParkServiceImpl implements ParkService {
 
         // 金额为0,无需走支付 -- 直接发送通知.
         if (parkingOrder.getDueAmount() == 0) {
-           // 走设备服务.
+            // 走设备服务.
             miniPayVO.setRetCode("0");
             miniPayVO.setNeedQuery(false);
             miniPayVO.setType(ORDER_TYPE);
